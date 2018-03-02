@@ -87,7 +87,7 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
             if (skipFloatBtn) {
                 SchemeHelper.startKata(this, sharedText!!, 0)
             } else {
-                val mFloatingView = FloatingView(this)
+                val mFloatingView = FloatingView(applicationContext)
                 mFloatingView.mText = sharedText
                 mFloatingView.show()
             }
