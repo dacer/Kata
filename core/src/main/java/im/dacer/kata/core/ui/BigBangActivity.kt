@@ -149,7 +149,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                     } else { meaningStr }
 
                     val readingStr = it.readingStr
-                    if (readingStr.isNotEmpty()) {
+                    if (readingStr.isNotEmpty() && readingStr.contains(",")) {
                         pronunciationTv.visibility = View.VISIBLE
                         pronunciationTv.text = readingStr
                     }
