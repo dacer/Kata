@@ -8,16 +8,33 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <EditText
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:id="@+id/lyricEditText"
-            android:hint="@string/lyric"
-            android:lines="1"
-            android:maxLines="1"
-            android:inputType="text"
-            android:imeOptions="actionSearch"/>
+            android:layout_height="match_parent">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:id="@+id/lyricEditText"
+                android:hint="@string/lyric"
+                android:lines="1"
+                android:maxLines="1"
+                android:inputType="text"
+                android:imeOptions="actionSearch"/>
+
+            <com.mikepenz.iconics.view.IconicsTextView
+                android:id="@+id/searchEtClearBtn"
+                android:text="{gmd-highlight-off}"
+                android:textColor="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:layout_alignRight="@+id/lyricEditText"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:visibility="gone"/>
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

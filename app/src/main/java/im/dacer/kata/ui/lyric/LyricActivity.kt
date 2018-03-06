@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
 import im.dacer.kata.adapter.LyricAdapter
@@ -69,6 +70,25 @@ class LyricActivity : AppCompatActivity() {
             }
         }
 
+        lyricEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (lyricEditText.text.isEmpty()) {
+                    searchEtClearBtn.visibility = View.GONE
+                } else {
+                    searchEtClearBtn.visibility = View.VISIBLE
+                }
+            }
+        })
+
+        searchEtClearBtn.setOnClickListener {
+            lyricEditText.text.clear()
+            lyricEditText.clearFocus()
+            searchEtClearBtn.visibility = View.GONE
+        }
 
     }
 
