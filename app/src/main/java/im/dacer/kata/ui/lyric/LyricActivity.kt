@@ -29,8 +29,6 @@ class LyricActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter.bindToRecyclerView(recyclerView)
-//        val bottomView = layoutInflater.inflate(R.layout.item_history_bottom, recyclerView.parent as ViewGroup, false)
-//        adapter.setFooterView(bottomView)
         adapter.setOnLoadMoreListener({ loadMore() }, recyclerView)
 
         lyricEditText.addTextChangedListener(object : TextWatcher {
@@ -45,6 +43,7 @@ class LyricActivity : AppCompatActivity() {
                     searchDisposable = LyricsHelper.search(s.toString())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
+                                recyclerView.scrollToPosition(0)
                                 adapter.setNewData(it.songs.toList())
                             }, { timberAndToast(it) })
                 }
@@ -55,6 +54,13 @@ class LyricActivity : AppCompatActivity() {
             adapter.getItem(pos)?.id?.run {
                 progressDialog.show()
                 searchDisposable = LyricsHelper.getLyric(this)
+                        .map {
+                            it.split("\n").filter {
+                                        !(it.matches(Regex("^\\[(by|ti|ar|al).+]")) ||
+                                        it.matches(Regex("^.*作曲.*[:：].+")) ||
+                                        it.matches(Regex("^.*(作词|作詞).*[:：].+")))
+                            }.joinToString("\n")
+                        }
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             progressDialog.dismiss()
