@@ -17,6 +17,8 @@
     <string name="redo">Redo</string>
     <string name="set_alias">Set alias</string>
     <string name="star">Star</string>
+    <string name="click_to_youtube_tutorial_title">Don\'t know where to start?</string>
+    <string name="click_to_youtube_tutorial_summary">Click to view our tutorial video</string>
 
     <string name="lyric">Lyric</string>
 

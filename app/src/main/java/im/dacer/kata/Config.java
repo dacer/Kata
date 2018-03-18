@@ -33,4 +33,8 @@ public interface Config {
     boolean showLyricBtn();
     void setShowLyricBtn(boolean show);
 
+    @Default("false")
+    boolean hasShownGoYoutube();
+    void setHasShownGoYoutube(boolean show);
+
 }

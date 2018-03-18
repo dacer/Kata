@@ -10,6 +10,7 @@ interface MainMvp {
     fun setBigbangTipTv(strId: Int)
     fun catchError(throwable: Throwable)
     fun showNothingHappenedView()
+    fun showGoYoutubeView()
     fun getClipTvText(): String
     fun showHistory(historyList: List<History>?)
     fun getDecorView(): View

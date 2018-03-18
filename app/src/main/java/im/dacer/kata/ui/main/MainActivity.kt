@@ -105,6 +105,16 @@ class MainActivity : AppCompatActivity(), MainMvp {
         nothingHappenedView.startAnimation(slideUp)
     }
 
+    override fun showGoYoutubeView() {
+        val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+        goToYoutubeView.visibility = View.VISIBLE
+        goToYoutubeView.startAnimation(slideUp)
+        goToYoutubeView.setOnClickListener {
+            goToYoutubeView.visibility = View.GONE
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutActivity.YOUTUBE_LINK)))
+        }
+    }
+
     override fun showHistory(historyList: List<History>?) {
         if (historyList != null) {
             tutorialLayout.visibility = View.GONE

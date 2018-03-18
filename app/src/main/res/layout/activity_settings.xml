@@ -96,7 +96,6 @@
         </RelativeLayout>
 
 
-
         <RelativeLayout
             android:id="@+id/bigbangStyle"
             style="@style/SettingsItem.MoreTopDivider">
@@ -112,7 +111,15 @@
             <TextView
                 style="@style/SettingsItemLeft.Title"
                 android:text="@string/cache"/>
+        </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/tutorialVideoLayout"
+            style="@style/SettingsItem">
+
+            <TextView
+                style="@style/SettingsItemLeft.Title"
+                android:text="@string/click_to_youtube_tutorial_summary"/>
         </RelativeLayout>
 
     </LinearLayout>

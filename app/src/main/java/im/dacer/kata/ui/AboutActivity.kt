@@ -96,6 +96,7 @@ class AboutActivity : me.drakeet.support.about.AboutActivity() {
     }
 
     companion object {
-        private val CC_LICENSE = "Creative Commons Attribution-ShareAlike Licence (V3.0)"
+        private const val CC_LICENSE = "Creative Commons Attribution-ShareAlike Licence (V3.0)"
+        const val YOUTUBE_LINK = "https://www.youtube.com/watch?v=2XgRTL_W0Z0"
     }
 }

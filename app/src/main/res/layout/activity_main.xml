@@ -78,6 +78,41 @@
     </android.support.v7.widget.CardView>
 
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/goToYoutubeView"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="18dp"
+        card_view:cardCornerRadius="4dp"
+        android:layout_below="@+id/tutorialLayout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F44336"
+            android:padding="12dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/click_to_youtube_tutorial_title"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#fff"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textColor="#fff"
+                android:text="@string/click_to_youtube_tutorial_summary" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
     <LinearLayout
         android:id="@+id/permissionErrorLayout"
         android:layout_width="match_parent"

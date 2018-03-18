@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit
  */
 class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupView.PopupListener {
     private var nothingHappenedCountdown: Disposable? = null
+    private var showGoYoutubeCountdown: Disposable? = null
     private val treasure by lazy { Treasure.get(context, Config::class.java) }
     private val appPref by lazy { MultiprocessPref(context) }
     private var refreshHistoryDis: Disposable? = null
@@ -63,6 +64,14 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
     fun showLyricMenu(): Boolean = treasure.showLyricBtn()
 
     fun onResume() {
+        if (!treasure.hasShownGoYoutube()) {
+            showGoYoutubeCountdown = Observable.timer(2, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        mainMvp.showGoYoutubeView()
+                        treasure.setHasShownGoYoutube(true)
+                    }
+        }
         restartListenService()
         refreshHistoryList()
     }
@@ -70,6 +79,7 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
     fun onStop() {
         nothingHappenedCountdown?.dispose()
         refreshHistoryDis?.dispose()
+        showGoYoutubeCountdown?.dispose()
     }
 
     fun onDestroy() {

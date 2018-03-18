@@ -1,6 +1,7 @@
 package im.dacer.kata.ui.settings
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.util.LangUtils
 import im.dacer.kata.core.util.WebParser
 import im.dacer.kata.service.ListenClipboardService
+import im.dacer.kata.ui.AboutActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
@@ -59,6 +61,10 @@ class SettingsActivity : AppCompatActivity() {
                         updateUI()
                     }
                     .show()
+        }
+
+        tutorialVideoLayout.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutActivity.YOUTUBE_LINK)))
         }
 
         showFloatDialogSwit.setOnCheckedChangeListener { _, isChecked ->
