@@ -13,8 +13,8 @@ android {
         applicationId "im.dacer.kata"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 38
-        versionName "0.9.3"
+        versionCode 39
+        versionName "0.9.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
