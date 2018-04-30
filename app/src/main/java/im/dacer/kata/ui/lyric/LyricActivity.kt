@@ -62,6 +62,7 @@ class LyricActivity : AppCompatActivity() {
                                         it.matches(Regex("^.*(作词|作詞).*[:：].+")))
                             }.joinToString("\n")
                         }
+                        .map { it.replace(Regex("^\n+"), "") }
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             progressDialog.dismiss()
