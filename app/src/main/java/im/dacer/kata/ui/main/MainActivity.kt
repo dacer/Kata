@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), MainMvp {
         }
         permissionErrorLayout.setOnClickListener {
             val requestIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + packageName))
+                    Uri.parse("package:$packageName"))
             ListenClipboardService.stop(this)
             try {
                 startActivityForResult(requestIntent, REQUEST_CODE_OVERLAY_PERMISSION)
@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity(), MainMvp {
             permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
         }
         nothingHappenedView.visibility = View.GONE
+        goToYoutubeView.visibility = View.GONE
     }
 
     override fun onStop() {
