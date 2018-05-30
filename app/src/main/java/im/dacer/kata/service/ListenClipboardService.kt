@@ -26,7 +26,7 @@ class ListenClipboardService : Service() {
     private var disableDis: Disposable? = null
 
     private fun showAction() {
-        val primaryClip = mClipboardManager!!.primaryClip
+        val primaryClip = mClipboardManager.primaryClip
         if (primaryClip != null && primaryClip.itemCount > 0 && "BigBang" != primaryClip.description.label) {
             val text = primaryClip.getItemAt(0).coerceToText(this)
             if (text.isEmpty()) { return }

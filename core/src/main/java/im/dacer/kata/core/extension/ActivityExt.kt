@@ -1,8 +1,10 @@
 package im.dacer.kata.core.extension
 
 import android.app.Activity
+import android.app.Fragment
 import android.app.Service
 import android.widget.Toast
+import org.jetbrains.anko.toast
 import timber.log.Timber
 
 /**
