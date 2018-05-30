@@ -11,6 +11,7 @@ import im.dacer.kata.Config
 import im.dacer.kata.R
 import im.dacer.kata.SearchEngine
 import im.dacer.kata.core.data.MultiprocessPref
+import im.dacer.kata.core.extension.setMyActionBar
 import im.dacer.kata.core.util.LangUtils
 import im.dacer.kata.core.util.WebParser
 import im.dacer.kata.service.ListenClipboardService
@@ -25,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
+        setMyActionBar(myToolbar)
 
         searchEngine.setOnClickListener {
             MaterialDialog.Builder(this)
@@ -81,7 +82,6 @@ class SettingsActivity : AppCompatActivity() {
         bigbangStyle.setOnClickListener { startActivity(Intent(this@SettingsActivity, StyleActivity::class.java)) }
         updateUI()
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun refreshService() {

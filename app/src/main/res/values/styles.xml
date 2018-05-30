@@ -17,8 +17,7 @@
     <style name="SettingsItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">62dp</item>
-        <item name="android:layout_marginBottom">1dp</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_marginBottom">1dp</item>œ
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>

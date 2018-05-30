@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import im.dacer.kata.R
 import im.dacer.kata.core.data.MultiprocessPref
+import im.dacer.kata.core.extension.setMyActionBar
 import im.dacer.kata.core.model.BigBangStyle
 import im.dacer.kata.segment.model.KanjiResult
 import kotlinx.android.synthetic.main.activity_style.*
@@ -17,6 +18,7 @@ class StyleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_style)
+        setMyActionBar(myToolbar)
 
         multiprocessPref = MultiprocessPref(this)
         kataLayout.setKanjiResultData(EXAMPLE_KANJI_RESULT_LIST)
@@ -50,7 +52,6 @@ class StyleActivity : AppCompatActivity() {
         lineSpaceSeekBar.progress = multiprocessPref!!.getLineSpace()
         itemSpace.progress = multiprocessPref!!.getItemSpace()
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onPause() {

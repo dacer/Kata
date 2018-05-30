@@ -6,6 +6,7 @@ import android.view.MenuItem
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.Config
 import im.dacer.kata.R
+import im.dacer.kata.core.extension.setMyActionBar
 import kotlinx.android.synthetic.main.activity_cache_settings.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 
@@ -17,7 +18,7 @@ class CacheSettingsActivity : AppCompatActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cache_settings)
-
+        setMyActionBar(myToolbar)
         cacheSeekBar.progress = mConfig.cacheMax
         updateUI()
 
@@ -27,7 +28,6 @@ class CacheSettingsActivity : AppCompatActivity() {
                 updateUI()
             }
         })
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun updateUI() {
