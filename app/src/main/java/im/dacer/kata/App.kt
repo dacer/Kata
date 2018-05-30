@@ -7,6 +7,7 @@ import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.leakcanary.LeakCanary
+import com.tspoon.traceur.Traceur
 import io.fabric.sdk.android.Fabric
 import okhttp3.OkHttpClient
 import timber.log.Timber
@@ -31,6 +32,7 @@ class App : Application() {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            Traceur.enableLogging()
         } else {
             Timber.plant(CrashReportingTree())
         }
