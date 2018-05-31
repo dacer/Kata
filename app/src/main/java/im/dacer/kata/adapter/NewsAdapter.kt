@@ -19,6 +19,7 @@ class NewsAdapter : BaseItemDraggableAdapter<NewsItem, BaseViewHolder>(R.layout.
 
     override fun convert(helper: BaseViewHolder, item: NewsItem) {
         helper.setText(R.id.titleTv, item.title())
+                .setText(R.id.timeTv, item.time())
         if (!item.coverUrl().isNullOrEmpty()) {
             Picasso.get()
                     .load(item.coverUrl())

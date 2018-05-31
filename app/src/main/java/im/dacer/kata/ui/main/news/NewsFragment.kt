@@ -32,10 +32,10 @@ class NewsFragment: BaseFragment(), NewsMvp {
             toast(pos.toString())
         }
         newsAdapter.setNewData(listOf(
-                EasyNews(title = "Title", news_web_image_uri = "https://www3.nhk.or.jp/news/html/20180530/K10011458671_1805302002_1805302006_01_02.jpg"),
-                EasyNews(title = "Title1", news_web_image_uri = "https://www3.nhk.or.jp/news/html/20180530/K10011458671_1805302002_1805302006_01_02.jpg"),
-                EasyNews(title = "Title2", news_web_image_uri = "https://www3.nhk.or.jp/news/html/20180530/K10011458671_1805302002_1805302006_01_02.jpg"),
-                EasyNews(title = "Title3")
+                EasyNews(title = "２人死亡事故 85歳の女に過失運転致死の罪で判決 禁錮２年", news_publication_time = "16時31分", news_web_image_uri = "https://www3.nhk.or.jp/news/html/20180530/K10011458671_1805302002_1805302006_01_02.jpg"),
+                EasyNews(title = "７月の電気料金 大手６社が値上げ", news_publication_time = "16時27分", news_web_image_uri = "https://www3.nhk.or.jp/news/html/20180530/K10011458671_1805302002_1805302006_01_02.jpg"),
+                EasyNews(title = "公明 石田政調会長「麻生氏の発言理解できない」", news_publication_time = "16時22分", news_web_image_uri = "https://www3.nhk.or.jp/news/html/20180530/K10011458671_1805302002_1805302006_01_02.jpg"),
+                EasyNews(title = "時速100キロ以上 けが人相次ぐ イギリス「チーズ転がし祭り」", news_publication_time = "16時01分")
         ))
 
     }
