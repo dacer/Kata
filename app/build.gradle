@@ -54,6 +54,10 @@ android {
         exclude 'META-INF/CONTRIBUTORS.md'
         exclude 'META-INF/LICENSE.md'
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 
@@ -65,8 +69,14 @@ dependencies {
     implementation supportLibs
     implementation networkLibs
     implementation rxJavaLibs
+    implementation iconicsLibs
     implementation otherLibs
     implementation 'com.android.support:multidex:1.0.3'
+
+
+    annotationProcessor immutablesValue // <-- for annotation processor
+    compileOnly immutablesValue // <-- for annotation API
+    compileOnly immutablesGson
 
 
     implementation(glideOkhttp) { exclude group: 'glide-parent' }

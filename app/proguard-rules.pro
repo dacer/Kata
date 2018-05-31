@@ -31,6 +31,9 @@
 -keepclassmembers class im.dacer.kata.core.model.** {
     !static !private <fields>;
 }
+-keepclassmembers class im.dacer.kata.data.model.** {
+    !static !private <fields>;
+}
 
 #https://github.com/mikepenz/Android-Iconics
 -keep class .R

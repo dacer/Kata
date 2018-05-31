@@ -30,4 +30,5 @@ dependencies {
 
     implementation supportLibs
     implementation networkLibs
+    implementation rxJavaLibs
 }
