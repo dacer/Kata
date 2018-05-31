@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.*
 import com.mikepenz.materialdrawer.DrawerBuilder
 import im.dacer.kata.R
 import im.dacer.kata.ui.AboutActivity
@@ -16,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import im.dacer.kata.ui.base.BaseActivity
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import im.dacer.kata.core.extension.startActivity
@@ -85,6 +83,12 @@ class MainActivity : BaseActivity(), MainMvp {
                 }
                 .build()
     }
+
+    override fun onResume() {
+        super.onResume()
+        mainPresenter.onResume()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_OVERLAY_PERMISSION) {

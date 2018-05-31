@@ -70,7 +70,6 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
                         treasure.setHasShownGoYoutube(true)
                     }
         }
-        restartListenService()
         refreshHistoryList()
     }
 
@@ -112,11 +111,6 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
                         inboxMvp.setBigbangTipTv(R.string.bigbang_hold_tip)
                         treasure.isDatabaseImported = true
                     }, { inboxMvp.catchError(it) })
-        }
-    }
-    fun restartListenService() {
-        if (treasure.isListenClipboard) {
-            ListenClipboardService.restart(context)
         }
     }
 

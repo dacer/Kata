@@ -31,5 +31,15 @@ import java.util.concurrent.TimeUnit
  * Created by Dacer on 13/02/2018.
  */
 class MainPresenter(val context: Context, private val mainMvp: MainMvp) {
+    private val treasure by lazy { Treasure.get(context, Config::class.java) }
 
+    fun onResume() {
+        restartListenService()
+    }
+
+    fun restartListenService() {
+        if (treasure.isListenClipboard) {
+            ListenClipboardService.restart(context)
+        }
+    }
 }
