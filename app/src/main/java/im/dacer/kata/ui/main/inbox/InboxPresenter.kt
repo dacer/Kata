@@ -1,4 +1,4 @@
-package im.dacer.kata.ui.inbox
+package im.dacer.kata.ui.main.inbox
 
 import android.app.Activity
 import android.content.ClipData
@@ -19,7 +19,6 @@ import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.model.History
 import im.dacer.kata.core.util.SchemeHelper
 import im.dacer.kata.data.DictImporter
-import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.widget.PopupView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -7,8 +7,8 @@ import android.os.Bundle
 import com.mikepenz.materialdrawer.DrawerBuilder
 import im.dacer.kata.R
 import im.dacer.kata.ui.AboutActivity
-import im.dacer.kata.ui.inbox.InboxFragment
-import im.dacer.kata.ui.inbox.InboxFragment.Companion.REQUEST_CODE_OVERLAY_PERMISSION
+import im.dacer.kata.ui.main.inbox.InboxFragment
+import im.dacer.kata.ui.main.inbox.InboxFragment.Companion.REQUEST_CODE_OVERLAY_PERMISSION
 import im.dacer.kata.ui.lyric.LyricActivity
 import im.dacer.kata.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*

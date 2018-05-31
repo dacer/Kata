@@ -1,4 +1,4 @@
-package im.dacer.kata.ui.inbox
+package im.dacer.kata.ui.main.inbox
 
 import android.annotation.SuppressLint
 import android.content.Intent
