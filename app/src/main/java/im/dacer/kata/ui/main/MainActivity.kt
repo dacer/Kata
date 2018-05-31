@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import com.mikepenz.materialdrawer.DrawerBuilder
 import im.dacer.kata.R
 import im.dacer.kata.ui.AboutActivity
@@ -18,6 +19,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import im.dacer.kata.ui.base.BaseActivity
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import im.dacer.kata.core.extension.startActivity
+import im.dacer.kata.ui.main.news.NewsFragment
 
 
 class MainActivity : BaseActivity(), MainMvp {
@@ -34,9 +36,8 @@ class MainActivity : BaseActivity(), MainMvp {
         setSupportActionBar(myToolbar)
 
         if (savedInstanceState == null) {
-            val newFragment = InboxFragment()
             val ft = supportFragmentManager.beginTransaction()
-            ft.add(R.id.frameLayout, newFragment).commit()
+            ft.add(R.id.frameLayout, InboxFragment()).commit()
         }
         drawer.setSelection(DrawerItem.INBOX.id)
     }
@@ -60,11 +61,11 @@ class MainActivity : BaseActivity(), MainMvp {
                 .addDrawerItems(
                         itemInbox,
                         DividerDrawerItem(),
-                        itemLyric,
-                        DividerDrawerItem(),
                         itemNhkEasy,
                         DividerDrawerItem(),
                         itemNhk,
+                        DividerDrawerItem(),
+                        itemLyric,
                         DividerDrawerItem(),
                         itemSettings,
                         DividerDrawerItem(),
@@ -72,12 +73,12 @@ class MainActivity : BaseActivity(), MainMvp {
                 )
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
                     when(drawerItem.identifier) {
-                        DrawerItem.INBOX.id -> {}
-                        DrawerItem.LYRIC.id -> { startActivity(LyricActivity::class.java) }
-                        DrawerItem.NHK_EASY.id -> {}
+                        DrawerItem.INBOX.id -> switchFragment(InboxFragment())
+                        DrawerItem.LYRIC.id -> startActivity(LyricActivity::class.java)
+                        DrawerItem.NHK_EASY.id -> switchFragment(NewsFragment())
                         DrawerItem.NHK.id -> {}
-                        DrawerItem.SETTINGS.id -> { startActivity(SettingsActivity::class.java) }
-                        DrawerItem.ABOUT.id -> { startActivity(AboutActivity::class.java) }
+                        DrawerItem.SETTINGS.id -> startActivity(SettingsActivity::class.java)
+                        DrawerItem.ABOUT.id -> startActivity(AboutActivity::class.java)
                     }
                     return@withOnDrawerItemClickListener false
                 }
@@ -96,5 +97,8 @@ class MainActivity : BaseActivity(), MainMvp {
         }
     }
 
-
+    private fun switchFragment(fragment: Fragment) {
+        val ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.frameLayout, fragment).commit()
+    }
 }

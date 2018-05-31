@@ -21,15 +21,14 @@ import im.dacer.kata.ui.AboutActivity
 import im.dacer.kata.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_inbox.*
 import org.jetbrains.anko.support.v4.toast
+import timber.log.Timber
 
 class InboxFragment: BaseFragment(), InboxMvp {
     private val mainPresenter by lazy { InboxPresenter(context!!, this) }
     private val historyAdapter = HistoryAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_inbox, container, false)
-
-        return view
+        return inflater.inflate(R.layout.fragment_inbox, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,11 +83,13 @@ class InboxFragment: BaseFragment(), InboxMvp {
     override fun onStop() {
         super.onStop()
         mainPresenter.onStop()
+        Timber.e("onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mainPresenter.onDestroy()
+        Timber.e("onDestroy")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -5,7 +5,7 @@ apply plugin: 'com.squareup.sqldelight'
 
 apply from: '../dependencies.gradle'
 android {
-    compileSdkVersion 26
+    compileSdkVersion compileVersion
     buildToolsVersion buildToolsVersion
     publishNonDefault true
 
@@ -40,7 +40,6 @@ dependencies {
     compileOnly "com.ryanharter.auto.value:auto-value-gson-annotations:$versions.autoValueGson"
     compileOnly 'com.jakewharton.auto.value:auto-value-annotations:1.4'
 
-    implementation(glideOkhttp) { exclude group: 'glide-parent' }
     implementation(crashlyticsSdk) { transitive = true }
     implementation(materialdrawer) { transitive = true }
 

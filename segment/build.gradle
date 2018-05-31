@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 apply from: '../dependencies.gradle'
 android {
-    compileSdkVersion 26
+    compileSdkVersion compileVersion
     buildToolsVersion buildToolsVersion
 
     defaultConfig {

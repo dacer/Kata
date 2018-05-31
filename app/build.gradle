@@ -11,7 +11,7 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('ks.properties').newDataInputStream())
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion compileVersion
     buildToolsVersion buildToolsVersion
     defaultConfig {
         applicationId "im.dacer.kata"
@@ -78,8 +78,6 @@ dependencies {
     compileOnly immutablesValue // <-- for annotation API
     compileOnly immutablesGson
 
-
-    implementation(glideOkhttp) { exclude group: 'glide-parent' }
     implementation(crashlyticsSdk) { transitive = true }
     implementation(materialdrawer) { transitive = true }
 
