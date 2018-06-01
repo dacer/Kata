@@ -5,17 +5,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.chad.library.adapter.base.BaseQuickAdapter
 import im.dacer.kata.R
 import im.dacer.kata.adapter.NewsAdapter
-import im.dacer.kata.data.model.EasyNews
 import im.dacer.kata.data.model.NewsItem
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.ui.main.inbox.NewsMvp
 import im.dacer.kata.ui.main.inbox.NewsPresenter
 import kotlinx.android.synthetic.main.fragment_news.*
-import org.jetbrains.anko.support.v4.toast
 
 class NewsFragment: BaseFragment(), NewsMvp {
 
@@ -40,6 +37,11 @@ class NewsFragment: BaseFragment(), NewsMvp {
             }
         }
         newsPresenter.initData()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        newsPresenter.onDestroy()
     }
 
     override fun showData(newsItems: List<NewsItem>) {
