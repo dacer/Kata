@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_alignParentTop="true"
+        android:paddingTop="@dimen/toolbar_padding_top"
         android:background="@color/gray"
         >
         <RelativeLayout

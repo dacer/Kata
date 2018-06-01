@@ -32,6 +32,9 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_big_bang.*
+import android.view.WindowManager
+import android.os.Build
+import qiu.niorgai.StatusBarCompat
 
 
 class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
@@ -55,6 +58,8 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_big_bang)
+        StatusBarCompat.translucentStatusBar(this)
+        StatusBarCompat.translucentStatusBar(this, true)
         ttsHelper = TTSHelper(applicationContext)
         kataLayout.itemSpace = appPre.getItemSpace()
         kataLayout.lineSpace = appPre.getLineSpace()

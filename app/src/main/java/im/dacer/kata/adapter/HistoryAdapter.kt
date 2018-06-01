@@ -16,7 +16,12 @@ class HistoryAdapter : BaseItemDraggableAdapter<History, BaseViewHolder>(R.layou
         helper.setText(R.id.historyTv, item.text())
                 .setText(R.id.aliasTv, item.alias())
                 .setVisible(R.id.starIcon, item.star() == true)
-        helper.getView<TextView>(R.id.aliasTv).visibility = if(item.alias().isNullOrEmpty()) View.GONE else View.VISIBLE
+
+        if (item.star() == true && item.alias().isNullOrEmpty()) {
+            helper.setText(R.id.aliasTv, " ")
+        }
+        helper.getView<TextView>(R.id.aliasTv).visibility =
+                if(helper.getView<TextView>(R.id.aliasTv).text.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
 

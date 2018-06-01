@@ -1,5 +1,8 @@
 <resources>
 
+    <style name="BigBangTheme" parent="Theme.AppCompat.NoActionBar">
+    </style>
+
     <style name="IconicsBtnStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

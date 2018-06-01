@@ -14,6 +14,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">@color/toolbarBackground</item>
+    </style>
+
     <style name="SettingsItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">62dp</item>

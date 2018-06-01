@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.Toolbar
 import com.mikepenz.materialdrawer.DrawerBuilder
 import im.dacer.kata.R
 import im.dacer.kata.ui.AboutActivity
@@ -18,8 +19,10 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import im.dacer.kata.ui.base.BaseActivity
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
+import com.mikepenz.materialdrawer.model.BaseDrawerItem
 import im.dacer.kata.core.extension.startActivity
 import im.dacer.kata.ui.main.news.NewsFragment
+import timber.log.Timber
 
 
 class MainActivity : BaseActivity(), MainMvp {
@@ -33,13 +36,13 @@ class MainActivity : BaseActivity(), MainMvp {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(myToolbar)
+        setSupportActionBar(myToolbar as Toolbar)
 
         if (savedInstanceState == null) {
-            val ft = supportFragmentManager.beginTransaction()
-            ft.add(R.id.frameLayout, InboxFragment()).commit()
+//            val ft = supportFragmentManager.beginTransaction()
+//            ft.add(R.id.frameLayout, InboxFragment()).commit()
+            drawer.setSelection(DrawerItem.INBOX.id, true)
         }
-        drawer.setSelection(DrawerItem.INBOX.id)
     }
 
     private fun initDrawer() : Drawer {
@@ -55,7 +58,7 @@ class MainActivity : BaseActivity(), MainMvp {
                 .build()
         return DrawerBuilder()
                 .withActivity(this)
-                .withToolbar(myToolbar)
+                .withToolbar(myToolbar as Toolbar)
                 .withTranslucentStatusBar(false)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
@@ -73,14 +76,15 @@ class MainActivity : BaseActivity(), MainMvp {
                 )
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
                     when(drawerItem.identifier) {
-                        DrawerItem.INBOX.id -> switchFragment(InboxFragment())
+                        DrawerItem.INBOX.id -> switchFragment(InboxFragment(), R.string.inbox)
                         DrawerItem.LYRIC.id -> startActivity(LyricActivity::class.java)
-                        DrawerItem.NHK_EASY.id -> switchFragment(NewsFragment())
+                        DrawerItem.NHK_EASY.id -> switchFragment(NewsFragment(), R.string.nhk_easy)
                         DrawerItem.NHK.id -> {}
                         DrawerItem.SETTINGS.id -> startActivity(SettingsActivity::class.java)
                         DrawerItem.ABOUT.id -> startActivity(AboutActivity::class.java)
                     }
                     return@withOnDrawerItemClickListener false
+
                 }
                 .build()
     }
@@ -97,8 +101,9 @@ class MainActivity : BaseActivity(), MainMvp {
         }
     }
 
-    private fun switchFragment(fragment: Fragment) {
+    private fun switchFragment(fragment: Fragment, titleRes: Int = R.string.app_name) {
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.frameLayout, fragment).commit()
+        supportActionBar?.setTitle(titleRes)
     }
 }

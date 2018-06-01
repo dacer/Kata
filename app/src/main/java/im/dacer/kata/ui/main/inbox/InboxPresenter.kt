@@ -157,7 +157,7 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
         service.primaryClip = ClipData.newPlainText("", inboxMvp.getClipTvText())
         Toast.makeText(context, context.getString(R.string.copied), Toast.LENGTH_SHORT).show()
 
-        nothingHappenedCountdown = Observable.timer(3, TimeUnit.SECONDS)
+        nothingHappenedCountdown = Observable.timer(8, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { inboxMvp.showNothingHappenedView()}
     }

@@ -83,13 +83,11 @@ class InboxFragment: BaseFragment(), InboxMvp {
     override fun onStop() {
         super.onStop()
         mainPresenter.onStop()
-        Timber.e("onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mainPresenter.onDestroy()
-        Timber.e("onDestroy")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

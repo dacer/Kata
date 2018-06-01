@@ -4,4 +4,7 @@
     <dimen name="big_bang_default_line_space">8dp</dimen>
     <dimen name="big_bang_default_text_size">14sp</dimen>
     <dimen name="big_bang_action_bar_height">42dp</dimen>
+
+    <dimen name="toolbar_padding_top">0dp</dimen>
+
 </resources>
