@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import im.dacer.kata.core.model.History
 import im.dacer.kata.core.model.HistoryModel
+import im.dacer.kata.segment.util.LogUtils
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -20,7 +21,7 @@ class HistoryHelper {
                 val historyDb = HistoryDbHelper(context).writableDatabase
                 HistoryHelper.save(historyDb, string, alias)
                 historyDb.close()
-            }.subscribeOn(Schedulers.io()).subscribe({}, { Timber.e(it) })
+            }.subscribeOn(Schedulers.io()).subscribe({}, { LogUtils.log(it, context) })
         }
 
         fun save(db: SQLiteDatabase, text: String, alias: String = "") {

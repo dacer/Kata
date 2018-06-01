@@ -12,6 +12,7 @@ import android.view.Gravity
 import android.view.WindowManager
 import im.dacer.kata.core.R
 import im.dacer.kata.core.util.SchemeHelper
+import im.dacer.kata.segment.util.LogUtils
 import timber.log.Timber
 
 class FloatingView @JvmOverloads constructor(
@@ -50,7 +51,7 @@ class FloatingView @JvmOverloads constructor(
             try {
                 mWindowManager.addView(this, layoutParams)
             } catch (e: WindowManager.BadTokenException) {
-                Timber.e(e)
+                LogUtils.log(e)
             }
 
             isShow = true
@@ -75,7 +76,7 @@ class FloatingView @JvmOverloads constructor(
                     try {
                         mWindowManager.removeView(this@FloatingView)
                     } catch (e: Exception) {
-                        Timber.e(e)
+                        LogUtils.log(e)
                     }
 
                     isShow = false

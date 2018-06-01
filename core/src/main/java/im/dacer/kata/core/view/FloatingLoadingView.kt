@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.RelativeLayout
 import im.dacer.kata.core.R
 import im.dacer.kata.core.util.SchemeHelper
+import im.dacer.kata.segment.util.LogUtils
 import timber.log.Timber
 
 class FloatingLoadingView @JvmOverloads constructor(
@@ -48,7 +49,7 @@ class FloatingLoadingView @JvmOverloads constructor(
             try {
                 mWindowManager.addView(this, layoutParams)
             } catch (e: WindowManager.BadTokenException) {
-                Timber.e(e)
+                LogUtils.log(e)
             }
 
             isShow = true
@@ -78,7 +79,7 @@ class FloatingLoadingView @JvmOverloads constructor(
                     try {
                         mWindowManager.removeView(this@FloatingLoadingView)
                     } catch (e: Exception) {
-                        Timber.e(e)
+                        LogUtils.log(e)
                     }
                 }
             }).start()

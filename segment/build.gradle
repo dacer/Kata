@@ -31,4 +31,6 @@ dependencies {
     implementation supportLibs
     implementation networkLibs
     implementation rxJavaLibs
+    implementation otherLibs
+    implementation(crashlyticsSdk) { transitive = true }
 }

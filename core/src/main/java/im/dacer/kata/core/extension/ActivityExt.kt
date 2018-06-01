@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.Toast
+import im.dacer.kata.segment.util.LogUtils
 import org.jetbrains.anko.toast
 import timber.log.Timber
 
@@ -36,11 +37,9 @@ fun Service.toast(resId: Int, length: Int = Toast.LENGTH_LONG) {
 }
 
 fun Activity.timberAndToast(throwable: Throwable) {
-    Timber.e(throwable)
-    toast(throwable.message)
+    LogUtils.log(throwable, this)
 }
 
 fun Service.timberAndToast(throwable: Throwable) {
-    Timber.e(throwable)
-    toast(throwable.message)
+    LogUtils.log(throwable, this)
 }
