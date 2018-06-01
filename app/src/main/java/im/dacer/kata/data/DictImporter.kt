@@ -13,7 +13,7 @@ import java.util.zip.ZipInputStream
  * import JMDict.sqlite3
  */
 
-class DictImporter(private val context: Context) : JMDictDbHelper(context) {
+class DictImporter(private val context: Context) : im.dacer.kata.core.data.JMDictDbHelper(context) {
 
     /**
      * return false if db is existed

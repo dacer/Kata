@@ -3,22 +3,7 @@
 
     <application>
 
-        <activity
-            android:name=".ui.BigBangActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/BigBangTheme"
-            android:process=":listener"
-            android:documentLaunchMode="intoExisting">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="kata"/>
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

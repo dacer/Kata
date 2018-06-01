@@ -1,0 +1,20 @@
+CREATE TABLE reading (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    reading TEXT,
+    id_in_entry INTEGER
+);
+
+select_all:
+SELECT *
+FROM reading;
+
+search:
+SELECT *
+FROM reading
+WHERE reading IS ?;
+
+search_by_entry_id:
+SELECT *
+FROM reading
+WHERE id_in_entry IS ?;
+

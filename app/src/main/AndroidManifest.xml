@@ -45,8 +45,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible" />
-
-
         <activity android:name="im.dacer.kata.ui.FloatActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
@@ -70,6 +68,23 @@
                 <data android:scheme="kata-float"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".core.ui.BigBangActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/BigBangTheme"
+            android:process=":listener"
+            android:documentLaunchMode="intoExisting">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="kata"/>
+            </intent-filter>
+        </activity>
+
 
         <service android:name="im.dacer.kata.service.UrlAnalysisService"
             android:process=":listener" />

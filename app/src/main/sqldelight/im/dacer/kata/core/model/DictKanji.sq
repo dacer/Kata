@@ -1,0 +1,14 @@
+CREATE TABLE kanji (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    kanji TEXT,
+    id_in_entry INTEGER
+);
+
+select_all:
+SELECT *
+FROM kanji;
+
+search:
+SELECT *
+FROM kanji
+WHERE kanji IS ?;

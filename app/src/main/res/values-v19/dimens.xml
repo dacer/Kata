@@ -1,6 +1,3 @@
 <resources>
-    <!--
-    http://stormzhang.com/android/2015/08/16/boohee-toolbar/
-    -->
     <dimen name="toolbar_padding_top">25dp</dimen>
 </resources>

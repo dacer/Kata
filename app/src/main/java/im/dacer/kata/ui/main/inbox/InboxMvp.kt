@@ -9,7 +9,7 @@ interface InboxMvp {
     fun showNothingHappenedView()
     fun showGoYoutubeView()
     fun getClipTvText(): String
-    fun showHistory(historyList: List<History>?)
+    fun showHistory(historyList: List<im.dacer.kata.core.model.History>?)
     fun getDecorView(): View
-    fun updateHistory(index: Int, history: History)
+    fun updateHistory(index: Int, history: im.dacer.kata.core.model.History)
 }

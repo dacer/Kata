@@ -1,0 +1,15 @@
+CREATE TABLE entry (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    gloss TEXT,
+    position TEXT,
+    gloss_cn TEXT
+);
+
+select_all:
+SELECT *
+FROM entry;
+
+search:
+SELECT *
+FROM entry
+WHERE id IS ?;

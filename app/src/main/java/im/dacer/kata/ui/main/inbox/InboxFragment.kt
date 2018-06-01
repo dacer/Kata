@@ -113,7 +113,7 @@ class InboxFragment: BaseFragment(), InboxMvp {
         }
     }
 
-    override fun showHistory(historyList: List<History>?) {
+    override fun showHistory(historyList: List<im.dacer.kata.core.model.History>?) {
         if (historyList != null) {
             tutorialLayout.visibility = View.GONE
             historyRecyclerView.visibility = View.VISIBLE
@@ -124,7 +124,7 @@ class InboxFragment: BaseFragment(), InboxMvp {
         }
     }
 
-    override fun updateHistory(index: Int, history: History) {
+    override fun updateHistory(index: Int, history: im.dacer.kata.core.model.History) {
         historyAdapter.setData(index, history)
     }
 

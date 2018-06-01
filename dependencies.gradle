@@ -87,7 +87,7 @@ ext {
             autoValueParcel : "com.ryanharter.auto.value:auto-value-parcel:$versions.autoValueParcel"
     ]
 
-//    daggerCompiler = "com.google.dagger:dagger-compiler:$versions.dagger"
+    daggerCompiler = "com.google.dagger:dagger-compiler:$versions.dagger"
     leakCannary = "com.squareup.leakcanary:leakcanary-android:1.5.1"
     crashlyticsSdk = "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics"
     materialdrawer = "com.mikepenz:materialdrawer:6.0.7@aar"

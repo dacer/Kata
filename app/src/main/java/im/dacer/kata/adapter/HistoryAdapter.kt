@@ -10,9 +10,9 @@ import im.dacer.kata.core.model.History
 /**
  * Created by Dacer on 13/02/2018.
  */
-class HistoryAdapter : BaseItemDraggableAdapter<History, BaseViewHolder>(R.layout.item_history, listOf()) {
+class HistoryAdapter : BaseItemDraggableAdapter<im.dacer.kata.core.model.History, BaseViewHolder>(R.layout.item_history, listOf()) {
 
-    override fun convert(helper: BaseViewHolder, item: History) {
+    override fun convert(helper: BaseViewHolder, item: im.dacer.kata.core.model.History) {
         helper.setText(R.id.historyTv, item.text())
                 .setText(R.id.aliasTv, item.alias())
                 .setVisible(R.id.starIcon, item.star() == true)

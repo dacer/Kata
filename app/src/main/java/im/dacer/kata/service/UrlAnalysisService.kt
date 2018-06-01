@@ -4,7 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import im.dacer.kata.core.R
+import im.dacer.kata.R
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.timberAndToast
 import im.dacer.kata.core.extension.toast

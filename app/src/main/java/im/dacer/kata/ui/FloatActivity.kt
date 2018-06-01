@@ -95,7 +95,7 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
             return
         }
 
-        HistoryHelper.saveAsync(this, sharedText!!)
+        im.dacer.kata.core.data.HistoryHelper.saveAsync(this, sharedText!!)
         applyData()
     }
 
@@ -104,7 +104,7 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private fun applyData() {
         disposable?.dispose()
-        disposable = BigBang.getSegmentParserAsync()
+        disposable = im.dacer.kata.core.BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(sharedText!!) }
                 .flatMap { Observable.fromIterable(it) }
                 .toList()
