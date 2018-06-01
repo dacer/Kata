@@ -13,15 +13,13 @@ import android.view.*
 import android.view.animation.AnimationUtils
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
 import im.dacer.kata.R
-import im.dacer.kata.adapter.HistoryAdapter
-import im.dacer.kata.core.extension.timberAndToast
-import im.dacer.kata.core.model.History
+import im.dacer.kata.data.model.bigbang.History
+import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
 import im.dacer.kata.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_inbox.*
 import org.jetbrains.anko.support.v4.toast
-import timber.log.Timber
 
 class InboxFragment: BaseFragment(), InboxMvp {
     private val mainPresenter by lazy { InboxPresenter(context!!, this) }
@@ -113,7 +111,7 @@ class InboxFragment: BaseFragment(), InboxMvp {
         }
     }
 
-    override fun showHistory(historyList: List<im.dacer.kata.core.model.History>?) {
+    override fun showHistory(historyList: List<History>?) {
         if (historyList != null) {
             tutorialLayout.visibility = View.GONE
             historyRecyclerView.visibility = View.VISIBLE
@@ -124,7 +122,7 @@ class InboxFragment: BaseFragment(), InboxMvp {
         }
     }
 
-    override fun updateHistory(index: Int, history: im.dacer.kata.core.model.History) {
+    override fun updateHistory(index: Int, history: History) {
         historyAdapter.setData(index, history)
     }
 

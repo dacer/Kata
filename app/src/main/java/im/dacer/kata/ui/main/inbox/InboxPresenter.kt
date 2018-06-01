@@ -13,13 +13,13 @@ import com.baoyz.treasure.Treasure
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import im.dacer.kata.Config
 import im.dacer.kata.R
-import im.dacer.kata.core.data.HistoryDbHelper
-import im.dacer.kata.core.data.HistoryHelper
-import im.dacer.kata.core.data.MultiprocessPref
-import im.dacer.kata.core.model.History
-import im.dacer.kata.core.util.SchemeHelper
+import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.data.DictImporter
-import im.dacer.kata.widget.PopupView
+import im.dacer.kata.data.local.HistoryDbHelper
+import im.dacer.kata.data.local.HistoryHelper
+import im.dacer.kata.data.model.bigbang.History
+import im.dacer.kata.view.PopupView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -34,19 +34,19 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
     private val appPref by lazy { MultiprocessPref(context) }
     private var refreshHistoryDis: Disposable? = null
 
-    private val historyDbHelper by lazy { im.dacer.kata.core.data.HistoryDbHelper(context) }
+    private val historyDbHelper by lazy { HistoryDbHelper(context) }
     private val db by lazy { historyDbHelper.readableDatabase }
-    private var historyList: List<im.dacer.kata.core.model.History>? = null
+    private var historyList: List<History>? = null
     val swipeListener = object: OnItemSwipeListener {
         override fun clearView(viewHolder: RecyclerView.ViewHolder?, pos: Int) {}
 
         override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
             val history = historyList?.get(pos)
             if (history != null) {
-                im.dacer.kata.core.data.HistoryHelper.delete(db, history.id())
+                HistoryHelper.delete(db, history.id())
                 Snackbar.make(inboxMvp.getDecorView(), context.getString(R.string.deleted_sth, history.text()), Snackbar.LENGTH_SHORT)
                         .setAction(R.string.redo, {
-                            im.dacer.kata.core.data.HistoryHelper.save(db, history.text()!!)
+                            HistoryHelper.save(db, history.text()!!)
                             refreshHistoryList()
                         })
                         .show()
@@ -85,7 +85,7 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
     fun refreshHistoryList() {
         refreshHistoryDis?.dispose()
         if (appPref.tutorialFinished && treasure.cacheMax > 0) {
-            refreshHistoryDis = Observable.fromCallable { im.dacer.kata.core.data.HistoryHelper.get(db, treasure.cacheMax) }
+            refreshHistoryDis = Observable.fromCallable { HistoryHelper.get(db, treasure.cacheMax) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
@@ -136,18 +136,18 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
         return true
     }
 
-    private fun starHistory(index: Int, h: im.dacer.kata.core.model.History) {
+    private fun starHistory(index: Int, h: History) {
         val isStar = h.star() == true
-        inboxMvp.updateHistory(index, im.dacer.kata.core.model.History.newInstance(h.id(), h.text(), h.alias(), !isStar, h.createdAt()))
-        im.dacer.kata.core.data.HistoryHelper.update(db, h.id(), h.alias(), !isStar)
+        inboxMvp.updateHistory(index, History.newInstance(h.id(), h.text(), h.alias(), !isStar, h.createdAt()))
+        HistoryHelper.update(db, h.id(), h.alias(), !isStar)
     }
 
-    private fun setHistoryAlias(activity: Activity, index: Int, h: im.dacer.kata.core.model.History) {
+    private fun setHistoryAlias(activity: Activity, index: Int, h: History) {
         MaterialDialog.Builder(activity)
                 .input(context.getString(R.string.set_alias), h.alias(), true,
                         { _, char ->
-                            inboxMvp.updateHistory(index, im.dacer.kata.core.model.History.newInstance(h.id(), h.text(), char.toString(), h.star(), h.createdAt()))
-                            im.dacer.kata.core.data.HistoryHelper.update(db, h.id(), char.toString(), h.star())
+                            inboxMvp.updateHistory(index, History.newInstance(h.id(), h.text(), char.toString(), h.star(), h.createdAt()))
+                            HistoryHelper.update(db, h.id(), char.toString(), h.star())
                         })
                 .show()
     }

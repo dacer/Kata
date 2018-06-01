@@ -11,7 +11,7 @@ import com.baoyz.treasure.Treasure
 import im.dacer.kata.BuildConfig
 import im.dacer.kata.Config
 import im.dacer.kata.R
-import im.dacer.kata.core.extension.toast
+import im.dacer.kata.util.extension.toast
 
 import me.drakeet.multitype.Items
 import me.drakeet.support.about.*

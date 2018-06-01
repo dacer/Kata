@@ -29,7 +29,7 @@
             android:layout_marginTop="15dp"
             android:text="@string/example_sentence"/>
 
-        <im.dacer.kata.widget.PopupView
+        <im.dacer.kata.view.PopupView
             android:id="@+id/popupView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

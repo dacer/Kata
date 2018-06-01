@@ -6,16 +6,15 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import im.dacer.kata.R
-import im.dacer.kata.core.BigBang
-import im.dacer.kata.core.data.HistoryHelper
-import im.dacer.kata.core.data.MultiprocessPref
-import im.dacer.kata.core.extension.findUrl
-import im.dacer.kata.core.extension.timberAndToast
-import im.dacer.kata.core.ui.BigBangActivity
-import im.dacer.kata.core.util.SchemeHelper
-import im.dacer.kata.core.view.FloatingView
-import im.dacer.kata.core.view.KataLayout
+import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.util.extension.findUrl
+import im.dacer.kata.util.extension.timberAndToast
+import im.dacer.kata.data.local.HistoryHelper
+import im.dacer.kata.util.helper.SchemeHelper
+import im.dacer.kata.view.FloatingView
+import im.dacer.kata.view.KataLayout
 import im.dacer.kata.service.UrlAnalysisService
+import im.dacer.kata.util.segment.BigBang
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -95,7 +94,7 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
             return
         }
 
-        im.dacer.kata.core.data.HistoryHelper.saveAsync(this, sharedText!!)
+        HistoryHelper.saveAsync(this, sharedText!!)
         applyData()
     }
 
@@ -104,7 +103,7 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private fun applyData() {
         disposable?.dispose()
-        disposable = im.dacer.kata.core.BigBang.getSegmentParserAsync()
+        disposable = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(sharedText!!) }
                 .flatMap { Observable.fromIterable(it) }
                 .toList()

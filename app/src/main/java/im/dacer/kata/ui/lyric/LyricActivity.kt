@@ -8,10 +8,9 @@ import android.text.TextWatcher
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
-import im.dacer.kata.adapter.LyricAdapter
-import im.dacer.kata.core.extension.timberAndToast
-import im.dacer.kata.core.util.LyricsHelper
-import im.dacer.kata.core.util.SchemeHelper
+import im.dacer.kata.util.extension.timberAndToast
+import im.dacer.kata.util.helper.LyricsHelper
+import im.dacer.kata.util.helper.SchemeHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_lyric.*

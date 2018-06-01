@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import im.dacer.kata.core.data.MultiprocessPref
+import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.service.ListenClipboardService
 
 class BootCompletedReceiver : BroadcastReceiver() {

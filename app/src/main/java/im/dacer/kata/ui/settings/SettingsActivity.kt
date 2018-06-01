@@ -9,11 +9,11 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.Config
 import im.dacer.kata.R
-import im.dacer.kata.SearchEngine
-import im.dacer.kata.core.data.MultiprocessPref
-import im.dacer.kata.core.extension.setMyActionBar
-import im.dacer.kata.core.util.LangUtils
-import im.dacer.kata.core.util.WebParser
+import im.dacer.kata.util.engine.SearchEngine
+import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.util.extension.setMyActionBar
+import im.dacer.kata.util.LangUtils
+import im.dacer.kata.util.WebParser
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
 import kotlinx.android.synthetic.main.activity_settings.*

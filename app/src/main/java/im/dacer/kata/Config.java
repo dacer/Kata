@@ -7,6 +7,8 @@ package im.dacer.kata;
 import com.baoyz.treasure.Default;
 import com.baoyz.treasure.Preferences;
 
+import im.dacer.kata.util.engine.SegmentEngine;
+
 /**
  * Created by baoyongzhang on 2016/10/26.
  */

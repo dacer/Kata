@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import im.dacer.kata.R
-import im.dacer.kata.core.data.MultiprocessPref
-import im.dacer.kata.core.extension.setMyActionBar
-import im.dacer.kata.core.model.BigBangStyle
-import im.dacer.kata.segment.model.KanjiResult
+import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.util.extension.setMyActionBar
+import im.dacer.kata.data.model.bigbang.BigBangStyle
+import im.dacer.kata.data.model.segment.KanjiResult
 import kotlinx.android.synthetic.main.activity_style.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 

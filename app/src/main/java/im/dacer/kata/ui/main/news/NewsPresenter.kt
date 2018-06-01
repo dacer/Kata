@@ -3,7 +3,7 @@ package im.dacer.kata.ui.main.inbox
 import android.content.Context
 import im.dacer.kata.data.NewsDataManager
 import im.dacer.kata.data.room.NewsRoomStore
-import im.dacer.kata.segment.util.LogUtils
+import im.dacer.kata.util.LogUtils
 
 class NewsPresenter(val context: Context, private val newsMvp: NewsMvp) {
     private val newsRoomStore by lazy { NewsRoomStore(context) }

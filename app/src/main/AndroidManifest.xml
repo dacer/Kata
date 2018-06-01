@@ -69,7 +69,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".core.ui.BigBangActivity"
+            android:name=".ui.BigBangActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/BigBangTheme"

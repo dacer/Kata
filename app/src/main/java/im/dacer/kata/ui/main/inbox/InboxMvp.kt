@@ -1,7 +1,7 @@
 package im.dacer.kata.ui.main.inbox
 
 import android.view.View
-import im.dacer.kata.core.model.History
+import im.dacer.kata.data.model.bigbang.History
 
 interface InboxMvp {
     fun setBigbangTipTv(strId: Int)
@@ -9,7 +9,7 @@ interface InboxMvp {
     fun showNothingHappenedView()
     fun showGoYoutubeView()
     fun getClipTvText(): String
-    fun showHistory(historyList: List<im.dacer.kata.core.model.History>?)
+    fun showHistory(historyList: List<History>?)
     fun getDecorView(): View
-    fun updateHistory(index: Int, history: im.dacer.kata.core.model.History)
+    fun updateHistory(index: Int, history: History)
 }

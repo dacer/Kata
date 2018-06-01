@@ -6,7 +6,7 @@ import android.view.MenuItem
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.Config
 import im.dacer.kata.R
-import im.dacer.kata.core.extension.setMyActionBar
+import im.dacer.kata.util.extension.setMyActionBar
 import kotlinx.android.synthetic.main.activity_cache_settings.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 

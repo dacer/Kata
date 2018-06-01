@@ -1,7 +1,7 @@
 package im.dacer.kata.data
 
 import android.content.Context
-import im.dacer.kata.core.data.JMDictDbHelper
+import im.dacer.kata.data.local.JMDictDbHelper
 import timber.log.Timber
 import java.io.FileOutputStream
 import java.io.IOException
@@ -13,7 +13,7 @@ import java.util.zip.ZipInputStream
  * import JMDict.sqlite3
  */
 
-class DictImporter(private val context: Context) : im.dacer.kata.core.data.JMDictDbHelper(context) {
+class DictImporter(private val context: Context) : JMDictDbHelper(context) {
 
     /**
      * return false if db is existed

@@ -13,16 +13,14 @@ import im.dacer.kata.ui.main.inbox.InboxFragment
 import im.dacer.kata.ui.main.inbox.InboxFragment.Companion.REQUEST_CODE_OVERLAY_PERMISSION
 import im.dacer.kata.ui.lyric.LyricActivity
 import im.dacer.kata.ui.settings.SettingsActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import im.dacer.kata.ui.base.BaseActivity
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
-import com.mikepenz.materialdrawer.model.BaseDrawerItem
-import im.dacer.kata.core.extension.startActivity
+import im.dacer.kata.util.extension.startActivity
 import im.dacer.kata.ui.main.news.NewsFragment
-import timber.log.Timber
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity(), MainMvp {
