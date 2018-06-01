@@ -1,6 +1,7 @@
 package im.dacer.kata
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import com.androidnetworking.AndroidNetworking
 import com.crashlytics.android.Crashlytics
@@ -8,11 +9,35 @@ import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.leakcanary.LeakCanary
 import com.tspoon.traceur.Traceur
+import im.dacer.kata.injection.component.AppComponent
+import im.dacer.kata.injection.component.DaggerAppComponent
+import im.dacer.kata.injection.module.AppModule
 import io.fabric.sdk.android.Fabric
 import okhttp3.OkHttpClient
 import timber.log.Timber
 
 class App : Application() {
+
+    private var appComponent: AppComponent? = null
+
+    var component: AppComponent
+        get() {
+            if (appComponent == null) {
+                appComponent = DaggerAppComponent.builder()
+                        .appModule(AppModule(this))
+                        .build()
+            }
+            return appComponent as AppComponent
+        }
+        set(appComponent) {
+            this.appComponent = appComponent
+        }
+
+    companion object {
+        operator fun get(context: Context): App {
+            return context.applicationContext as App
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -21,23 +46,21 @@ class App : Application() {
             // You should not init your app in this process.
             return
         }
-        LeakCanary.install(this)
         Fabric.with(this, Crashlytics())
 
-
         val okHttpClient = OkHttpClient().newBuilder()
-                .addNetworkInterceptor(StethoInterceptor())
-                .build()
-        AndroidNetworking.initialize(applicationContext, okHttpClient)
 
         if (BuildConfig.DEBUG) {
+            LeakCanary.install(this)
             Timber.plant(Timber.DebugTree())
             Traceur.enableLogging()
+            Stetho.initializeWithDefaults(this)
+            okHttpClient.addNetworkInterceptor(StethoInterceptor())
         } else {
             Timber.plant(CrashReportingTree())
         }
-        Stetho.initializeWithDefaults(this)
 
+        AndroidNetworking.initialize(applicationContext, okHttpClient.build())
     }
 
     private class CrashReportingTree : Timber.Tree() {

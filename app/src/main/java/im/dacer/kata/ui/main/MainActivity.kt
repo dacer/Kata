@@ -21,19 +21,23 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import im.dacer.kata.util.extension.startActivity
 import im.dacer.kata.ui.main.news.NewsFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 
 class MainActivity : BaseActivity(), MainMvp {
-    private val mainPresenter by lazy { MainPresenter(baseContext, this) }
+
+    @Inject lateinit var mainPresenter: MainPresenter
     private val drawer by lazy { initDrawer() }
 
     enum class DrawerItem(val id: Long) {
         INBOX(0), LYRIC(1), NHK_EASY(2), NHK(3), SETTINGS(4), ABOUT(5)
     }
+    override fun layoutId() = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        activityComponent().inject(this)
+        mainPresenter.attachView(this)
         setSupportActionBar(myToolbar as Toolbar)
 
         if (savedInstanceState == null) {
@@ -90,6 +94,11 @@ class MainActivity : BaseActivity(), MainMvp {
     override fun onResume() {
         super.onResume()
         mainPresenter.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainPresenter.detachView()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

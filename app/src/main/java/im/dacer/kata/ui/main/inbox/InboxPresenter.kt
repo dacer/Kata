@@ -19,14 +19,19 @@ import im.dacer.kata.data.DictImporter
 import im.dacer.kata.data.local.HistoryDbHelper
 import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.data.model.bigbang.History
+import im.dacer.kata.injection.ApplicationContext
+import im.dacer.kata.injection.ConfigPersistent
+import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.view.PopupView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : PopupView.PopupListener {
+@ConfigPersistent
+class InboxPresenter @Inject constructor(@ApplicationContext val context: Context) : BasePresenter<InboxMvp>(), PopupView.PopupListener {
 
     private var nothingHappenedCountdown: Disposable? = null
     private var showGoYoutubeCountdown: Disposable? = null
@@ -44,7 +49,7 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
             val history = historyList?.get(pos)
             if (history != null) {
                 HistoryHelper.delete(db, history.id())
-                Snackbar.make(inboxMvp.getDecorView(), context.getString(R.string.deleted_sth, history.text()), Snackbar.LENGTH_SHORT)
+                Snackbar.make(mvpView!!.getDecorView(), context.getString(R.string.deleted_sth, history.text()), Snackbar.LENGTH_SHORT)
                         .setAction(R.string.redo, {
                             HistoryHelper.save(db, history.text()!!)
                             refreshHistoryList()
@@ -65,7 +70,7 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
             showGoYoutubeCountdown = Observable.timer(2, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
-                        inboxMvp.showGoYoutubeView()
+                        mvpView?.showGoYoutubeView()
                         treasure.setHasShownGoYoutube(true)
                     }
         }
@@ -78,7 +83,8 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
         showGoYoutubeCountdown?.dispose()
     }
 
-    fun onDestroy() {
+    override fun detachView() {
+        super.detachView()
         db.close()
     }
 
@@ -91,25 +97,25 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
                     .subscribe {
                         historyList = it
                         if (historyList?.isNotEmpty() == true) {
-                            inboxMvp.showHistory(historyList!!)
+                            mvpView?.showHistory(historyList!!)
                         }
                     }
         } else {
-            inboxMvp.showHistory(null)
+            mvpView?.showHistory(null)
         }
     }
 
     fun importDictDb() {
         val dbImporter = DictImporter(context)
         if (!dbImporter.isDataBaseExists || !treasure.isDatabaseImported) {
-            inboxMvp.setBigbangTipTv(R.string.initializing_database)
+            mvpView?.setBigbangTipTv(R.string.initializing_database)
             Observable.fromCallable{ dbImporter.importDataBaseFromAssets() }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        inboxMvp.setBigbangTipTv(R.string.bigbang_hold_tip)
+                        mvpView?.setBigbangTipTv(R.string.bigbang_hold_tip)
                         treasure.isDatabaseImported = true
-                    }, { inboxMvp.catchError(it) })
+                    }, { mvpView?.catchError(it) })
         }
     }
 
@@ -138,7 +144,7 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
 
     private fun starHistory(index: Int, h: History) {
         val isStar = h.star() == true
-        inboxMvp.updateHistory(index, History.newInstance(h.id(), h.text(), h.alias(), !isStar, h.createdAt()))
+        mvpView?.updateHistory(index, History.newInstance(h.id(), h.text(), h.alias(), !isStar, h.createdAt()))
         HistoryHelper.update(db, h.id(), h.alias(), !isStar)
     }
 
@@ -146,7 +152,7 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
         MaterialDialog.Builder(activity)
                 .input(context.getString(R.string.set_alias), h.alias(), true,
                         { _, char ->
-                            inboxMvp.updateHistory(index, History.newInstance(h.id(), h.text(), char.toString(), h.star(), h.createdAt()))
+                            mvpView?.updateHistory(index, History.newInstance(h.id(), h.text(), char.toString(), h.star(), h.createdAt()))
                             HistoryHelper.update(db, h.id(), char.toString(), h.star())
                         })
                 .show()
@@ -154,12 +160,12 @@ class InboxPresenter(val context: Context, private val inboxMvp: InboxMvp) : Pop
 
     override fun onPopupClicked() {
         val service = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        service.primaryClip = ClipData.newPlainText("", inboxMvp.getClipTvText())
+        service.primaryClip = ClipData.newPlainText("", mvpView?.getClipTvText())
         Toast.makeText(context, context.getString(R.string.copied), Toast.LENGTH_SHORT).show()
 
         nothingHappenedCountdown = Observable.timer(8, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { inboxMvp.showNothingHappenedView()}
+                .subscribe { mvpView?.showNothingHappenedView()}
     }
 
     companion object {

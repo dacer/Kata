@@ -2,8 +2,9 @@ package im.dacer.kata.ui.main.inbox
 
 import android.view.View
 import im.dacer.kata.data.model.bigbang.History
+import im.dacer.kata.ui.base.MvpView
 
-interface InboxMvp {
+interface InboxMvp : MvpView {
     fun setBigbangTipTv(strId: Int)
     fun catchError(throwable: Throwable)
     fun showNothingHappenedView()

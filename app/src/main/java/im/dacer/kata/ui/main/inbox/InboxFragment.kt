@@ -20,20 +20,25 @@ import im.dacer.kata.ui.AboutActivity
 import im.dacer.kata.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_inbox.*
 import org.jetbrains.anko.support.v4.toast
+import javax.inject.Inject
 
 class InboxFragment: BaseFragment(), InboxMvp {
-    private val mainPresenter by lazy { InboxPresenter(context!!, this) }
+    @Inject lateinit var inboxPresenter: InboxPresenter
     private val historyAdapter = HistoryAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_inbox, container, false)
+    override fun layoutId() = R.layout.fragment_inbox
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fragmentComponent().inject(this)
+        inboxPresenter.attachView(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        popupView.listener = mainPresenter
-        mainPresenter.importDictDb()
+        popupView.listener = inboxPresenter
+        inboxPresenter.importDictDb()
         historyRecyclerView.layoutManager = LinearLayoutManager(context)
 
         val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(historyAdapter)
@@ -41,13 +46,13 @@ class InboxFragment: BaseFragment(), InboxMvp {
         historyAdapter.openLoadAnimation()
         historyAdapter.bindToRecyclerView(historyRecyclerView)
         itemTouchHelper.attachToRecyclerView(historyRecyclerView)
-        historyAdapter.setOnItemClickListener { _, _, pos -> mainPresenter.onHistoryClicked(pos)}
-        historyAdapter.setOnItemLongClickListener { _, _, pos -> mainPresenter.onHistoryLongClicked(activity!!, pos) }
+        historyAdapter.setOnItemClickListener { _, _, pos -> inboxPresenter.onHistoryClicked(pos)}
+        historyAdapter.setOnItemLongClickListener { _, _, pos -> inboxPresenter.onHistoryLongClicked(activity!!, pos) }
         historyAdapter.setEmptyView(R.layout.empty_history)
         val bottomView = layoutInflater.inflate(R.layout.item_history_bottom, historyRecyclerView.parent as ViewGroup, false)
         historyAdapter.setFooterView(bottomView)
         historyAdapter.enableSwipeItem()
-        historyAdapter.setOnItemSwipeListener(mainPresenter.swipeListener)
+        historyAdapter.setOnItemSwipeListener(inboxPresenter.swipeListener)
 
         clipTv.setOnLongClickListener {
             popupView.show(Point((clipTv.width / 2), clipTv.y.toInt()- bigbangTipTv.height))
@@ -69,7 +74,7 @@ class InboxFragment: BaseFragment(), InboxMvp {
     @SuppressLint("NewApi")
     override fun onResume() {
         super.onResume()
-        mainPresenter.onResume()
+        inboxPresenter.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val canDraw = Settings.canDrawOverlays(activity)
             permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
@@ -80,18 +85,18 @@ class InboxFragment: BaseFragment(), InboxMvp {
 
     override fun onStop() {
         super.onStop()
-        mainPresenter.onStop()
+        inboxPresenter.onStop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mainPresenter.onDestroy()
+        inboxPresenter.detachView()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_OVERLAY_PERMISSION) {
-//            mainPresenter.restartListenService()
+//            inboxPresenter.restartListenService()
         }
     }
 

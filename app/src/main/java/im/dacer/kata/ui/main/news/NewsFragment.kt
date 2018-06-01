@@ -12,14 +12,19 @@ import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.ui.main.inbox.NewsMvp
 import im.dacer.kata.ui.main.inbox.NewsPresenter
 import kotlinx.android.synthetic.main.fragment_news.*
+import javax.inject.Inject
 
 class NewsFragment: BaseFragment(), NewsMvp {
+    override fun layoutId() = R.layout.fragment_news
+    @Inject lateinit var newsPresenter: NewsPresenter
 
-    private val newsPresenter by lazy { NewsPresenter(context!!, this) }
     private val newsAdapter = NewsAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_news, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fragmentComponent().inject(this)
+        newsPresenter.attachView(this)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,8 +45,9 @@ class NewsFragment: BaseFragment(), NewsMvp {
 
     override fun onDestroy() {
         super.onDestroy()
-        newsPresenter.onDestroy()
+        newsPresenter.detachView()
     }
+
 
     override fun showData(newsItems: List<NewsItem>) {
         newsAdapter.setNewData(newsItems)

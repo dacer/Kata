@@ -25,6 +25,7 @@ ext {
             immutables      : '2.2.1',
             room            : "1.1.0",
             store           : '3.0.1',
+            chuck           : '1.1.0',
 
             leakcanary      : '1.5.4',
     ]
@@ -36,7 +37,8 @@ ext {
             design           : "com.android.support:design:$versions.support",
             recyclerView     : "com.android.support:recyclerview-v7:$versions.support",
             cardview         : "com.android.support:cardview-v7:$versions.support",
-            vectorDrawable   : "com.android.support:support-vector-drawable:$versions.support"
+            vectorDrawable   : "com.android.support:support-vector-drawable:$versions.support",
+            multidex         : 'com.android.support:multidex:1.0.3'
     ]
 
     rxJava = [
@@ -84,21 +86,29 @@ ext {
 
             autoValue       : "com.google.auto.value:auto-value:$versions.autoValue",
             autoValueGson   : "com.ryanharter.auto.value:auto-value-gson:$versions.autoValueGson",
-            autoValueParcel : "com.ryanharter.auto.value:auto-value-parcel:$versions.autoValueParcel"
+            autoValueParcel : "com.ryanharter.auto.value:auto-value-parcel:$versions.autoValueParcel",
+            daggerCompiler  : "com.google.dagger:dagger-compiler:$versions.dagger",
+            roomCompiler    : "android.arch.persistence.room:compiler:$versions.room",
     ]
 
-    daggerCompiler = "com.google.dagger:dagger-compiler:$versions.dagger"
-    leakCannary = "com.squareup.leakcanary:leakcanary-android:1.5.1"
+    compileOnly = [
+            autoValueGsonAnnotation : "com.ryanharter.auto.value:auto-value-gson-annotations:$versions.autoValueGson",
+            autoValueAnnotation     : 'com.jakewharton.auto.value:auto-value-annotations:1.4',
+    ]
+
+    leakCannary    = "com.squareup.leakcanary:leakcanary-android:1.5.1"
     crashlyticsSdk = "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics"
     materialdrawer = "com.mikepenz:materialdrawer:6.0.7@aar"
 
+    chuckDebug     = "com.readystatesoftware.chuck:library:$versions.chuck"
+    chuckRelease   = "com.readystatesoftware.chuck:library-no-op:$versions.chuck"
 
     immutablesValue          = "org.immutables:value:$versions.immutables"
     immutablesValueProcessor = "org.immutables:value-processor:$versions.immutables"
     immutablesGson           = "org.immutables:gson:$versions.immutables"
+    statusBarCompat = 'com.github.niorgai:StatusBarCompat:2.1.4'
 
     roomLibs = room.values()
-    roomCompiler = "android.arch.persistence.room:compiler:$versions.room"
 
     supportLibs = supportDeps.values()
     networkLibs = okHttp.values()
@@ -106,8 +116,9 @@ ext {
     rxJavaLibs = rxJava.values()
     otherLibs = others.values()
 
-    debugLibs = leakCannary
-    releaseLibs = leakCannary
+    compileOnlyLibs = compileOnly.values()
+    debugLibs = [leakCannary, chuckDebug]
+    releaseLibs = [leakCannary, chuckRelease]
     annotationProcessorLibs = compilers.values()
 
 }

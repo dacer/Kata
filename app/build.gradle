@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 apply plugin: 'com.squareup.sqldelight'
+apply plugin: 'kotlin-kapt'
 
 // enable it when you need to check method count
 //apply plugin: 'com.getkeepsafe.dexcount'
@@ -16,7 +17,7 @@ android {
     buildToolsVersion buildToolsVersion
     defaultConfig {
         applicationId "im.dacer.kata"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 40
         versionName "0.9.6"
@@ -71,25 +72,17 @@ dependencies {
     implementation rxJavaLibs
     implementation iconicsLibs
     implementation otherLibs
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation roomLibs
+
+    implementation (statusBarCompat, { exclude group: 'com.android.support' })
 
     compile 'com.baoyz.treasure:treasure:0.7.4'
     annotationProcessor 'com.baoyz.treasure:treasure-compiler:0.7.4'
 
-    compileOnly "com.ryanharter.auto.value:auto-value-gson-annotations:$versions.autoValueGson"
-    compileOnly 'com.jakewharton.auto.value:auto-value-annotations:1.4'
-
-    compile ('com.github.niorgai:StatusBarCompat:2.1.4', {
-        exclude group: 'com.android.support'
-    })
-
-    implementation roomLibs
-    annotationProcessor roomCompiler
-//    kapt roomCompiler
-
     annotationProcessor immutablesValue // <-- for annotation processor
     compileOnly immutablesValue // <-- for annotation API
     compileOnly immutablesGson
+    compileOnly compileOnlyLibs
 
     implementation(crashlyticsSdk) { transitive = true }
     implementation(materialdrawer) { transitive = true }
@@ -97,6 +90,6 @@ dependencies {
     debugImplementation debugLibs
     releaseImplementation releaseLibs
 
-    annotationProcessor annotationProcessorLibs
+    kapt annotationProcessorLibs
 
 }

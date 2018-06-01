@@ -8,13 +8,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import org.json.JSONObject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object NewsDataManager {
-    private val NHK_EASY_NEWS_URL = "http://www3.nhk.or.jp/news/easy/news-list.json"
+@Singleton
+class NewsDataManager @Inject constructor() {
 
     fun getEasyNews(): Observable<ArrayList<EasyNews>> {
         val gson = Gson()
-        return Rx2AndroidNetworking.get(NHK_EASY_NEWS_URL)
+        return Rx2AndroidNetworking.get(Companion.NHK_EASY_NEWS_URL)
                 .build()
                 .jsonArrayObservable
                 .map { array -> array[0] as JSONObject }
@@ -30,6 +32,10 @@ object NewsDataManager {
 
     private fun jsonArrayToEasyNews(jsonArray: JSONArray, gson: Gson): List<EasyNews> {
         return gson.fromJson(jsonArray.toString(), Array<EasyNews>::class.java).asList()
+    }
+
+    companion object {
+        private const val NHK_EASY_NEWS_URL = "http://www3.nhk.or.jp/news/easy/news-list.json"
     }
 
 }
