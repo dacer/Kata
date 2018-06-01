@@ -7,5 +7,6 @@ interface NewsItem {
     fun coverUrl(): String?
     fun videoUrl(): Single<String>
     fun voiceUrl(): Single<String>
+    fun link(): String?
     fun time(): String?
 }

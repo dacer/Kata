@@ -16,6 +16,9 @@ data class EasyNews(private val news_id: String? = null,
                     private val news_web_movie_uri: String? = null,
                     private val news_easy_voice_uri: String? = null) : NewsItem {
 
+    override fun link(): String? {
+        return news_web_url
+    }
 
     override fun title(): String? {
         return title
@@ -34,6 +37,6 @@ data class EasyNews(private val news_id: String? = null,
     }
 
     override fun time(): String? {
-        return news_publication_time
+        return news_publication_time?.substring(5)
     }
 }

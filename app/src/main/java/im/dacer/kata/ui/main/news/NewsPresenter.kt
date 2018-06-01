@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.baoyz.treasure.Treasure
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import im.dacer.kata.Config
 import im.dacer.kata.R
@@ -19,6 +20,9 @@ import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.model.History
 import im.dacer.kata.core.util.SchemeHelper
 import im.dacer.kata.data.DictImporter
+import im.dacer.kata.data.NewsDataManager
+import im.dacer.kata.data.model.EasyNews
+import im.dacer.kata.segment.util.LogUtils
 import im.dacer.kata.widget.PopupView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -27,5 +31,14 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class NewsPresenter(val context: Context, private val newsMvp: NewsMvp) {
+
+    fun initData() {
+        newsMvp.showLoading(true)
+        NewsDataManager.getEasyNews().subscribe({
+            newsMvp.showData(it)
+            newsMvp.showLoading(false)
+
+        }, { LogUtils.log(it, context) })
+    }
 
 }
