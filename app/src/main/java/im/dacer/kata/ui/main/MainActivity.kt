@@ -1,26 +1,27 @@
 package im.dacer.kata.ui.main
 
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
+import com.mikepenz.materialdrawer.AccountHeaderBuilder
+import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.materialdrawer.model.DividerDrawerItem
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import im.dacer.kata.R
 import im.dacer.kata.ui.AboutActivity
+import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.ui.lyric.LyricActivity
 import im.dacer.kata.ui.main.inbox.InboxFragment
 import im.dacer.kata.ui.main.inbox.InboxFragment.Companion.REQUEST_CODE_OVERLAY_PERMISSION
-import im.dacer.kata.ui.lyric.LyricActivity
-import im.dacer.kata.ui.settings.SettingsActivity
-import com.mikepenz.materialdrawer.Drawer
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
-import com.mikepenz.materialdrawer.model.DividerDrawerItem
-import im.dacer.kata.ui.base.BaseActivity
-import com.mikepenz.materialdrawer.AccountHeaderBuilder
-import im.dacer.kata.util.extension.startActivity
 import im.dacer.kata.ui.main.news.NewsFragment
+import im.dacer.kata.ui.settings.SettingsActivity
+import im.dacer.kata.util.extension.startActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import qiu.niorgai.StatusBarCompat
 import javax.inject.Inject
 
 
@@ -56,25 +57,21 @@ class MainActivity : BaseActivity(), MainMvp {
         val itemAbout = SecondaryDrawerItem().withIdentifier(DrawerItem.ABOUT.id).withName(R.string.about).withSelectable(false)
         val headerResult = AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(ColorDrawable(Color.BLACK))
+                .withHeaderBackground(ColorDrawable(ContextCompat.getColor(this, R.color.material_drawer_dark_background)))
                 .build()
-        return DrawerBuilder()
+        val drawer =  DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(myToolbar as Toolbar)
-                .withTranslucentStatusBar(false)
                 .withAccountHeader(headerResult)
+                .withTranslucentStatusBar(true)
                 .addDrawerItems(
                         itemInbox,
-                        DividerDrawerItem(),
                         itemNhkEasy,
-                        DividerDrawerItem(),
                         itemNhk,
-                        DividerDrawerItem(),
                         itemLyric,
-                        DividerDrawerItem(),
                         itemSettings,
-                        DividerDrawerItem(),
-                        itemAbout
+                        itemAbout,
+                        DividerDrawerItem()
                 )
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
                     when(drawerItem.identifier) {
@@ -89,6 +86,9 @@ class MainActivity : BaseActivity(), MainMvp {
 
                 }
                 .build()
+
+        StatusBarCompat.translucentStatusBar(this, true)
+        return drawer
     }
 
     override fun onResume() {

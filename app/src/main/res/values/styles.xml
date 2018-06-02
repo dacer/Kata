@@ -1,12 +1,29 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="BaseTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/windowBackground</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/material_drawer_dark_background</item>
+        <item name="material_drawer_primary_text">@color/material_drawer_dark_hint_text</item>
+        <item name="material_drawer_primary_icon">@color/material_drawer_dark_primary_icon</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_dark_secondary_text
+        </item>
+        <item name="material_drawer_hint_text">@color/material_drawer_dark_hint_text</item>
+        <item name="material_drawer_hint_icon">@color/material_drawer_dark_hint_icon</item>
+        <item name="material_drawer_selected">#cccccc</item>
+        <item name="material_drawer_selected_text">@color/material_drawer_dark_selected_text</item>
+        <item name="material_drawer_header_selection_text">
+            @color/material_drawer_header_selection_text
+        </item>
+    </style>
+
+    <style name="AppTheme" parent="BaseTheme">
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,64 +34,12 @@
     <style name="BigBangTheme" parent="Theme.AppCompat.NoActionBar">
     </style>
 
-    <style name="IconicsBtnStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
-        <item name="android:textSize">22sp</item>
-        <item name="android:textColor">#757575</item>
+    <style name="FloatTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-
-    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">@color/toolbarBackground</item>
-    </style>
-
-    <style name="SettingsItem">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">62dp</item>
-        <item name="android:layout_marginBottom">1dp</item>œ
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:foreground">?attr/selectableItemBackground</item>
-    </style>
-    <style name="SettingsItem.MoreTopDivider">
-        <item name="android:layout_marginTop">16dp</item>
-    </style>
-    <style name="SettingsItem.WrapHeight">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-    </style>
-    <style name="SettingsItemLeft">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-    <style name="SettingsItemLeft.Title">
-        <item name="android:textSize">16sp</item>
-    </style>
-    <style name="SettingsItemSummary">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">#BDBDBD</item>
-    </style>
-    <style name="SettingsItemRight">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_alignParentRight">true</item>
-    </style>
-    <style name="DiscreteSeekBar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="dsb_progressColor">@color/colorPrimary</item>
-        <item name="dsb_indicatorColor">@color/colorPrimary</item>
-    </style>
-    <style name="DiscreteSeekBar.TopMargin">
-        <item name="android:layout_marginTop">10dp</item>
-    </style>
 </resources>

@@ -17,8 +17,10 @@
     <string name="redo">撤销</string>
     <string name="set_alias">设置别名</string>
     <string name="star">收藏</string>
+    <string name="unstar">取消收藏</string>
     <string name="click_to_youtube_tutorial_title">不知道从何开始?</string>
     <string name="click_to_youtube_tutorial_summary">点击查看我们的概览视频</string>
+    <string name="no_alias">未设置别名</string>
 
     <string name="lyric">歌词</string>
     <string name="inbox">收件箱</string>

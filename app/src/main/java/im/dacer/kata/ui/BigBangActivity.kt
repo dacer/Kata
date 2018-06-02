@@ -60,7 +60,6 @@ class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
         super.onCreate(savedInstanceState)
         activityComponent().inject(this)
 
-        StatusBarCompat.translucentStatusBar(this)
         StatusBarCompat.translucentStatusBar(this, true)
         kataLayout.itemSpace = appPre.getItemSpace()
         kataLayout.lineSpace = appPre.getLineSpace()

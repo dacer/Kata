@@ -130,9 +130,8 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
 
     fun onHistoryLongClicked(activity: Activity, index: Int): Boolean {
         val history = historyList?.get(index)!!
-
         MaterialDialog.Builder(activity)
-                .items(getLongClickItems(context))
+                .items(getHistoryLongClickItems(history))
                 .itemsCallback { _, _, pos, _ ->
                     when (pos) {
                         0 -> starHistory(index, history)
@@ -170,8 +169,9 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
                 .subscribe { mvpView?.showNothingHappenedView()}
     }
 
+    private fun getHistoryLongClickItems(history: History?): ArrayList<String> =
+            arrayListOf(context.getString(if (history?.star() != true) { R.string.star } else { R.string.unstar }),
+                    context.getString(R.string.set_alias))
     companion object {
-        fun getLongClickItems(c: Context): ArrayList<String> =
-                arrayListOf(c.getString(R.string.star), c.getString(R.string.set_alias))
     }
 }
