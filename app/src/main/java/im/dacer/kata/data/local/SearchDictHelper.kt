@@ -9,7 +9,7 @@ import im.dacer.kata.data.model.bigbang.DictReading
 /**
  * Created by Dacer on 12/01/2018.
  */
-class SearchHelper(private val db: SQLiteDatabase) {
+class SearchDictHelper(private val db: SQLiteDatabase) {
 
     fun search(text: String): BigbangSearchResult {
         val isKanjiInside = kanjiInside(text)

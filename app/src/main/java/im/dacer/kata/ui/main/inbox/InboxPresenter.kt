@@ -1,5 +1,6 @@
 package im.dacer.kata.ui.main.inbox
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -42,6 +43,8 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
     private val historyDbHelper by lazy { HistoryDbHelper(context) }
     private val db by lazy { historyDbHelper.readableDatabase }
     private var historyList: List<History>? = null
+
+
     val swipeListener = object: OnItemSwipeListener {
         override fun clearView(viewHolder: RecyclerView.ViewHolder?, pos: Int) {}
 
@@ -103,6 +106,7 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
         }
     }
 
+    @SuppressLint("CheckResult")
     fun importDictDb() {
         val dbImporter = DictImporter(context)
         if (!dbImporter.isDataBaseExists || !settingUtility.isDatabaseImported) {

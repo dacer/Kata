@@ -5,13 +5,15 @@ import android.content.Context
 import android.speech.tts.TextToSpeech
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
+import im.dacer.kata.injection.ApplicationContext
 import java.util.*
+import javax.inject.Inject
 
 
 /**
  * Created by Dacer on 01/02/2018.
  */
-class TTSHelper(val appContext: Context) {
+class TTSHelper @Inject constructor(@ApplicationContext appContext: Context) {
     private var available = false
     private val initListener = TextToSpeech.OnInitListener {
         if (it == TextToSpeech.SUCCESS) {

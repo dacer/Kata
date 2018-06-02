@@ -13,7 +13,7 @@ import im.dacer.kata.R
 import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.data.local.JMDictDbHelper
 import im.dacer.kata.data.local.MultiprocessPref
-import im.dacer.kata.data.local.SearchHelper
+import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.DictEntry
 import im.dacer.kata.data.model.bigbang.DictReading
 import im.dacer.kata.ui.base.BaseActivity
@@ -40,14 +40,14 @@ class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
     private var kanjiResultList: List<Token>? = null
     private var dictDb: SQLiteDatabase? = null
     private var segmentDis: Disposable? = null
-    private var searchHelper: SearchHelper? = null
+    private var searchDictHelper: SearchDictHelper? = null
     private var dictDisposable: Disposable? = null
     private var currentSelectedToken: Token? = null
     private var searchAction: im.dacer.kata.util.action.SearchAction? = null
-    private var ttsHelper: TTSHelper? = null
 
     @Inject lateinit var appPre: MultiprocessPref
     @Inject lateinit var langUtils: LangUtils
+    @Inject lateinit var ttsHelper: TTSHelper
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -62,7 +62,6 @@ class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
 
         StatusBarCompat.translucentStatusBar(this)
         StatusBarCompat.translucentStatusBar(this, true)
-        ttsHelper = TTSHelper(applicationContext)
         kataLayout.itemSpace = appPre.getItemSpace()
         kataLayout.lineSpace = appPre.getLineSpace()
         kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
@@ -139,7 +138,7 @@ class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
         }
 
         dictDisposable?.dispose()
-        dictDisposable = Observable.fromCallable{ searchHelper!!.search(strForSearch) }
+        dictDisposable = Observable.fromCallable{ searchDictHelper!!.search(strForSearch) }
                 .flatMap {
                     Observable.zip(
                             dealWithDictEntryList(it.dictEntryList),
@@ -194,7 +193,7 @@ class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
         meaningScrollView.smoothScrollTo(0,0)
         bigBangScrollView.smoothScrollTo(0,0)
         dictDb = JMDictDbHelper(this).readableDatabase
-        searchHelper = SearchHelper(dictDb!!)
+        searchDictHelper = SearchDictHelper(dictDb!!)
 
         segmentDis?.dispose()
         segmentDis = BigBang.getSegmentParserAsync()
