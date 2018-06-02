@@ -7,28 +7,22 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.baoyz.treasure.Treasure
 import im.dacer.kata.BuildConfig
-import im.dacer.kata.Config
 import im.dacer.kata.R
-import im.dacer.kata.util.extension.toast
-
 import me.drakeet.multitype.Items
 import me.drakeet.support.about.*
 
 class AboutActivity : me.drakeet.support.about.AboutActivity() {
     private var easterEgg = 0
-    private val treasure by lazy { Treasure.get(this, Config::class.java) }
 
     override fun onCreateHeader(icon: ImageView, slogan: TextView, version: TextView) {
         icon.setImageResource(R.drawable.icon)
-        icon.setOnClickListener {
-            easterEgg++
-            if (easterEgg > 5) {
-                treasure.setShowLyricBtn(true)
-                toast("\uD83E\uDD21")
-            }
-        }
+//        icon.setOnClickListener {
+//            easterEgg++
+//            if (easterEgg > 5) {
+//                toast("\uD83E\uDD21")
+//            }
+//        }
         slogan.setText(R.string.app_name)
         version.text = BuildConfig.VERSION_NAME
     }

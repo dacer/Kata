@@ -9,19 +9,18 @@ import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
-import com.baoyz.treasure.Treasure
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
-import im.dacer.kata.Config
 import im.dacer.kata.R
-import im.dacer.kata.data.local.MultiprocessPref
-import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.data.DictImporter
 import im.dacer.kata.data.local.HistoryDbHelper
 import im.dacer.kata.data.local.HistoryHelper
+import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.ui.base.BasePresenter
+import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.view.PopupView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,10 +32,11 @@ import javax.inject.Inject
 @ConfigPersistent
 class InboxPresenter @Inject constructor(@ApplicationContext val context: Context) : BasePresenter<InboxMvp>(), PopupView.PopupListener {
 
+    @Inject lateinit var settingUtility: SettingUtility
+    @Inject lateinit var appPref: MultiprocessPref
+
     private var nothingHappenedCountdown: Disposable? = null
     private var showGoYoutubeCountdown: Disposable? = null
-    private val treasure by lazy { Treasure.get(context, Config::class.java) }
-    private val appPref by lazy { MultiprocessPref(context) }
     private var refreshHistoryDis: Disposable? = null
 
     private val historyDbHelper by lazy { HistoryDbHelper(context) }
@@ -63,15 +63,13 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
 
     }
 
-    fun showLyricMenu(): Boolean = treasure.showLyricBtn()
-
     fun onResume() {
-        if (!treasure.hasShownGoYoutube()) {
+        if (!settingUtility.hasShownGoYoutube) {
             showGoYoutubeCountdown = Observable.timer(2, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         mvpView?.showGoYoutubeView()
-                        treasure.setHasShownGoYoutube(true)
+                        settingUtility.hasShownGoYoutube = true
                     }
         }
         refreshHistoryList()
@@ -90,8 +88,8 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
 
     fun refreshHistoryList() {
         refreshHistoryDis?.dispose()
-        if (appPref.tutorialFinished && treasure.cacheMax > 0) {
-            refreshHistoryDis = Observable.fromCallable { HistoryHelper.get(db, treasure.cacheMax) }
+        if (appPref.tutorialFinished && settingUtility.cacheMax > 0) {
+            refreshHistoryDis = Observable.fromCallable { HistoryHelper.get(db, settingUtility.cacheMax) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
@@ -107,14 +105,14 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
 
     fun importDictDb() {
         val dbImporter = DictImporter(context)
-        if (!dbImporter.isDataBaseExists || !treasure.isDatabaseImported) {
+        if (!dbImporter.isDataBaseExists || !settingUtility.isDatabaseImported) {
             mvpView?.setBigbangTipTv(R.string.initializing_database)
             Observable.fromCallable{ dbImporter.importDataBaseFromAssets() }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         mvpView?.setBigbangTipTv(R.string.bigbang_hold_tip)
-                        treasure.isDatabaseImported = true
+                        settingUtility.isDatabaseImported = true
                     }, { mvpView?.catchError(it) })
         }
     }

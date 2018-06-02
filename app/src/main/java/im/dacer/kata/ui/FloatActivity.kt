@@ -3,31 +3,33 @@ package im.dacer.kata.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import im.dacer.kata.R
+import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.service.UrlAnalysisService
+import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.util.extension.findUrl
 import im.dacer.kata.util.extension.timberAndToast
-import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.util.helper.SchemeHelper
+import im.dacer.kata.util.segment.BigBang
 import im.dacer.kata.view.FloatingView
 import im.dacer.kata.view.KataLayout
-import im.dacer.kata.service.UrlAnalysisService
-import im.dacer.kata.util.segment.BigBang
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_float.*
+import javax.inject.Inject
 
 /**
  * Created by Dacer on 31/01/2018.
  */
-class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
-
+class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
     private var disposable: Disposable? = null
     private var sharedText: String? = null
-    private val appPre by lazy { MultiprocessPref(this) }
+    @Inject lateinit var appPre: MultiprocessPref
+
+    override fun layoutId() = R.layout.activity_float
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

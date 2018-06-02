@@ -1,8 +1,7 @@
 package im.dacer.kata.ui.main
 
 import android.content.Context
-import com.baoyz.treasure.Treasure
-import im.dacer.kata.Config
+import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.service.ListenClipboardService
@@ -15,14 +14,14 @@ import javax.inject.Inject
 
 @ConfigPersistent
 class MainPresenter @Inject constructor(@ApplicationContext val context: Context) : BasePresenter<MainMvp>() {
-    private val treasure by lazy { Treasure.get(context, Config::class.java) }
+    @Inject lateinit var settingUtility: SettingUtility
 
     fun onResume() {
         restartListenService()
     }
 
     fun restartListenService() {
-        if (treasure.isListenClipboard) {
+        if (settingUtility.isListenClipboard) {
             ListenClipboardService.restart(context)
         }
     }

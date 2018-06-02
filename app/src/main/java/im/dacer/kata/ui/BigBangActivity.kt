@@ -6,35 +6,36 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.PopupMenu
 import android.view.View
 import com.atilika.kuromoji.ipadic.Token
-import im.dacer.kata.util.engine.SearchEngine
+import im.dacer.kata.R
+import im.dacer.kata.data.local.HistoryHelper
+import im.dacer.kata.data.local.JMDictDbHelper
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SearchHelper
+import im.dacer.kata.data.model.bigbang.DictEntry
+import im.dacer.kata.data.model.bigbang.DictReading
+import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.util.LangUtils
+import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.extension.getSubtitle
 import im.dacer.kata.util.extension.strForSearch
 import im.dacer.kata.util.extension.timberAndToast
-import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.helper.TTSHelper
+import im.dacer.kata.util.segment.BigBang
 import im.dacer.kata.view.KataLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import im.dacer.kata.R
-import im.dacer.kata.data.local.HistoryHelper
-import im.dacer.kata.data.local.JMDictDbHelper
-import im.dacer.kata.data.model.bigbang.DictEntry
-import im.dacer.kata.data.model.bigbang.DictReading
-import im.dacer.kata.util.segment.BigBang
 import kotlinx.android.synthetic.main.activity_big_bang.*
 import qiu.niorgai.StatusBarCompat
+import javax.inject.Inject
 
 
-class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
+class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
 
     private var kanjiResultList: List<Token>? = null
     private var dictDb: SQLiteDatabase? = null
@@ -44,17 +45,21 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     private var currentSelectedToken: Token? = null
     private var searchAction: im.dacer.kata.util.action.SearchAction? = null
     private var ttsHelper: TTSHelper? = null
-    private val appPre by lazy { MultiprocessPref(this) }
-    private val langUtils by lazy { LangUtils(appPre) }
+
+    @Inject lateinit var appPre: MultiprocessPref
+    @Inject lateinit var langUtils: LangUtils
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         handleIntent(intent)
     }
 
+    override fun layoutId() = R.layout.activity_big_bang
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_big_bang)
+        activityComponent().inject(this)
+
         StatusBarCompat.translucentStatusBar(this)
         StatusBarCompat.translucentStatusBar(this, true)
         ttsHelper = TTSHelper(applicationContext)

@@ -4,10 +4,14 @@ import android.app.Application
 import android.content.Context
 import dagger.Component
 import im.dacer.kata.data.NewsDataManager
+import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.data.local.PreferencesHelper
+import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.room.AppDatabase
 import im.dacer.kata.data.room.NewsDao
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.injection.module.AppModule
+import im.dacer.kata.util.LangUtils
 import javax.inject.Singleton
 
 @Singleton
@@ -20,6 +24,14 @@ interface AppComponent {
     fun application(): Application
 
     fun newsDataManager(): NewsDataManager
+
+    fun preferenceHelper(): PreferencesHelper
+
+    fun settingUtility(): SettingUtility
+
+    fun multiprocessPref(): MultiprocessPref
+
+    fun langUtils(): LangUtils
 
     fun appDatabase(): AppDatabase
 

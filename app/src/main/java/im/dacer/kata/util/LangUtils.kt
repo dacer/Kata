@@ -8,13 +8,16 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Dacer on 03/02/2018.
  * https://ctrlq.org/code/19909-google-translate-apicc
  * Thanks Google
  */
-class LangUtils(private val appPre: MultiprocessPref) {
+@Singleton
+class LangUtils @Inject constructor(private val appPre: MultiprocessPref) {
 
     fun fetchTranslation(dictEntry: DictEntry): Observable<String> {
         var targetLang = appPre.targetLang

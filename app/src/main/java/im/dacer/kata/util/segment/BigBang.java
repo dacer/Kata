@@ -16,14 +16,11 @@ public class BigBang {
 
     public static Observable<SimpleParser> getSegmentParserAsync() {
 
-        return Observable.fromCallable(new Callable<SimpleParser>() {
-            @Override
-            public SimpleParser call() throws Exception {
-                if (sParser == null) {
-                    sParser = new KuromojiParser();
-                }
-                return sParser;
+        return Observable.fromCallable(() -> {
+            if (sParser == null) {
+                sParser = new KuromojiParser();
             }
+            return sParser;
         }).subscribeOn(Schedulers.io());
     }
 

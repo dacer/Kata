@@ -1,26 +1,27 @@
 package im.dacer.kata.ui.settings
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
-import im.dacer.kata.util.extension.setMyActionBar
 import im.dacer.kata.data.model.bigbang.BigBangStyle
 import im.dacer.kata.data.model.segment.KanjiResult
+import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.util.extension.setMyActionBar
 import kotlinx.android.synthetic.main.activity_style.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+import javax.inject.Inject
 
-class StyleActivity : AppCompatActivity() {
+class StyleActivity : BaseActivity() {
+    @Inject lateinit var appPref: MultiprocessPref
 
-    private var multiprocessPref: MultiprocessPref? = null
+    override fun layoutId() = R.layout.activity_style
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_style)
+        activityComponent().inject(this)
         setMyActionBar(myToolbar)
 
-        multiprocessPref = MultiprocessPref(this)
         kataLayout.setKanjiResultData(EXAMPLE_KANJI_RESULT_LIST)
 
         textSizeSeekBar.setOnProgressChangeListener(object : SimpleListener() {
@@ -47,10 +48,10 @@ class StyleActivity : AppCompatActivity() {
         })
 
 
-        textSizeSeekBar.progress = multiprocessPref!!.getItemTextSize()
-        furiganaTextSizeSeekBar.progress = multiprocessPref!!.getFuriganaItemTextSize()
-        lineSpaceSeekBar.progress = multiprocessPref!!.getLineSpace()
-        itemSpace.progress = multiprocessPref!!.getItemSpace()
+        textSizeSeekBar.progress = appPref.getItemTextSize()
+        furiganaTextSizeSeekBar.progress = appPref.getFuriganaItemTextSize()
+        lineSpaceSeekBar.progress = appPref.getLineSpace()
+        itemSpace.progress = appPref.getItemSpace()
 
     }
 
@@ -60,7 +61,7 @@ class StyleActivity : AppCompatActivity() {
     }
 
     private fun updatePref() {
-        multiprocessPref?.bigBangStyle = BigBangStyle(
+        appPref.bigBangStyle = BigBangStyle(
                 itemSpace.progress,
                 lineSpaceSeekBar.progress,
                 textSizeSeekBar.progress,

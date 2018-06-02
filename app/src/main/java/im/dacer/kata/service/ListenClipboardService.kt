@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import im.dacer.kata.util.engine.SegmentEngine
 import im.dacer.kata.data.local.MultiprocessPref
-import im.dacer.kata.util.extension.findUrl
 import im.dacer.kata.util.NotificationUtil
+import im.dacer.kata.util.engine.SegmentEngine
+import im.dacer.kata.util.extension.findUrl
 import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.util.helper.hasKanjiOrKana
 import io.reactivex.Observable
@@ -60,7 +60,7 @@ class ListenClipboardService : Service() {
 
     override fun onCreate() {
         mClipboardManager.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
-        Observable.fromCallable { SegmentEngine.setup(this) }.subscribeOn(Schedulers.io()).subscribe()
+        Observable.fromCallable { SegmentEngine.setup() }.subscribeOn(Schedulers.io()).subscribe()
     }
 
 

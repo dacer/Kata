@@ -1,17 +1,21 @@
 package im.dacer.kata.data.local
 
 import android.content.Context
-import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.data.model.bigbang.BigBangStyle
+import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.WebParser
+import im.dacer.kata.util.engine.SearchEngine
 import net.grandcentrix.tray.TrayPreferences
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Dacer on 15/01/2018.
  */
-class MultiprocessPref(context: Context): TrayPreferences(context, "Kata", 1) {
 
+@Singleton
+class MultiprocessPref @Inject constructor(@ApplicationContext context: Context): TrayPreferences(context, "Kata", 1) {
 
     fun getLineSpace(): Int = bigBangStyle.lineSpace
 

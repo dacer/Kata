@@ -3,29 +3,30 @@ package im.dacer.kata.ui.settings
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.afollestad.materialdialogs.MaterialDialog
-import com.baoyz.treasure.Treasure
-import im.dacer.kata.Config
 import im.dacer.kata.R
-import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.data.local.MultiprocessPref
-import im.dacer.kata.util.extension.setMyActionBar
-import im.dacer.kata.util.LangUtils
-import im.dacer.kata.util.WebParser
+import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
+import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.util.LangUtils
+import im.dacer.kata.util.WebParser
+import im.dacer.kata.util.engine.SearchEngine
+import im.dacer.kata.util.extension.setMyActionBar
 import kotlinx.android.synthetic.main.activity_settings.*
+import javax.inject.Inject
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
+    @Inject lateinit var settingUtility: SettingUtility
+    @Inject lateinit var appPref: MultiprocessPref
 
-    private val mConfig by lazy { Treasure.get(this, Config::class.java) }
-    private val appPref by lazy { MultiprocessPref(this) }
+    override fun layoutId() = R.layout.activity_settings
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        activityComponent().inject(this)
         setMyActionBar(myToolbar)
 
         searchEngine.setOnClickListener {
@@ -74,7 +75,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         listenClipboardSwitch.setOnCheckedChangeListener { _, isChecked ->
-            mConfig.isListenClipboard = isChecked
+            settingUtility.isListenClipboard = isChecked
             refreshService()
             updateUI()
         }
@@ -85,7 +86,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun refreshService() {
-        if (mConfig.isListenClipboard) {
+        if (settingUtility.isListenClipboard) {
             ListenClipboardService.restart(applicationContext)
         } else {
             ListenClipboardService.stop(applicationContext)
@@ -95,7 +96,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun updateUI() {
         searchEngineTv.text = appPref.searchEngine
         showFloatDialogSwit.isChecked = appPref.showFloatDialog
-        listenClipboardSwitch.isChecked = mConfig.isListenClipboard
+        listenClipboardSwitch.isChecked = settingUtility.isListenClipboard
         webPageParserTv.setText(appPref.webParser.stringRes)
         enhancedModeSwitch.isChecked = appPref.enhancedMode
         translationTargetTv.text = LangUtils.getLangByKey(appPref.targetLang)
