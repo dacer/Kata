@@ -33,8 +33,8 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_float)
-
+        activityComponent().inject(this)
+        
         applyStyle()
         handleIntent(intent)
     }
