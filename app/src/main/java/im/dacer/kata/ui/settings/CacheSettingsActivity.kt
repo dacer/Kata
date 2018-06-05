@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SettingUtility
-import im.dacer.kata.ui.base.BaseSwipeActivity
+import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.extension.setMyActionBar
 import kotlinx.android.synthetic.main.activity_cache_settings.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import javax.inject.Inject
 
-class CacheSettingsActivity : BaseSwipeActivity() {
+class CacheSettingsActivity : BaseTransparentSwipeActivity() {
     @Inject lateinit var settingUtility: SettingUtility
 
     override fun layoutId() = R.layout.activity_cache_settings

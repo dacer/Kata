@@ -3,17 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/myToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
         android:paddingTop="@dimen/toolbar_padding_top"
+        android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="?attr/actionBarSize">
 
             <EditText
                 android:layout_width="match_parent"
@@ -24,6 +26,7 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:inputType="text"
+                android:layout_centerVertical="true"
                 android:imeOptions="actionSearch"/>
 
             <com.mikepenz.iconics.view.IconicsTextView
@@ -40,19 +43,20 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/topProgressbar"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:mpb_progressStyle="horizontal"
+        app:mpb_useIntrinsicPadding="false"
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myToolbar"/>
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/loadingView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/myToolbar"
-        android:layout_centerHorizontal="true"
-        app:indicatorName="BallScaleMultipleIndicator"
-        />
 </RelativeLayout>

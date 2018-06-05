@@ -7,16 +7,15 @@ import android.text.TextWatcher
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
-import im.dacer.kata.ui.base.BaseSwipeActivity
+import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.util.helper.LyricsHelper
 import im.dacer.kata.util.helper.SchemeHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_lyric.*
-import qiu.niorgai.StatusBarCompat
 
-class LyricActivity : BaseSwipeActivity() {
+class LyricActivity : BaseTransparentSwipeActivity() {
 
     private var searchDisposable: Disposable? = null
     private val adapter: LyricAdapter = LyricAdapter()
@@ -28,13 +27,9 @@ class LyricActivity : BaseSwipeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        StatusBarCompat.translucentStatusBar(this, true)
-        loadingView.hide()
-
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter.bindToRecyclerView(recyclerView)
         adapter.setOnLoadMoreListener({ loadMore() }, recyclerView)
-
         lyricEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -43,17 +38,17 @@ class LyricActivity : BaseSwipeActivity() {
                 if (s.isNotEmpty()) {
                     searchKeyWord = s.toString()
                     pageIndex = 1
-                    loadingView.show()
+                    topProgressbar.visibility = View.VISIBLE
                     searchDisposable?.dispose()
                     searchDisposable = LyricsHelper.search(s.toString())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
                                 recyclerView.scrollToPosition(0)
                                 adapter.setNewData(it.songs.toList())
-                                loadingView.hide()
+                                topProgressbar.visibility = View.GONE
                             }, {
                                 timberAndToast(it)
-                                loadingView.hide()
+                                topProgressbar.visibility = View.GONE
                             })
                 }
             }
