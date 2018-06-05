@@ -1,16 +1,12 @@
 package im.dacer.kata.ui.base
 
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.support.annotation.LayoutRes
 import android.support.v4.util.LongSparseArray
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
-import android.view.Window
-import com.afollestad.materialdialogs.MaterialDialog
-import com.facebook.stetho.common.LogUtil
 import im.dacer.kata.App
 import im.dacer.kata.injection.component.ActivityComponent
 import im.dacer.kata.injection.component.ConfigPersistentComponent
@@ -18,8 +14,11 @@ import im.dacer.kata.injection.component.DaggerConfigPersistentComponent
 import im.dacer.kata.injection.module.ActivityModule
 import im.dacer.kata.util.LogUtils
 import timber.log.Timber
-import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicLong
+
+
+
+
 
 
 /**
@@ -55,6 +54,7 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
         }
         activityComponent = configPersistentComponent.activityComponent(ActivityModule(this))
         activityComponent?.inject(this)
+
     }
 
     @LayoutRes abstract fun layoutId(): Int
@@ -88,6 +88,24 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
     fun activityComponent() = activityComponent as ActivityComponent
 
 
+    protected open fun hideSystemUI() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
+
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN)
+    }
+
+    protected open fun showSystemUI() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
+
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+    }
     companion object {
         private val KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID"
         private val NEXT_ID = AtomicLong(0)

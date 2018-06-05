@@ -1,12 +1,16 @@
 package im.dacer.kata.ui
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.PopupMenu
+import android.util.Property
 import android.view.View
 import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.R
@@ -35,7 +39,7 @@ import qiu.niorgai.StatusBarCompat
 import javax.inject.Inject
 
 
-class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
+class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener, View.OnSystemUiVisibilityChangeListener {
 
     private var kanjiResultList: List<Token>? = null
     private var dictDb: SQLiteDatabase? = null
@@ -70,6 +74,7 @@ class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
         appPre.tutorialFinished = true
         loadingProgressBar.indeterminateDrawable.setColorFilter(Color.parseColor("#EEEEEE"), PorterDuff.Mode.MULTIPLY)
         searchAction = SearchEngine.getDefaultSearchAction(this)
+        window.decorView.setOnSystemUiVisibilityChangeListener(this)
 
         handleIntent(intent)
         searchBtn.setOnClickListener { onClickSearch() }
@@ -91,6 +96,44 @@ class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
             kataLayout.showFurigana(showFurigana)
             refreshIconStatus()
         }
+        bigBangScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            val isDown = scrollY - oldScrollY > 0
+            if (isDown) {
+                if (!systemUiIsHidden) hideSystemUI()
+            } else {
+                if (systemUiIsHidden) showSystemUI()
+            }
+        })
+    }
+
+    private var topPaddingAnim: ObjectAnimator? = null
+    private var systemUiIsHidden = false
+
+
+    override fun onSystemUiVisibilityChange(visibility: Int) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
+        systemUiIsHidden = (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN) != 0
+        if (topPaddingView.height == 0 && !systemUiIsHidden) {
+            showSystemUI()
+        }
+    }
+
+    override fun hideSystemUI() {
+        topPaddingAnim?.cancel()
+        topPaddingAnim = ObjectAnimator.ofInt(topPaddingView, HeightProperty(),
+                topPaddingView.height, 0)
+                .setDuration(UI_ANIM_DURATION)
+        topPaddingAnim?.start()
+        super.hideSystemUI()
+    }
+
+    override fun showSystemUI() {
+        topPaddingAnim?.cancel()
+        topPaddingAnim = ObjectAnimator.ofInt(topPaddingView, HeightProperty(),
+                topPaddingView.height, resources.getDimension(R.dimen.tool_bar_top_padding).toInt())
+                .setDuration(UI_ANIM_DURATION)
+        topPaddingAnim?.start()
+        super.showSystemUI()
     }
 
     private fun onClickSearch() : Boolean {
@@ -224,6 +267,20 @@ class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener {
         const val EXTRA_ALIAS = "extra_alias"
         const val PRESELECTED_INDEX = "preselected_index"
         const val SAVE_IN_HISTORY = "save_in_history"
+
+        const val UI_ANIM_DURATION = 300L
     }
 
+
+    internal inner class HeightProperty : Property<View, Int>(Int::class.java, "height") {
+
+        override operator fun get(view: View): Int? {
+            return view.height
+        }
+
+        override operator fun set(view: View, value: Int?) {
+            view.layoutParams.height = value!!
+            view.layoutParams = view.layoutParams
+        }
+    }
 }

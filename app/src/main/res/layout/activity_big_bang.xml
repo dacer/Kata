@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_alignParentTop="true"
-        android:paddingTop="@dimen/toolbar_padding_top"
         android:background="@color/gray"
         >
         <RelativeLayout
@@ -18,11 +17,18 @@
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp">
+            <View
+                android:id="@+id/topPaddingView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_padding_top"
+                />
+
             <LinearLayout
                 android:id="@+id/btnsLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_below="@+id/topPaddingView"
                 android:layout_alignParentRight="true">
 
                 <com.mikepenz.iconics.view.IconicsTextView
@@ -48,8 +54,8 @@
                 android:textSize="18sp"
                 android:textColor="#fff"
                 android:layout_toLeftOf="@id/btnsLayout"
+                android:layout_below="@+id/topPaddingView"
                 apps:text="片" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +80,7 @@
         </RelativeLayout>
     </ScrollView>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/bigBangScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -93,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"/>
         </FrameLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <ProgressBar
         android:id="@+id/loadingProgressBar"
