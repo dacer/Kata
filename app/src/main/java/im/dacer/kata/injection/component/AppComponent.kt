@@ -6,6 +6,7 @@ import dagger.Component
 import im.dacer.kata.data.NewsDataManager
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.PreferencesHelper
+import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.room.AppDatabase
 import im.dacer.kata.data.room.NewsDao
@@ -28,6 +29,8 @@ interface AppComponent {
     fun preferenceHelper(): PreferencesHelper
 
     fun settingUtility(): SettingUtility
+
+    fun searchDictHelper(): SearchDictHelper
 
     fun multiprocessPref(): MultiprocessPref
 

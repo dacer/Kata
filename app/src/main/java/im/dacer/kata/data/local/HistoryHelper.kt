@@ -16,11 +16,14 @@ class HistoryHelper {
     companion object {
 
         fun saveAsync(context: Context, string: String, alias: String = "") {
+            val historyDb = HistoryDbHelper(context).writableDatabase
             Observable.fromCallable {
-                val historyDb = HistoryDbHelper(context).writableDatabase
                 save(historyDb, string, alias)
                 historyDb.close()
-            }.subscribeOn(Schedulers.io()).subscribe({}, { LogUtils.log(it, context) })
+            }.subscribeOn(Schedulers.io()).subscribe({}, {
+                LogUtils.log(it, context)
+                historyDb.close()
+            })
         }
 
         fun save(db: SQLiteDatabase, text: String, alias: String = "") {

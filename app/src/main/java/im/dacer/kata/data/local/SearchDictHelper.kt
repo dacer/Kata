@@ -1,15 +1,26 @@
 package im.dacer.kata.data.local
 
-import android.database.sqlite.SQLiteDatabase
+import android.content.Context
 import im.dacer.kata.data.model.bigbang.BigbangSearchResult
 import im.dacer.kata.data.model.bigbang.DictEntry
 import im.dacer.kata.data.model.bigbang.DictKanji
 import im.dacer.kata.data.model.bigbang.DictReading
+import im.dacer.kata.injection.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by Dacer on 12/01/2018.
+ *
+ * remember to call onDestroy() !!
  */
-class SearchDictHelper(private val db: SQLiteDatabase) {
+@Singleton
+class SearchDictHelper @Inject constructor(@ApplicationContext context: Context) {
+    private val db = JMDictDbHelper(context).readableDatabase
+
+    fun onDestroy() {
+        db.close()
+    }
 
     fun search(text: String): BigbangSearchResult {
         val isKanjiInside = kanjiInside(text)

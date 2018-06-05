@@ -68,7 +68,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.BigBangActivity"
+            android:name=".ui.bigbang.BigBangActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:process=":listener"

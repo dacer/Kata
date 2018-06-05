@@ -9,6 +9,7 @@ import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.ui.bigbang.BigBangActivity
 import im.dacer.kata.util.extension.findUrl
 import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.util.extension.toKanjiResultList

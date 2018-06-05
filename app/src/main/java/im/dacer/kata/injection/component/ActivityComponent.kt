@@ -3,7 +3,7 @@ package im.dacer.kata.injection.component
 import dagger.Subcomponent
 import im.dacer.kata.injection.PerActivity
 import im.dacer.kata.injection.module.ActivityModule
-import im.dacer.kata.ui.BigBangActivity
+import im.dacer.kata.ui.bigbang.BigBangActivity
 import im.dacer.kata.ui.FloatActivity
 import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.ui.main.MainActivity
