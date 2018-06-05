@@ -158,7 +158,7 @@ class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener, View.OnSys
     override fun onDestroy() {
         super.onDestroy()
         dictDb?.close()
-        ttsHelper?.onDestroy()
+        ttsHelper.onDestroy()
         segmentDis?.dispose()
         dictDisposable?.dispose()
     }
