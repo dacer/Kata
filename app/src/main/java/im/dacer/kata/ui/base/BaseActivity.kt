@@ -51,7 +51,6 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
         }
         activityComponent = configPersistentComponent.activityComponent(ActivityModule(this))
         activityComponent?.inject(this)
-        transparentNav()
 
     }
 

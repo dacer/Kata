@@ -13,7 +13,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import im.dacer.kata.R
 import im.dacer.kata.ui.AboutActivity
-import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.ui.base.BaseTransparentActivity
 import im.dacer.kata.ui.lyric.LyricActivity
 import im.dacer.kata.ui.main.inbox.InboxFragment
 import im.dacer.kata.ui.main.inbox.InboxFragment.Companion.REQUEST_CODE_OVERLAY_PERMISSION
@@ -25,7 +25,7 @@ import qiu.niorgai.StatusBarCompat
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), MainMvp {
+class MainActivity : BaseTransparentActivity(), MainMvp {
 
     @Inject lateinit var mainPresenter: MainPresenter
     private val drawer by lazy { initDrawer() }

@@ -9,15 +9,16 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.view.*
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
 import im.dacer.kata.R
 import im.dacer.kata.data.model.bigbang.History
-import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
 import im.dacer.kata.ui.base.BaseFragment
+import im.dacer.kata.util.extension.timberAndToast
 import kotlinx.android.synthetic.main.fragment_inbox.*
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
@@ -43,7 +44,6 @@ class InboxFragment: BaseFragment(), InboxMvp {
 
         val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(historyAdapter)
         val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
-        historyAdapter.openLoadAnimation()
         historyAdapter.bindToRecyclerView(historyRecyclerView)
         itemTouchHelper.attachToRecyclerView(historyRecyclerView)
         historyAdapter.setOnItemClickListener { _, _, pos -> inboxPresenter.onHistoryClicked(pos)}
