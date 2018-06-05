@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import im.dacer.kata.BuildConfig
@@ -31,6 +32,9 @@ class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivit
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
     }
 
