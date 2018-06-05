@@ -1,12 +1,13 @@
 package im.dacer.kata.ui.base
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.util.LongSparseArray
 import android.support.v7.app.AppCompatActivity
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import im.dacer.kata.App
 import im.dacer.kata.injection.component.ActivityComponent
 import im.dacer.kata.injection.component.ConfigPersistentComponent
@@ -15,10 +16,6 @@ import im.dacer.kata.injection.module.ActivityModule
 import im.dacer.kata.util.LogUtils
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicLong
-
-
-
-
 
 
 /**
@@ -54,6 +51,7 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
         }
         activityComponent = configPersistentComponent.activityComponent(ActivityModule(this))
         activityComponent?.inject(this)
+        transparentNav()
 
     }
 
@@ -87,6 +85,11 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
 
     fun activityComponent() = activityComponent as ActivityComponent
 
+    protected fun transparentNav() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        }
+    }
 
     protected open fun hideSystemUI() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
@@ -105,6 +108,35 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+    }
+
+    protected fun getNavBarHeight(): Int {
+        val result = 0
+        val hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey()
+        val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
+
+        if (!hasMenuKey && !hasBackKey) {
+            //The device has a navigation bar
+            val resources = resources
+
+            val orientation = resources.configuration.orientation
+            val resourceId: Int
+            resourceId = if (isTablet(this)) {
+                resources.getIdentifier(if (orientation == Configuration.ORIENTATION_PORTRAIT) "navigation_bar_height" else "navigation_bar_height_landscape", "dimen", "android")
+            } else {
+                resources.getIdentifier(if (orientation == Configuration.ORIENTATION_PORTRAIT) "navigation_bar_height" else "navigation_bar_width", "dimen", "android")
+            }
+
+            if (resourceId > 0) {
+                return resources.getDimensionPixelSize(resourceId)
+            }
+        }
+        return result
+    }
+
+
+    private fun isTablet(c: Context): Boolean {
+        return c.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
     }
     companion object {
         private val KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID"

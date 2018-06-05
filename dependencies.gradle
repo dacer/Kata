@@ -79,6 +79,7 @@ ext {
             store          : "com.nytimes.android:store3:$versions.store",
             storeKotlin    : "com.nytimes.android:store-kotlin3:$versions.store",
             storeFilesystem: "com.nytimes.android:filesystem3:$versions.store",
+            swipebacklayout: 'me.imid.swipebacklayout.lib:library:1.1.0',
     ]
 
     compilers = [

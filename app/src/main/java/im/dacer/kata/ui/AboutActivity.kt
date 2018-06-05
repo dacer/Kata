@@ -3,6 +3,9 @@ package im.dacer.kata.ui
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -11,10 +14,49 @@ import im.dacer.kata.BuildConfig
 import im.dacer.kata.R
 import me.drakeet.multitype.Items
 import me.drakeet.support.about.*
+import me.imid.swipebacklayout.lib.SwipeBackLayout
+import me.imid.swipebacklayout.lib.Utils
+import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase
+import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper
 
-class AboutActivity : me.drakeet.support.about.AboutActivity() {
+class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivityBase {
     private var easterEgg = 0
 
+    private var mHelper: SwipeBackActivityHelper? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mHelper = SwipeBackActivityHelper(this)
+        mHelper!!.onActivityCreate()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        }
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        mHelper!!.onPostCreate()
+    }
+
+
+    override fun <T : View?> findViewById(id: Int): T {
+        val v = super.findViewById<View>(id)
+        return if (v == null && mHelper != null) mHelper?.findViewById(id) as T else v as T
+    }
+
+    override fun getSwipeBackLayout(): SwipeBackLayout {
+        return mHelper!!.swipeBackLayout
+    }
+
+    override fun setSwipeBackEnable(enable: Boolean) {
+        swipeBackLayout.setEnableGesture(enable)
+    }
+
+    override fun scrollToFinishActivity() {
+        Utils.convertActivityToTranslucent(this)
+        swipeBackLayout.scrollToFinishActivity()
+    }
     override fun onCreateHeader(icon: ImageView, slogan: TextView, version: TextView) {
         icon.setImageResource(R.drawable.icon)
 //        icon.setOnClickListener {

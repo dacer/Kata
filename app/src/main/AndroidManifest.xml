@@ -25,8 +25,7 @@
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/about"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/settings"
@@ -43,8 +42,8 @@
         <activity android:name=".ui.lyric.LyricActivity"
             android:label="@string/lyric"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible" />
+
         <activity android:name="im.dacer.kata.ui.FloatActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
@@ -72,7 +71,6 @@
             android:name=".ui.BigBangActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
-            android:theme="@style/BigBangTheme"
             android:process=":listener"
             android:documentLaunchMode="intoExisting">
             <intent-filter>

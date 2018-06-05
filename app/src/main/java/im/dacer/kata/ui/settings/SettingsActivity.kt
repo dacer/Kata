@@ -10,7 +10,7 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
-import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.ui.base.BaseSwipeActivity
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.WebParser
 import im.dacer.kata.util.engine.SearchEngine
@@ -18,7 +18,7 @@ import im.dacer.kata.util.extension.setMyActionBar
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : BaseSwipeActivity() {
     @Inject lateinit var settingUtility: SettingUtility
     @Inject lateinit var appPref: MultiprocessPref
 

@@ -9,7 +9,6 @@
     <include android:id="@+id/myToolbar"
         layout="@layout/include_toolbar"/>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -84,6 +83,10 @@
             app:dsb_max="20"
             app:dsb_min="0"/>
 
+        <View
+            android:id="@+id/bottomPadding"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
     </LinearLayout>
 
 </RelativeLayout>

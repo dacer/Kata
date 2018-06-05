@@ -1,21 +1,22 @@
 package im.dacer.kata.ui.lyric
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
+import im.dacer.kata.ui.base.BaseSwipeActivity
 import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.util.helper.LyricsHelper
 import im.dacer.kata.util.helper.SchemeHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_lyric.*
+import qiu.niorgai.StatusBarCompat
 
-class LyricActivity : AppCompatActivity() {
+class LyricActivity : BaseSwipeActivity() {
 
     private var searchDisposable: Disposable? = null
     private val adapter: LyricAdapter = LyricAdapter()
@@ -23,9 +24,12 @@ class LyricActivity : AppCompatActivity() {
     private var pageIndex = 1
     private var searchKeyWord: String? = null
 
+    override fun layoutId() = R.layout.activity_lyric
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lyric)
+        StatusBarCompat.translucentStatusBar(this, true)
+        loadingView.hide()
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter.bindToRecyclerView(recyclerView)
@@ -39,13 +43,18 @@ class LyricActivity : AppCompatActivity() {
                 if (s.isNotEmpty()) {
                     searchKeyWord = s.toString()
                     pageIndex = 1
+                    loadingView.show()
                     searchDisposable?.dispose()
                     searchDisposable = LyricsHelper.search(s.toString())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
                                 recyclerView.scrollToPosition(0)
                                 adapter.setNewData(it.songs.toList())
-                            }, { timberAndToast(it) })
+                                loadingView.hide()
+                            }, {
+                                timberAndToast(it)
+                                loadingView.hide()
+                            })
                 }
             }
         })

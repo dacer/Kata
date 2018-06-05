@@ -20,7 +20,7 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.DictEntry
 import im.dacer.kata.data.model.bigbang.DictReading
-import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.ui.base.BaseSwipeActivity
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.extension.getSubtitle
@@ -39,7 +39,7 @@ import qiu.niorgai.StatusBarCompat
 import javax.inject.Inject
 
 
-class BigBangActivity : BaseActivity(), KataLayout.ItemClickListener, View.OnSystemUiVisibilityChangeListener {
+class BigBangActivity : BaseSwipeActivity(), KataLayout.ItemClickListener, View.OnSystemUiVisibilityChangeListener {
 
     private var kanjiResultList: List<Token>? = null
     private var dictDb: SQLiteDatabase? = null

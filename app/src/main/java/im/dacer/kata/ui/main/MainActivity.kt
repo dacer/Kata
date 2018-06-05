@@ -2,12 +2,10 @@ package im.dacer.kata.ui.main
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
-import android.view.WindowManager
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
@@ -43,9 +41,6 @@ class MainActivity : BaseActivity(), MainMvp {
         mainPresenter.attachView(this)
         setSupportActionBar(myToolbar as Toolbar)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        }
         if (savedInstanceState == null) {
 //            val ft = supportFragmentManager.beginTransaction()
 //            ft.add(R.id.frameLayout, InboxFragment()).commit()

@@ -6,13 +6,14 @@ import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.model.bigbang.BigBangStyle
 import im.dacer.kata.data.model.segment.KanjiResult
-import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.ui.base.BaseSwipeActivity
+import im.dacer.kata.util.extension.applyHeight
 import im.dacer.kata.util.extension.setMyActionBar
 import kotlinx.android.synthetic.main.activity_style.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import javax.inject.Inject
 
-class StyleActivity : BaseActivity() {
+class StyleActivity : BaseSwipeActivity() {
     @Inject lateinit var appPref: MultiprocessPref
 
     override fun layoutId() = R.layout.activity_style
@@ -21,7 +22,7 @@ class StyleActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         activityComponent().inject(this)
         setMyActionBar(myToolbar)
-
+        bottomPadding.applyHeight(getNavBarHeight())
         kataLayout.setKanjiResultData(EXAMPLE_KANJI_RESULT_LIST)
 
         textSizeSeekBar.setOnProgressChangeListener(object : SimpleListener() {

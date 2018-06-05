@@ -40,3 +40,8 @@ fun Activity.timberAndToast(throwable: Throwable) {
 fun Service.timberAndToast(throwable: Throwable) {
     LogUtils.log(throwable, this)
 }
+
+fun View.applyHeight(height: Int) {
+    this.layoutParams.height = height
+    this.layoutParams = this.layoutParams
+}

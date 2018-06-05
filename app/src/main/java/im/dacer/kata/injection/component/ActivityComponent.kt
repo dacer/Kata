@@ -10,11 +10,13 @@ import im.dacer.kata.ui.main.MainActivity
 import im.dacer.kata.ui.settings.CacheSettingsActivity
 import im.dacer.kata.ui.settings.SettingsActivity
 import im.dacer.kata.ui.settings.StyleActivity
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity
 
 @PerActivity
 @Subcomponent(modules = [ActivityModule::class])
 interface ActivityComponent {
     fun inject(baseActivity: BaseActivity)
+    fun inject(mainActivity: SwipeBackActivity)
     fun inject(mainActivity: MainActivity)
     fun inject(mainActivity: SettingsActivity)
     fun inject(mainActivity: CacheSettingsActivity)
