@@ -12,7 +12,6 @@ import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.PopupMenu
 import android.util.Property
 import android.view.View
-import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.R
 import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.data.local.JMDictDbHelper
@@ -20,12 +19,12 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.DictEntry
 import im.dacer.kata.data.model.bigbang.DictReading
+import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.ui.base.BaseSwipeActivity
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
-import im.dacer.kata.util.extension.getSubtitle
-import im.dacer.kata.util.extension.strForSearch
 import im.dacer.kata.util.extension.timberAndToast
+import im.dacer.kata.util.extension.toKanjiResultList
 import im.dacer.kata.util.helper.TTSHelper
 import im.dacer.kata.util.segment.BigBang
 import im.dacer.kata.view.KataLayout
@@ -41,12 +40,12 @@ import javax.inject.Inject
 
 class BigBangActivity : BaseSwipeActivity(), KataLayout.ItemClickListener, View.OnSystemUiVisibilityChangeListener {
 
-    private var kanjiResultList: List<Token>? = null
+    private var kanjiResultList: List<KanjiResult>? = null
     private var dictDb: SQLiteDatabase? = null
     private var segmentDis: Disposable? = null
     private var searchDictHelper: SearchDictHelper? = null
     private var dictDisposable: Disposable? = null
-    private var currentSelectedToken: Token? = null
+    private var currentSelectedToken: KanjiResult? = null
     private var searchAction: im.dacer.kata.util.action.SearchAction? = null
 
     @Inject lateinit var appPre: MultiprocessPref
@@ -143,7 +142,7 @@ class BigBangActivity : BaseSwipeActivity(), KataLayout.ItemClickListener, View.
 
     private fun onClickAudio() : Boolean {
         try {
-            currentSelectedToken?.run { ttsHelper?.play(this@BigBangActivity, this.baseForm) }
+            currentSelectedToken?.run { ttsHelper.play(this@BigBangActivity, this.baseForm) }
         } catch (e: Exception) {
             timberAndToast(e)
         }
@@ -170,7 +169,7 @@ class BigBangActivity : BaseSwipeActivity(), KataLayout.ItemClickListener, View.
 
         pronunciationTv.visibility = View.GONE
         if (currentSelectedToken?.isKnown == true) {
-            descTv.text = "[${currentSelectedToken?.baseForm}] ${currentSelectedToken?.getSubtitle()}"
+            descTv.text = "[${currentSelectedToken?.baseForm}] ${currentSelectedToken?.subtitle}"
             meaningTv.text = ""
             strForSearch = currentSelectedToken!!.baseForm
 
@@ -240,7 +239,7 @@ class BigBangActivity : BaseSwipeActivity(), KataLayout.ItemClickListener, View.
         segmentDis?.dispose()
         segmentDis = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(text) }
-                .flatMap { Observable.fromIterable(it) }
+                .flatMap { Observable.fromIterable(it.toKanjiResultList()) }
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
@@ -248,7 +247,7 @@ class BigBangActivity : BaseSwipeActivity(), KataLayout.ItemClickListener, View.
                     kataLayout.reset()
                     resetTopLayout()
                     kanjiResultList = it
-                    kataLayout.setTokenData(it)
+                    kataLayout.setKanjiResultData(it)
                     preselectedIndex?.let { kataLayout.select(it) }
 
                 }, { timberAndToast(it) })

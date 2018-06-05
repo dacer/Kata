@@ -11,6 +11,7 @@ import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.util.extension.findUrl
 import im.dacer.kata.util.extension.timberAndToast
+import im.dacer.kata.util.extension.toKanjiResultList
 import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.util.segment.BigBang
 import im.dacer.kata.view.FloatingView
@@ -78,6 +79,10 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
             return
         }
 
+        //sharedText process finished
+
+        sharedText = sharedText!!.trim() //remove whitespaces from the beginning and end
+
         sharedText!!.findUrl()?.run {
             startService(UrlAnalysisService.getIntent(this@FloatActivity, this))
             finish()
@@ -107,12 +112,12 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
         disposable?.dispose()
         disposable = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(sharedText!!) }
-                .flatMap { Observable.fromIterable(it) }
+                .flatMap { Observable.fromIterable(it.toKanjiResultList()) }
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     kataLayout.reset()
-                    kataLayout.setTokenData(it)
+                    kataLayout.setKanjiResultData(it)
                 }, { timberAndToast(it) })
     }
 

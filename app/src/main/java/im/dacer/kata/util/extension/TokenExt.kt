@@ -21,8 +21,34 @@ fun Token.getSubtitle(): String {
     return "$partOfSpeechLevel1 (${list.joinToString(", ")})"
 }
 
-fun Token.toKanjiResult(): KanjiResult {
-    return KanjiResult(surface, baseForm, KanaHelper.toHiragana(reading))
+//fun Token.toKanjiResult(): KanjiResult {
+//    return KanjiResult(surface, baseForm,
+//            KanaHelper.toHiragana(reading), isKnown, getSubtitle())
+//}
+
+fun List<Token>.toKanjiResultList(): List<KanjiResult> {
+    val result: ArrayList<KanjiResult> = arrayListOf()
+    for (token in this) {
+        var surface = token.surface
+        var newLineNumber = 0
+        while (surface.endsWith("\n") && !surface.isNewLine()) {
+            surface = surface.substring(0, surface.length - 1)
+            newLineNumber++
+        }
+        result.add(KanjiResult(surface, token.baseForm,
+                KanaHelper.toHiragana(token.reading), token.isKnown, token.getSubtitle()))
+        while (newLineNumber > 0) {
+            result.add(KanjiResult.NEW_LINE)
+            newLineNumber--
+        }
+
+    }
+
+    return result
+}
+
+private fun String.isNewLine(): Boolean {
+    return this.replace("\n", "").isEmpty()
 }
 
 fun Token.strForSearch(): String {

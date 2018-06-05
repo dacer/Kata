@@ -7,10 +7,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
-import com.atilika.kuromoji.ipadic.Token
-import im.dacer.kata.util.extension.toKanjiResult
-import im.dacer.kata.util.ViewUtil
 import im.dacer.kata.data.model.segment.KanjiResult
+import im.dacer.kata.util.ViewUtil
 
 /**
  * Created by Dacer on 20/01/2018.
@@ -56,10 +54,6 @@ class KataLayout @JvmOverloads constructor(
                 .map { it.itemList }
                 .flatMap { it }
                 .forEach { it.view.showFurigana = show }
-    }
-
-    fun setTokenData(tokens: List<Token>) {
-        setKanjiResultData(tokens.map { it.toKanjiResult() })
     }
 
     fun select(index: Int) {

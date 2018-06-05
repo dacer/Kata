@@ -6,10 +6,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import com.atilika.kuromoji.ipadic.Token
-import im.dacer.kata.util.extension.toKanjiResult
-import im.dacer.kata.util.ViewUtil
 import im.dacer.kata.data.model.segment.KanjiResult
+import im.dacer.kata.util.ViewUtil
 
 
 /**
@@ -69,10 +67,6 @@ class FuriganaView @JvmOverloads constructor(
     fun setText(kanjiResult: KanjiResult): FuriganaView {
         this.kanjiResult = kanjiResult
         return this
-    }
-
-    fun setText(token: Token) {
-        setText(token.toKanjiResult())
     }
 
     /**

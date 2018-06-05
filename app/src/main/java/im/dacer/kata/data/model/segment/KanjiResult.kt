@@ -6,7 +6,8 @@ import im.dacer.kata.util.helper.isKana
 /**
  * Created by Dacer on 10/01/2018.
  */
-data class KanjiResult(val surface: String, val baseForm: String = "", val furigana: String = "") {
+data class KanjiResult(val surface: String, val baseForm: String = "", val furigana: String = "",
+                       val isKnown: Boolean = false, val subtitle: String = "") {
 
     /**
      * remove the exist kana in the surface for furigana
@@ -48,5 +49,13 @@ data class KanjiResult(val surface: String, val baseForm: String = "", val furig
         furiganaStartOffset = startCount
         furiganaEndOffset = endCount
         furiganaForDisplay = result
+    }
+
+    fun strForSearch(): String {
+        return if (isKnown) baseForm else surface
+    }
+
+    companion object {
+        val NEW_LINE : KanjiResult = KanjiResult("\n")
     }
 }
