@@ -43,6 +43,7 @@ class InboxFragment: BaseFragment(), InboxMvp {
         historyRecyclerView.layoutManager = LinearLayoutManager(context)
 
         val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(historyAdapter)
+        itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START)
         val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
         historyAdapter.bindToRecyclerView(historyRecyclerView)
         itemTouchHelper.attachToRecyclerView(historyRecyclerView)

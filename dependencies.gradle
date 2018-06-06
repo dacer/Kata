@@ -68,7 +68,7 @@ ext {
             timber         : "com.jakewharton.timber:timber:$versions.timber",
             anko           : "org.jetbrains.anko:anko:$versions.anko",
             materialDialog : "com.afollestad.material-dialogs:core:$versions.materialDialog",
-            cymChad        : "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35",
+            cymChad        : "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40",
             tray           : "net.grandcentrix.tray:tray:0.12.0",
             drakeetAbout   : "me.drakeet.support:about:0.9.9",
             drakeetMulti   : "me.drakeet.multitype:multitype:2.2.0-beta1",
