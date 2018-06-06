@@ -19,7 +19,7 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
     private val db = JMDictDbHelper(context).readableDatabase
 
     fun onDestroy() {
-        db.close()
+//        db.close()
     }
 
     fun search(text: String): BigbangSearchResult {
