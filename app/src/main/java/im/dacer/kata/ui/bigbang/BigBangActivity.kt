@@ -19,6 +19,7 @@ import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.ui.base.BaseSwipeActivity
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.view.KataLayout
+import im.dacer.kata.view.MyScrollView
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_big_bang.*
 import qiu.niorgai.StatusBarCompat
@@ -82,6 +83,15 @@ class BigBangActivity : BaseSwipeActivity(), BigbangMvp, KataLayout.ItemClickLis
                 if (systemUiIsHidden) showSystemUI()
             }
         })
+        bigBangScrollView.overScrollListener = object : MyScrollView.OverScrollListener {
+            override fun onOverScroll(topOverScroll: Boolean) {
+                if (topOverScroll) {
+                    if (systemUiIsHidden) showSystemUI()
+                } else {
+                    if (!systemUiIsHidden) hideSystemUI()
+                }
+            }
+        }
     }
 
     private var changeUiAnim: AnimatorSet? = null
@@ -189,7 +199,7 @@ class BigBangActivity : BaseSwipeActivity(), BigbangMvp, KataLayout.ItemClickLis
     override fun resetBigBangScrollViewPos() {
         if (bigBangScrollView.scrollY != 0) bigBangScrollView.smoothScrollTo(0,0)
     }
-    
+
 
     companion object {
         const val EXTRA_TEXT = "extra_text"

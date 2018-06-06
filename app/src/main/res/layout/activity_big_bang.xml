@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:apps="http://schemas.android.com/tools">
 
-    <android.support.v4.widget.NestedScrollView
+    <im.dacer.kata.view.MyScrollView
         android:id="@+id/bigBangScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"/>
         </FrameLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </im.dacer.kata.view.MyScrollView>
 
     <ScrollView
         android:id="@+id/meaningScrollView"
