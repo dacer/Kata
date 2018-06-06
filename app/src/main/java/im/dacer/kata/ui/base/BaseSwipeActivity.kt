@@ -2,6 +2,7 @@ package im.dacer.kata.ui.base
 
 import android.os.Bundle
 import android.view.View
+import im.dacer.kata.R
 import me.imid.swipebacklayout.lib.SwipeBackLayout
 import me.imid.swipebacklayout.lib.Utils
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase
@@ -21,7 +22,6 @@ abstract class BaseSwipeActivity : BaseActivity(), SwipeBackActivityBase {
         mHelper!!.onPostCreate()
     }
 
-
     override fun <T : View?> findViewById(id: Int): T {
         val v = super.findViewById<View>(id)
         return if (v == null && mHelper != null) mHelper?.findViewById(id) as T else v as T
@@ -39,4 +39,10 @@ abstract class BaseSwipeActivity : BaseActivity(), SwipeBackActivityBase {
         Utils.convertActivityToTranslucent(this)
         swipeBackLayout.scrollToFinishActivity()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.activity_in, R.anim.activity_out)
+    }
+
 }

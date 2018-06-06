@@ -1,6 +1,7 @@
 package im.dacer.kata.ui.base
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.support.v4.util.LongSparseArray
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import im.dacer.kata.App
+import im.dacer.kata.R
 import im.dacer.kata.injection.component.ActivityComponent
 import im.dacer.kata.injection.component.ConfigPersistentComponent
 import im.dacer.kata.injection.component.DaggerConfigPersistentComponent
@@ -77,6 +79,10 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
         else -> super.onOptionsItemSelected(item)
     }
 
+    override fun startActivity(intent: Intent?) {
+        super.startActivity(intent)
+        overridePendingTransition(R.anim.activity_in, R.anim.activity_out)
+    }
 
     override fun toastError(t: Throwable) {
         LogUtils.log(t, this)

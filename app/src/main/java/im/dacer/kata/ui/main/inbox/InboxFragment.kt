@@ -1,6 +1,7 @@
 package im.dacer.kata.ui.main.inbox
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Point
 import android.net.Uri
@@ -23,11 +24,12 @@ import kotlinx.android.synthetic.main.fragment_inbox.*
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
-class InboxFragment: BaseFragment(), InboxMvp {
+class InboxFragment() : BaseFragment(), InboxMvp {
     @Inject lateinit var inboxPresenter: InboxPresenter
     private val historyAdapter = HistoryAdapter()
 
     override fun layoutId() = R.layout.fragment_inbox
+    override val activity: Activity? get() =  getActivity()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +71,6 @@ class InboxFragment: BaseFragment(), InboxMvp {
                 toast(getString(R.string.cannot_open_overlay_permission_settings))
             }
         }
-
     }
 
     @SuppressLint("NewApi")

@@ -124,8 +124,9 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
     fun onHistoryClicked(position: Int) {
         val history = historyList?.get(position)
         history?.run {
-            SchemeHelper.startKata(context, this.text()!!, saveInHistory =  false)
+            SchemeHelper.startKata(context, this.text()!!, saveInHistory =  false, activity = mvpView?.activity)
         }
+
     }
 
     fun onHistoryLongClicked(activity: Activity, index: Int): Boolean {

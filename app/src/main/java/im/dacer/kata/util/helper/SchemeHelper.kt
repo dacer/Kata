@@ -1,8 +1,10 @@
 package im.dacer.kata.util.helper
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import im.dacer.kata.R
 import im.dacer.kata.ui.bigbang.BigBangActivity
 import java.net.URLEncoder
 
@@ -13,10 +15,12 @@ class SchemeHelper {
     companion object {
         const val SHOW_FLOAT_MAX_TEXT_COUNT = 99
 
-        fun startKata(c: Context, text: String, preselectedIndex: Int = -1, saveInHistory: Boolean = true, alias: String = "") {
+        fun startKata(c: Context, text: String, preselectedIndex: Int = -1,
+                      saveInHistory: Boolean = true, alias: String = "", activity: Activity? = null) {
             val intent = Intent(Intent.ACTION_VIEW, getUri(text, preselectedIndex, saveInHistory, alias))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             c.startActivity(intent)
+            activity?.overridePendingTransition(R.anim.activity_in, R.anim.activity_out)
         }
 
         fun startKataFloatDialog(c: Context, text: String) {
