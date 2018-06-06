@@ -16,7 +16,7 @@ import android.view.View
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.model.segment.KanjiResult
-import im.dacer.kata.ui.base.BaseSwipeActivity
+import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.view.KataLayout
 import im.dacer.kata.view.MyScrollView
@@ -26,7 +26,7 @@ import qiu.niorgai.StatusBarCompat
 import javax.inject.Inject
 
 
-class BigBangActivity : BaseSwipeActivity(), BigbangMvp, KataLayout.ItemClickListener, View.OnSystemUiVisibilityChangeListener {
+class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.ItemClickListener, View.OnSystemUiVisibilityChangeListener {
     private var dictDisposable: Disposable? = null
 
     @Inject lateinit var bigbangPresenter: BigbangPresenter
