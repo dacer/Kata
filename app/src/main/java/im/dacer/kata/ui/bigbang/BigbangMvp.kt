@@ -9,6 +9,9 @@ import im.dacer.kata.ui.base.MvpView
  */
 interface BigbangMvp : MvpView {
     fun onDataInitFinished(list: List<KanjiResult>, preselectedIndex: Int?)
+    fun showSystemUI()
+    fun resetMeaningViewPos()
+    fun resetBigBangScrollViewPos()
     fun finish()
 
     var descText: String?

@@ -4,10 +4,31 @@
     android:layout_height="match_parent"
     xmlns:apps="http://schemas.android.com/tools">
 
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/bigBangScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:fillViewport="true"
+        android:layout_alignParentBottom="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/big_bang_meaning_height">
+
+            <im.dacer.kata.view.KataLayout
+                android:id="@+id/kataLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"/>
+        </FrameLayout>
+    </android.support.v4.widget.NestedScrollView>
+
     <ScrollView
         android:id="@+id/meaningScrollView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/big_bang_meaning_height"
         android:layout_alignParentTop="true"
         android:background="@color/gray"
         >
@@ -79,27 +100,6 @@
 
         </RelativeLayout>
     </ScrollView>
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/bigBangScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#fff"
-        android:fillViewport="true"
-        android:layout_below="@+id/meaningScrollView"
-        android:layout_alignParentBottom="true">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <im.dacer.kata.view.KataLayout
-                android:id="@+id/kataLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"/>
-        </FrameLayout>
-    </android.support.v4.widget.NestedScrollView>
 
     <ProgressBar
         android:id="@+id/loadingProgressBar"

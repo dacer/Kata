@@ -1,5 +1,6 @@
 package im.dacer.kata.ui.bigbang
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -73,7 +74,9 @@ class BigBangActivity : BaseSwipeActivity(), BigbangMvp, KataLayout.ItemClickLis
         }
         bigBangScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             val isDown = scrollY - oldScrollY > 0
+            if (Math.abs(scrollY - oldScrollY) < 3) return@OnScrollChangeListener
             if (isDown) {
+                if (Math.abs(scrollY) < getDimen(R.dimen.big_bang_meaning_height) - getDimen(R.dimen.big_bang_meaning_mini_height)) return@OnScrollChangeListener
                 if (!systemUiIsHidden) hideSystemUI()
             } else {
                 if (systemUiIsHidden) showSystemUI()
@@ -81,7 +84,7 @@ class BigBangActivity : BaseSwipeActivity(), BigbangMvp, KataLayout.ItemClickLis
         })
     }
 
-    private var topPaddingAnim: ObjectAnimator? = null
+    private var changeUiAnim: AnimatorSet? = null
     private var systemUiIsHidden = false
 
 
@@ -94,23 +97,34 @@ class BigBangActivity : BaseSwipeActivity(), BigbangMvp, KataLayout.ItemClickLis
     }
 
     override fun hideSystemUI() {
-        topPaddingAnim?.cancel()
-        topPaddingAnim = ObjectAnimator.ofInt(topPaddingView, HeightProperty(),
-                topPaddingView.height, 0)
-                .setDuration(UI_ANIM_DURATION)
-        topPaddingAnim?.start()
+        systemUiIsHidden = true
+        changeUiAnim?.cancel()
+        changeUiAnim = AnimatorSet()
+        changeUiAnim?.playTogether(
+                ObjectAnimator.ofInt(topPaddingView, HeightProperty(), topPaddingView.height, 0),
+                ObjectAnimator.ofInt(meaningScrollView, HeightProperty(), meaningScrollView.height, getDimen(R.dimen.big_bang_meaning_mini_height)))
+        changeUiAnim?.duration = UI_ANIM_DURATION
+        changeUiAnim?.start()
+        resetMeaningViewPos()
         super.hideSystemUI()
     }
 
     override fun showSystemUI() {
-        topPaddingAnim?.cancel()
-        topPaddingAnim = ObjectAnimator.ofInt(topPaddingView, HeightProperty(),
-                topPaddingView.height, resources.getDimension(R.dimen.tool_bar_top_padding).toInt())
-                .setDuration(UI_ANIM_DURATION)
-        topPaddingAnim?.start()
+        systemUiIsHidden = false
+        changeUiAnim?.cancel()
+        changeUiAnim = AnimatorSet()
+        changeUiAnim?.playTogether(
+                ObjectAnimator.ofInt(topPaddingView, HeightProperty(), topPaddingView.height, getDimen(R.dimen.tool_bar_top_padding)),
+                ObjectAnimator.ofInt(meaningScrollView, HeightProperty(), meaningScrollView.height, getDimen(R.dimen.big_bang_meaning_height)))
+        changeUiAnim?.duration = UI_ANIM_DURATION
+        changeUiAnim?.start()
+
         super.showSystemUI()
     }
 
+    private fun getDimen(dimenResId: Int) : Int {
+        return resources.getDimensionPixelSize(dimenResId)
+    }
 
     override fun onDataInitFinished(list: List<KanjiResult>, preselectedIndex: Int?) {
         loadingProgressBar.visibility = View.GONE
@@ -141,9 +155,6 @@ class BigBangActivity : BaseSwipeActivity(), BigbangMvp, KataLayout.ItemClickLis
     }
 
     private fun handleIntent(intent: Intent) {
-        meaningScrollView.smoothScrollTo(0,0)
-        bigBangScrollView.smoothScrollTo(0,0)
-
         bigbangPresenter.handIntent(intent)
     }
 
@@ -171,6 +182,14 @@ class BigBangActivity : BaseSwipeActivity(), BigbangMvp, KataLayout.ItemClickLis
             }
         }
 
+    override fun resetMeaningViewPos() {
+        if (meaningScrollView.scrollY != 0) meaningScrollView.smoothScrollTo(0,0)
+    }
+
+    override fun resetBigBangScrollViewPos() {
+        if (bigBangScrollView.scrollY != 0) bigBangScrollView.smoothScrollTo(0,0)
+    }
+    
 
     companion object {
         const val EXTRA_TEXT = "extra_text"

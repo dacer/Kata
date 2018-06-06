@@ -10,6 +10,8 @@
     <dimen name="big_bang_default_line_space">8dp</dimen>
     <dimen name="big_bang_default_text_size">14sp</dimen>
     <dimen name="big_bang_action_bar_height">42dp</dimen>
+    <dimen name="big_bang_meaning_height">150dp</dimen>
+    <dimen name="big_bang_meaning_mini_height">46dp</dimen>
 
 
 </resources>

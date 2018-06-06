@@ -67,6 +67,8 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
             mvpView?.finish()
             return
         }
+        mvpView?.resetBigBangScrollViewPos()
+        mvpView?.resetMeaningViewPos()
         segmentDis?.dispose()
         segmentDis = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(text) }
@@ -120,7 +122,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
                         mvpView?.pronunciationText = readingStr
                     }
                 }, { mvpView?.toastError(it) })
-
+        mvpView?.showSystemUI()
     }
 
     fun onClickSearch() : Boolean {
