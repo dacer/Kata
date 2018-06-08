@@ -1,14 +1,14 @@
 package im.dacer.kata.ui.base
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.util.LongSparseArray
 import android.support.v7.app.AppCompatActivity
-import android.view.*
+import android.view.MenuItem
+import android.view.View
+import android.view.WindowManager
 import im.dacer.kata.App
 import im.dacer.kata.R
 import im.dacer.kata.injection.component.ActivityComponent
@@ -115,34 +115,8 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     }
 
-    protected fun getNavBarHeight(): Int {
-        val result = 0
-        val hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey()
-        val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
-
-        if (!hasMenuKey && !hasBackKey) {
-            //The device has a navigation bar
-            val resources = resources
-
-            val orientation = resources.configuration.orientation
-            val resourceId: Int
-            resourceId = if (isTablet(this)) {
-                resources.getIdentifier(if (orientation == Configuration.ORIENTATION_PORTRAIT) "navigation_bar_height" else "navigation_bar_height_landscape", "dimen", "android")
-            } else {
-                resources.getIdentifier(if (orientation == Configuration.ORIENTATION_PORTRAIT) "navigation_bar_height" else "navigation_bar_width", "dimen", "android")
-            }
-
-            if (resourceId > 0) {
-                return resources.getDimensionPixelSize(resourceId)
-            }
-        }
-        return result
-    }
 
 
-    private fun isTablet(c: Context): Boolean {
-        return c.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
-    }
     companion object {
         private val KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID"
         private val NEXT_ID = AtomicLong(0)

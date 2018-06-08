@@ -1,4 +1,4 @@
-package im.dacer.kata.ui.main.inbox
+package im.dacer.kata.ui.main.news
 
 import im.dacer.kata.data.model.NewsItem
 import im.dacer.kata.ui.base.MvpView

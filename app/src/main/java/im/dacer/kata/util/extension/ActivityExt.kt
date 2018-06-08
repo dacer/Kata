@@ -3,9 +3,13 @@ package im.dacer.kata.util.extension
 import android.app.Activity
 import android.app.Service
 import android.content.Intent
+import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.KeyCharacterMap
+import android.view.KeyEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.widget.Toast
 import im.dacer.kata.util.LogUtils
 
@@ -44,4 +48,33 @@ fun Service.timberAndToast(throwable: Throwable) {
 fun View.applyHeight(height: Int) {
     this.layoutParams.height = height
     this.layoutParams = this.layoutParams
+}
+
+fun Activity.getNavBarHeight(): Int {
+    val result = 0
+    val hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey()
+    val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
+
+    if (!hasMenuKey && !hasBackKey) {
+        //The device has a navigation bar
+        val resources = resources
+
+        val orientation = resources.configuration.orientation
+        val resourceId: Int
+        resourceId = if (isTablet()) {
+            resources.getIdentifier(if (orientation == Configuration.ORIENTATION_PORTRAIT) "navigation_bar_height" else "navigation_bar_height_landscape", "dimen", "android")
+        } else {
+            resources.getIdentifier(if (orientation == Configuration.ORIENTATION_PORTRAIT) "navigation_bar_height" else "navigation_bar_width", "dimen", "android")
+        }
+
+        if (resourceId > 0) {
+            return resources.getDimensionPixelSize(resourceId)
+        }
+    }
+    return result
+}
+
+
+fun Activity.isTablet(): Boolean {
+    return resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
 }

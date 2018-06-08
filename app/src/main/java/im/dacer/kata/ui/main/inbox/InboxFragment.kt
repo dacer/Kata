@@ -19,12 +19,13 @@ import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
 import im.dacer.kata.ui.base.BaseFragment
+import im.dacer.kata.util.extension.getNavBarHeight
 import im.dacer.kata.util.extension.timberAndToast
 import kotlinx.android.synthetic.main.fragment_inbox.*
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
-class InboxFragment() : BaseFragment(), InboxMvp {
+class InboxFragment : BaseFragment(), InboxMvp {
     @Inject lateinit var inboxPresenter: InboxPresenter
     private val historyAdapter = HistoryAdapter()
 
@@ -80,6 +81,8 @@ class InboxFragment() : BaseFragment(), InboxMvp {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val canDraw = Settings.canDrawOverlays(activity)
             permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
+            permissionBottomMargin.layoutParams.height = activity!!.getNavBarHeight()
+            permissionBottomMargin.layoutParams = permissionBottomMargin.layoutParams
         }
         nothingHappenedView.visibility = View.GONE
         goToYoutubeView.visibility = View.GONE
