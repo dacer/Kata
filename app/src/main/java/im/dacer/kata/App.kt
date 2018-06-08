@@ -1,7 +1,7 @@
 package im.dacer.kata
 
-import android.app.Application
 import android.content.Context
+import android.support.multidex.MultiDexApplication
 import android.util.Log
 import com.androidnetworking.AndroidNetworking
 import com.crashlytics.android.Crashlytics
@@ -16,7 +16,7 @@ import io.fabric.sdk.android.Fabric
 import okhttp3.OkHttpClient
 import timber.log.Timber
 
-class App : Application() {
+class App : MultiDexApplication() {
 
     private var appComponent: AppComponent? = null
 

@@ -2,19 +2,19 @@ package im.dacer.kata.ui.main.news
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import im.dacer.kata.R
 import im.dacer.kata.data.model.NewsItem
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseFragment
-import im.dacer.kata.ui.main.inbox.NewsMvp
-import im.dacer.kata.ui.main.inbox.NewsPresenter
+import im.dacer.kata.view.PacmanIndicator
 import kotlinx.android.synthetic.main.fragment_news.*
+import org.jetbrains.anko.dip
 import javax.inject.Inject
 
 class NewsFragment: BaseFragment(), NewsMvp {
+
     override fun layoutId() = R.layout.fragment_news
     @Inject lateinit var newsPresenter: NewsPresenter
 
@@ -24,14 +24,12 @@ class NewsFragment: BaseFragment(), NewsMvp {
         super.onCreate(savedInstanceState)
         fragmentComponent().inject(this)
         newsPresenter.attachView(this)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        newsAdapter.openLoadAnimation()
         newsAdapter.bindToRecyclerView(recyclerView)
         newsAdapter.setOnItemClickListener { _, _, pos ->
             val link = newsAdapter.getItem(pos)?.link()
@@ -40,7 +38,14 @@ class NewsFragment: BaseFragment(), NewsMvp {
                 startService(UrlAnalysisService.getIntent(this, link!!))
             }
         }
+        refreshLayout.setOnRefreshListener(newsPresenter)
+        refreshLayout.setRefreshView(PacmanIndicator(activity!!),
+                ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, context!!.dip(30)))
         newsPresenter.initData()
+    }
+
+    override fun showRefreshing(show: Boolean) {
+        refreshLayout.setRefreshing(show)
     }
 
     override fun onDestroy() {

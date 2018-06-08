@@ -6,4 +6,5 @@ import im.dacer.kata.ui.base.MvpView
 interface NewsMvp : MvpView {
     fun showData(newsItems: List<NewsItem>)
     fun showLoading(show: Boolean)
+    fun showRefreshing(show: Boolean)
 }
