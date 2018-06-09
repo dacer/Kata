@@ -6,9 +6,11 @@ import android.net.NetworkInfo
 import com.dinuscxj.refresh.RecyclerRefreshLayout
 import im.dacer.kata.data.NewsDataManager
 import im.dacer.kata.data.model.EasyNews
+import im.dacer.kata.data.model.NewsItem
 import im.dacer.kata.data.room.AppDatabase
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
+import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.LogUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -50,6 +52,18 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                 .subscribe({
                     onFetchFinished(it)
                 }, { LogUtils.log(it, context) })
+    }
+
+    fun onNewsItemClicked(item: NewsItem?) {
+        val link = item?.link()
+        if (link.isNullOrEmpty()) return
+        mvpView?.getMyActivity()?.run {
+            startService(UrlAnalysisService.getIntent(this, link!!))
+        }
+    }
+
+    fun onPlayVideoClicked(item: NewsItem?) {
+
     }
 
     private fun onFetchFinished(newsList: ArrayList<EasyNews>?) {

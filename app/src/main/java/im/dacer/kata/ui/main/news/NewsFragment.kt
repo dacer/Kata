@@ -1,12 +1,12 @@
 package im.dacer.kata.ui.main.news
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import im.dacer.kata.R
 import im.dacer.kata.data.model.NewsItem
-import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.view.PacmanIndicator
 import kotlinx.android.synthetic.main.fragment_news.*
@@ -32,12 +32,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
         recyclerView.layoutManager = LinearLayoutManager(context)
         newsAdapter.bindToRecyclerView(recyclerView)
         newsAdapter.setOnItemClickListener { _, _, pos ->
-            val link = newsAdapter.getItem(pos)?.link()
-            if (link.isNullOrEmpty()) return@setOnItemClickListener
-            activity?.run {
-                startService(UrlAnalysisService.getIntent(this, link!!))
-            }
-
+            newsPresenter.onNewsItemClicked(newsAdapter.getItem(pos))
         }
         refreshLayout.setOnRefreshListener(newsPresenter)
         refreshLayout.setRefreshView(PacmanIndicator(activity!!),
@@ -54,6 +49,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
         newsPresenter.detachView()
     }
 
+    override fun getMyActivity(): Activity? { return activity }
 
     override fun showData(newsItems: List<NewsItem>) {
         newsAdapter.setNewData(newsItems)
