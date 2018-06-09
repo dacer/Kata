@@ -28,13 +28,9 @@
 
 -keep class com.atilika.**{*;}
 
--keepclassmembers class im.dacer.kata.core.model.** {
-    !static !private <fields>;
-}
 -keepclassmembers class im.dacer.kata.data.model.** {
     !static !private <fields>;
 }
-
 #https://github.com/mikepenz/Android-Iconics
 -keep class .R
 -keep class **.R$* {
@@ -84,3 +80,30 @@
 
 #https://github.com/MasayukiSuda/EasingInterpolator
 -keep class com.daasuu.** { *; }
+
+
+#org.immutables.gson
+-dontwarn org.immutables.gson.**
+
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-dontwarn sun.misc.**
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class im.dacer.kata.data.model.** { *; }
+
+# Prevent proguard from stripping interface information from TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+##---------------End: proguard configuration for Gson  ----------
