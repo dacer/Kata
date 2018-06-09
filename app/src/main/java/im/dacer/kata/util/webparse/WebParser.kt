@@ -1,4 +1,4 @@
-package im.dacer.kata.util
+package im.dacer.kata.util.webparse
 
 import android.content.Context
 import android.os.Build
@@ -24,13 +24,17 @@ class WebParser {
 
     companion object {
 
-        fun getParserNameArray(context: Context) = WebParser.Parser.values().map { context.getString(it.stringRes) }.toTypedArray()
+        fun getParserNameArray(context: Context) = Parser.values().map { context.getString(it.stringRes) }.toTypedArray()
 
         fun getParseBy(name: String): Parser = Parser.valueOf(name)
 
         val DEFAULT_PARSER = Parser.MERCURY
 
         fun fetchContent(targetUrl: String, pref: MultiprocessPref): Observable<String>{
+            if (EasyNewsParser.checkUrlAvailable(targetUrl)) {
+                return EasyNewsParser.fetchContent(targetUrl)
+            }
+
             return when (pref.webParser) {
                 Parser.MERCURY -> fetchContentByMercury(targetUrl)
                 Parser.URL2IO -> fetchContentByURL2IO(targetUrl)

@@ -12,7 +12,7 @@ import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
 import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.LangUtils
-import im.dacer.kata.util.WebParser
+import im.dacer.kata.util.webparse.WebParser
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.extension.setMyActionBar
 import kotlinx.android.synthetic.main.activity_settings.*

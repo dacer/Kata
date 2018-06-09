@@ -23,6 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -70,6 +71,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         mvpView?.resetBigBangScrollViewPos()
         mvpView?.resetMeaningViewPos()
         segmentDis?.dispose()
+        Timber.e(text)
         segmentDis = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(text) }
                 .flatMap { Observable.fromIterable(it.toKanjiResultList()) }
@@ -79,6 +81,18 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
                     mvpView?.onDataInitFinished(it, preselectedIndex)
                     kanjiResultList = it
                 }, { mvpView?.toastError(it) })
+
+
+//        segmentDis = Observable.fromIterable(text.split("\n"))
+//                .flatMap { BigBang.getSegmentParser().parse(it) }
+//                .flatMap { Observable.fromIterable(it.toKanjiResultList()) }
+//                .toList()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe ({
+//                    mvpView?.onDataInitFinished(it, preselectedIndex)
+//                    kanjiResultList = it
+//                }, { mvpView?.toastError(it) })
 
         if(saveInHistory) HistoryHelper.saveAsync(context, text, alias)
     }

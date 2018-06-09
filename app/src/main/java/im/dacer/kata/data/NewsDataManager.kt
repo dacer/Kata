@@ -16,7 +16,7 @@ class NewsDataManager @Inject constructor() {
 
     fun getEasyNews(): Observable<ArrayList<EasyNews>> {
         val gson = Gson()
-        return Rx2AndroidNetworking.get(Companion.NHK_EASY_NEWS_URL)
+        return Rx2AndroidNetworking.get(NHK_EASY_NEWS_URL)
                 .build()
                 .jsonArrayObservable
                 .map { array -> array[0] as JSONObject }

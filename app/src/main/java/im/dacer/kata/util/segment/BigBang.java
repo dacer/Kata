@@ -1,7 +1,5 @@
 package im.dacer.kata.util.segment;
 
-import java.util.concurrent.Callable;
-
 import im.dacer.kata.util.segment.parser.KuromojiParser;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
@@ -22,6 +20,13 @@ public class BigBang {
             }
             return sParser;
         }).subscribeOn(Schedulers.io());
+    }
+
+    public static SimpleParser getSegmentParser() {
+        if (sParser == null) {
+            sParser = new KuromojiParser();
+        }
+        return sParser;
     }
 
     public static void setSegmentParser(SimpleParser parser) {

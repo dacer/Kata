@@ -9,7 +9,7 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.util.extension.toast
 import im.dacer.kata.util.helper.SchemeHelper
-import im.dacer.kata.util.WebParser
+import im.dacer.kata.util.webparse.WebParser
 import im.dacer.kata.view.FloatingLoadingView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

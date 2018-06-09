@@ -4,7 +4,7 @@ import android.content.Context
 import im.dacer.kata.data.model.bigbang.BigBangStyle
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.util.LangUtils
-import im.dacer.kata.util.WebParser
+import im.dacer.kata.util.webparse.WebParser
 import im.dacer.kata.util.engine.SearchEngine
 import net.grandcentrix.tray.TrayPreferences
 import javax.inject.Inject

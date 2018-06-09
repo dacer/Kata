@@ -37,6 +37,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
             activity?.run {
                 startService(UrlAnalysisService.getIntent(this, link!!))
             }
+
         }
         refreshLayout.setOnRefreshListener(newsPresenter)
         refreshLayout.setRefreshView(PacmanIndicator(activity!!),
