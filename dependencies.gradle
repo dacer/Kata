@@ -82,6 +82,7 @@ ext {
             swipebacklayout: 'me.imid.swipebacklayout.lib:library:1.1.0',
             materialprogressbar: 'me.zhanghai.android.materialprogressbar:library:1.4.2',
             recyclerrefreshlayout: 'com.dinuscxj:recyclerrefreshlayout:2.0.5',
+            EasingInterpolator: 'com.daasuu:EasingInterpolator:1.0.0',
     ]
 
     compilers = [

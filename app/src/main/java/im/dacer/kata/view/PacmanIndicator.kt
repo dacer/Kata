@@ -8,7 +8,8 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.LinearInterpolator
+import com.daasuu.ei.Ease
+import com.daasuu.ei.EasingInterpolator
 import com.dinuscxj.refresh.IRefreshStatus
 
 /**
@@ -186,7 +187,7 @@ class PacmanIndicator @JvmOverloads constructor(
         val startT = (getPacmanWidth() / 11).toFloat()
         val translationAnim = ValueAnimator.ofFloat(width - startT, width / 2f)
         translationAnim.duration = ANIM_DURATION
-        translationAnim.interpolator = LinearInterpolator()
+        translationAnim.interpolator = EasingInterpolator(Ease.QUINT_IN_OUT)
         translationAnim.repeatCount = -1
         addUpdateListener(translationAnim, ValueAnimator.AnimatorUpdateListener{ animation ->
             translateX = animation.animatedValue as Float
