@@ -34,6 +34,11 @@ class NewsFragment: BaseFragment(), NewsMvp {
         newsAdapter.setOnItemClickListener { _, _, pos ->
             newsPresenter.onNewsItemClicked(newsAdapter.getItem(pos))
         }
+        newsAdapter.setOnItemChildClickListener { _, v, pos ->
+            if (v.id == R.id.coverImage) {
+                newsPresenter.onPlayVideoClicked(newsAdapter.getItem(pos))
+            }
+        }
         refreshLayout.setOnRefreshListener(newsPresenter)
         refreshLayout.setRefreshView(PacmanIndicator(activity!!),
                 ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, context!!.dip(30)))

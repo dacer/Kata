@@ -11,6 +11,7 @@ import im.dacer.kata.data.room.AppDatabase
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.service.UrlAnalysisService
+import im.dacer.kata.ui.VideoPlayerActivity
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.LogUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -63,7 +64,11 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     }
 
     fun onPlayVideoClicked(item: NewsItem?) {
+        if (item?.videoUrl().isNullOrEmpty()) {
 
+        } else {
+            mvpView?.getMyActivity()?.run { startActivity(VideoPlayerActivity.getIntent(this, item!!.videoUrl()!!)) }
+        }
     }
 
     private fun onFetchFinished(newsList: ArrayList<EasyNews>?) {

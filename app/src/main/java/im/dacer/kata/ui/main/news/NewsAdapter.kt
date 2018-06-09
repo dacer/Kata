@@ -17,6 +17,8 @@ class NewsAdapter : BaseQuickAdapter<NewsItem, BaseViewHolder>(R.layout.item_new
     override fun convert(helper: BaseViewHolder, item: NewsItem) {
         helper.setText(R.id.titleTv, item.title() ?: "")
                 .setText(R.id.timeTv, item.time() ?: "")
+                .setVisible(R.id.playIcon, !item.videoUrl().isNullOrEmpty())
+                .addOnClickListener(R.id.coverImage)
         if (!item.coverUrl().isNullOrEmpty()) {
             Picasso.get()
                     .load(item.coverUrl())
