@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import im.dacer.kata.R
 import im.dacer.kata.ui.base.BaseTransparentActivity
 import kotlinx.android.synthetic.main.video_player_activity.*
@@ -16,6 +17,8 @@ class VideoPlayerActivity : BaseTransparentActivity() {
         super.onCreate(savedInstanceState)
 
         handleIntent(intent)
+        // Hide the status bar.
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
     }
 
     override fun onNewIntent(intent: Intent) {
