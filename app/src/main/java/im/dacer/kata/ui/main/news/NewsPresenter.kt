@@ -59,7 +59,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         val link = item?.link()
         if (link.isNullOrEmpty()) return
         mvpView?.getMyActivity()?.run {
-            startService(UrlAnalysisService.getIntent(this, link!!))
+            startService(UrlAnalysisService.getIntent(this, link!!, false))
         }
     }
 
