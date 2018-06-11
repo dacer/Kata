@@ -9,6 +9,10 @@ import im.dacer.kata.R
 import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.view.PacmanIndicator
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_news.*
 import org.jetbrains.anko.dip
 import javax.inject.Inject
@@ -50,14 +54,24 @@ class NewsFragment: BaseFragment(), NewsMvp {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         newsPresenter.detachView()
+        showDataDisposable?.dispose()
+        super.onDestroy()
     }
 
     override fun getMyActivity(): Activity? { return activity }
 
+    private var showDataDisposable: Disposable? = null
     override fun showData(newsItems: List<NewsItem>) {
-        newsAdapter.setNewData(newsItems)
+        showDataDisposable?.dispose()
+        showDataDisposable = Observable.fromCallable {
+            newsItems.sortedByDescending { it.time() }
+        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    newsAdapter.setNewData(it)
+                }
     }
 
     override fun showLoading(show: Boolean) {
