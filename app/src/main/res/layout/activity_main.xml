@@ -9,7 +9,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/myToolbar"/>
+        android:layout_below="@+id/toolbarBorder"/>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/myToolbar"
@@ -18,4 +18,11 @@
         android:paddingTop="@dimen/toolbar_padding_top"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ToolbarStyle" />
+
+    <View
+        android:id="@+id/toolbarBorder"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/toolbarBorder"
+        android:layout_below="@+id/myToolbar"/>
 </RelativeLayout>
