@@ -52,7 +52,8 @@
     <string name="how_it_works">How it works</string>
     <string name="listen_to_clipboard">Listen to clipboard</string>
     <string name="cache">Cache</string>
-    <string name="max">Max</string>
+    <string name="inbox_max">Inbox Max</string>
+    <string name="news_caching_wifi_only">News Caching WiFi Only</string>
     <string name="clear_cache">Clear cache</string>
 
     <string name="tts_error_title">Text-to-speech not work</string>

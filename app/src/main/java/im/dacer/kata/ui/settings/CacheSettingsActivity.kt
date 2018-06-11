@@ -28,10 +28,16 @@ class CacheSettingsActivity : BaseTransparentSwipeActivity() {
                 updateUI()
             }
         })
+
+        newsCachingWifiOnly.setOnCheckedChangeListener { _, isChecked ->
+            settingUtility.newsCachingWifiOnly = isChecked
+            updateUI()
+        }
     }
 
     private fun updateUI() {
         cacheMaxNumTv.text = cacheSeekBar.progress.toString()
+        newsCachingWifiOnly.isChecked = settingUtility.newsCachingWifiOnly
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
