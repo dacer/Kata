@@ -1,4 +1,4 @@
-package im.dacer.kata.data.model
+package im.dacer.kata.data.model.news
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
@@ -14,7 +14,8 @@ data class EasyNews(@PrimaryKey var news_id: String,
                     var news_web_movie_uri: String? = null,
                     var news_easy_voice_uri: String? = null,
                     var news_easy_movie_uri: String? = null,
-                    var content: String? = null) : NewsItem {
+                    var content: String? = null,
+                    var hasRead: Boolean = false) : NewsItem {
 
     override fun link(): String? {
         return news_web_url

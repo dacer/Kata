@@ -5,8 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import com.dinuscxj.refresh.RecyclerRefreshLayout
 import im.dacer.kata.data.NewsDataManager
-import im.dacer.kata.data.model.EasyNews
-import im.dacer.kata.data.model.NewsItem
+import im.dacer.kata.data.model.news.EasyNews
+import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.data.room.AppDatabase
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
@@ -14,6 +14,9 @@ import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.VideoPlayerActivity
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.LogUtils
+import im.dacer.kata.util.extension.timberAndToast
+import im.dacer.kata.util.helper.SchemeHelper
+import im.dacer.kata.util.webparse.WebParser
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -27,6 +30,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     @Inject lateinit var newsDataManager: NewsDataManager
     private var initDataDisposable: Disposable? = null
     private var fetchDataDisposable: Disposable? = null
+    private var cacheDisposable: Disposable? = null
 
     fun initData() {
         mvpView?.showLoading(true)
@@ -42,7 +46,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                 }
     }
 
-    fun fetchData() {
+    private fun fetchData() {
         if (!networkConnected()) {
             onFetchFinished(null)
             return
@@ -88,6 +92,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         super.detachView()
         initDataDisposable?.dispose()
         fetchDataDisposable?.dispose()
+        cacheDisposable?.dispose()
     }
 
     private fun networkConnected() : Boolean {

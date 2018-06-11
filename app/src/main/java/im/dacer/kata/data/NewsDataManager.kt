@@ -2,7 +2,7 @@ package im.dacer.kata.data
 
 import com.google.gson.Gson
 import com.rx2androidnetworking.Rx2AndroidNetworking
-import im.dacer.kata.data.model.EasyNews
+import im.dacer.kata.data.model.news.EasyNews
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

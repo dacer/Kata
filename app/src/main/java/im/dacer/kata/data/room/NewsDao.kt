@@ -1,7 +1,7 @@
 package im.dacer.kata.data.room
 
 import android.arch.persistence.room.*
-import im.dacer.kata.data.model.EasyNews
+import im.dacer.kata.data.model.news.EasyNews
 import io.reactivex.Flowable
 
 @Dao

@@ -1,7 +1,7 @@
 package im.dacer.kata.ui.main.news
 
 import android.app.Activity
-import im.dacer.kata.data.model.NewsItem
+import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.ui.base.MvpView
 
 interface NewsMvp : MvpView {

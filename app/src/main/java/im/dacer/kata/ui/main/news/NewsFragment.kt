@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import im.dacer.kata.R
-import im.dacer.kata.data.model.NewsItem
+import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.view.PacmanIndicator
 import kotlinx.android.synthetic.main.fragment_news.*

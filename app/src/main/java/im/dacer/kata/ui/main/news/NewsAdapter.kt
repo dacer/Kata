@@ -7,7 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.squareup.picasso.Picasso
 import im.dacer.kata.R
-import im.dacer.kata.data.model.NewsItem
+import im.dacer.kata.data.model.news.NewsItem
 
 /**
  * Created by Dacer on 13/02/2018.

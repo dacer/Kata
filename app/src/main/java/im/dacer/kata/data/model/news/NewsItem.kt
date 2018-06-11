@@ -1,4 +1,4 @@
-package im.dacer.kata.data.model
+package im.dacer.kata.data.model.news
 
 interface NewsItem {
     fun title(): String?
