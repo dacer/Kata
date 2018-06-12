@@ -1,5 +1,6 @@
 package im.dacer.kata.data.local
 
+import im.dacer.kata.ui.main.MainActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,6 +31,10 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         get() = mHelper[PREF_NEWS_CACHING_WIFI_ONLY, true]
         set(value) { mHelper[PREF_NEWS_CACHING_WIFI_ONLY] = value }
 
+    var lastExitTab : Long
+        get() = mHelper[PREF_LAST_EXIT_TAB, MainActivity.DrawerItem.INBOX.id]
+        set(value) { mHelper[PREF_LAST_EXIT_TAB] = value }
+
 
 
     companion object {
@@ -38,5 +43,6 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         private const val PREF_CACHE_MAX = "cachemax"
         private const val PREF_HAS_SHOWN_GO_YOUTUBE = "hasshowngoyoutube"
         private const val PREF_NEWS_CACHING_WIFI_ONLY = "news_caching_wifi_only"
+        private const val PREF_LAST_EXIT_TAB = "last_exit_tab"
     }
 }

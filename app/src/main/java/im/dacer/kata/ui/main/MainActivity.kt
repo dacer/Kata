@@ -12,6 +12,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import im.dacer.kata.R
+import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.ui.AboutActivity
 import im.dacer.kata.ui.base.BaseTransparentActivity
 import im.dacer.kata.ui.lyric.LyricActivity
@@ -28,10 +29,20 @@ import javax.inject.Inject
 class MainActivity : BaseTransparentActivity(), MainMvp {
 
     @Inject lateinit var mainPresenter: MainPresenter
+    @Inject lateinit var settingUtility: SettingUtility
     private val drawer by lazy { initDrawer() }
 
     enum class DrawerItem(val id: Long) {
-        INBOX(0), LYRIC(1), NHK_EASY(2), NHK(3), SETTINGS(4), ABOUT(5)
+        INBOX(0), LYRIC(1), NHK_EASY(2), NHK(3), SETTINGS(4), ABOUT(5);
+
+        companion object {
+            fun get(id: Long) : DrawerItem {
+                for (item in DrawerItem.values()) {
+                    if (item.id == id) return item
+                }
+                return DrawerItem.INBOX
+            }
+        }
     }
     override fun layoutId() = R.layout.activity_main
 
@@ -42,9 +53,7 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
         setSupportActionBar(myToolbar as Toolbar)
 
         if (savedInstanceState == null) {
-//            val ft = supportFragmentManager.beginTransaction()
-//            ft.add(R.id.frameLayout, InboxFragment()).commit()
-            drawer.setSelection(DrawerItem.INBOX.id, true)
+            drawer.setSelection(DrawerItem.get(settingUtility.lastExitTab).id, true)
         }
     }
 
@@ -97,8 +106,9 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         mainPresenter.detachView()
+        settingUtility.lastExitTab = drawer.currentSelection
+        super.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
