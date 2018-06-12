@@ -51,7 +51,11 @@ class NewsFragment: BaseFragment(), NewsMvp {
     }
 
     override fun showLoadingText(msg: String?) {
-        activity?.runOnUiThread{ (activity as AppCompatActivity).supportActionBar!!.subtitle = msg }
+        try {
+            activity?.runOnUiThread {
+                (activity as AppCompatActivity).supportActionBar!!.subtitle = msg
+            }
+        } catch (t: Throwable) {}
     }
 
     override fun showRefreshing(show: Boolean) {

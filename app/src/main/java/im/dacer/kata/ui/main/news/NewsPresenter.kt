@@ -45,7 +45,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     fun initData() {
         mvpView?.showLoading(true)
         initDataDisposable?.dispose()
-        initDataDisposable = Flowable.timer(500, TimeUnit.MILLISECONDS)
+        initDataDisposable = Flowable.timer(200, TimeUnit.MILLISECONDS)
                 .flatMap { appDatabase.newsDao().loadAll() }
                 .take(1)
                 .subscribeOn(Schedulers.io())
@@ -67,7 +67,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         initDataDisposable?.dispose()
         fetchDataDisposable?.dispose()
         cacheDisposable?.dispose()
-        fetchDataDisposable = Observable.timer(500, TimeUnit.MILLISECONDS)
+        fetchDataDisposable = Observable.timer(300, TimeUnit.MILLISECONDS)
                 .concatMap { newsDataManager.getEasyNews() }
                 .doOnNext { appDatabase.newsDao().insertAll(it.toTypedArray()) }
                 .concatMap { appDatabase.newsDao().loadAll().take(1).toObservable() }
@@ -86,7 +86,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         cacheDisposable?.dispose()
         nowSyncingSize = 0
         mvpView?.showLoadingText(context.getString(R.string.caching_articles))
-        cacheDisposable = Flowable.timer(500, TimeUnit.MILLISECONDS)
+        cacheDisposable = Flowable.timer(300, TimeUnit.MILLISECONDS)
                 .concatMap { appDatabase.newsDao().loadAllNoContent() }
                 .take(1)
                 .concatMap { Flowable.fromIterable(it).onBackpressureBuffer() }

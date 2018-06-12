@@ -122,5 +122,6 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.frameLayout, fragment).commit()
         supportActionBar?.setTitle(titleRes)
+        supportActionBar?.subtitle = null
     }
 }
