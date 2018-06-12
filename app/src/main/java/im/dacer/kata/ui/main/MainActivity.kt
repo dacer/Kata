@@ -52,9 +52,7 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
         mainPresenter.attachView(this)
         setSupportActionBar(myToolbar as Toolbar)
 
-        if (savedInstanceState == null) {
-            drawer.setSelection(DrawerItem.get(settingUtility.lastExitTab).id, true)
-        }
+        drawer.setSelection(DrawerItem.get(settingUtility.lastExitTab).id, true)
     }
 
     private fun initDrawer() : Drawer {
