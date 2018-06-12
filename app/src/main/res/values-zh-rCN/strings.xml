@@ -56,6 +56,7 @@
     <string name="news_caching_wifi_only">只在 WiFi 下同步新闻</string>
     <string name="clear_cache">清除缓存</string>
     <string name="no_internet">无网络环境</string>
+    <string name="web_404_error">此网页无法访问</string>
 
     <string name="tts_error_title">你设备的 TTS 发音功能无法正常工作</string>
     <string name="tts_error_content">"请尝试：\n\n手机设置 - ︎无障碍 - ︎TTS - ︎勾选GoogleTTS引擎 -︎ 下载日文语音包"</string>

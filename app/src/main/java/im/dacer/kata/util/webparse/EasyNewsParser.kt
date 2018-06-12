@@ -42,11 +42,10 @@ object EasyNewsParser {
                     return@fromCallable "${newsBody.outputElement()}\n${newsBodyMore.outputElement()}"
                 }
 
-            throw ContentNotFound()
-
             } catch (e: Throwable) {
-                return@fromCallable ""
             }
+
+            throw ContentNotFound()
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -9,6 +9,7 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.util.extension.toast
 import im.dacer.kata.util.helper.SchemeHelper
+import im.dacer.kata.util.webparse.EasyNewsParser
 import im.dacer.kata.util.webparse.WebParser
 import im.dacer.kata.view.FloatingLoadingView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -70,7 +71,14 @@ class UrlAnalysisService : Service() {
                     floatingView.dismiss()
                     SchemeHelper.startKata(this, it, saveInHistory = saveInHistory)
                     stopSelf()
-                }, { timberAndToast(it) })
+                }, {
+                    if (it is EasyNewsParser.ContentNotFound) {
+                        toast(R.string.web_404_error)
+                    } else {
+                        timberAndToast(it)
+                    }
+                    floatingView.dismiss()
+                })
 
     }
 
