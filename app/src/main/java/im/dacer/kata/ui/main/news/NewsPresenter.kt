@@ -61,8 +61,10 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
             if (!hasData) context.toast(R.string.no_internet)
             return
         }
-        mvpView?.showLoadingText("Syncing...")
+        mvpView?.showLoadingText(context.getString(R.string.syncing))
+        initDataDisposable?.dispose()
         fetchDataDisposable?.dispose()
+        cacheDisposable?.dispose()
         fetchDataDisposable = newsDataManager.getEasyNews()
                 .subscribe({
                     onFetchFinished(it)
@@ -73,11 +75,11 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                 }, { log(it) })
     }
 
-    private var totalSyncSize = 0
+    private var nowSyncingSize = 0
     private fun cacheAllData() {
         cacheDisposable?.dispose()
-        totalSyncSize = 0
-        mvpView?.showLoadingText("Caching articles...")
+        nowSyncingSize = 0
+        mvpView?.showLoadingText(context.getString(R.string.caching_articles))
         cacheDisposable = appDatabase.newsDao().loadAllNoContent()
                 .take(1)
                 .concatMap { Flowable.fromIterable(it).onBackpressureBuffer() }
@@ -88,8 +90,8 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                 .subscribe({
                     Timber.e("${it.id()} : ${it.title}")
                     appDatabase.newsDao().updateNews(it)
-                    totalSyncSize++
-                    mvpView?.showLoadingText("Caching articles... $totalSyncSize")
+                    nowSyncingSize++
+                    mvpView?.showLoadingText("${context.getString(R.string.caching_articles)} $nowSyncingSize")
 
                 }, { log(it) }, { mvpView?.showLoadingText(null) })
     }
@@ -98,7 +100,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     fun onNewsItemClicked(item: NewsItem?) {
         val id = item?.id() ?: return
 
-        appDatabase.newsDao().get(id)
+        appDatabase.newsDao().get(id).take(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {

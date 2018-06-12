@@ -45,7 +45,8 @@ object EasyNewsParser {
             } catch (e: Throwable) {
             }
 
-            throw ContentNotFound()
+            return@fromCallable ""
+//            throw ContentNotFound()
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

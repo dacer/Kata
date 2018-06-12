@@ -10,8 +10,8 @@ import android.view.Gravity
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import im.dacer.kata.R
-import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.util.LogUtils
+import im.dacer.kata.util.helper.SchemeHelper
 
 class FloatingLoadingView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RelativeLayout(context, attrs, defStyleAttr) {
@@ -47,7 +47,7 @@ class FloatingLoadingView @JvmOverloads constructor(
 
             try {
                 mWindowManager.addView(this, layoutParams)
-            } catch (e: WindowManager.BadTokenException) {
+            } catch (e: Throwable) {
                 LogUtils.log(e)
             }
 

@@ -66,4 +66,7 @@
     <string name="web_page_parser_mercury">Mercury</string>
     <string name="web_page_parser_url2io">URL2io</string>
     <string name="web_page_parser_not_use">Do not use</string>
+
+    <string name="syncing">Syncing…</string>
+    <string name="caching_articles">Caching articles…</string>
 </resources>
