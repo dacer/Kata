@@ -20,11 +20,13 @@ import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.util.webparse.WebParser
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.toast
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ConfigPersistent
@@ -43,7 +45,8 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     fun initData() {
         mvpView?.showLoading(true)
         initDataDisposable?.dispose()
-        initDataDisposable = appDatabase.newsDao().loadAll()
+        initDataDisposable = Flowable.timer(500, TimeUnit.MILLISECONDS)
+                .flatMap { appDatabase.newsDao().loadAll() }
                 .take(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -64,9 +67,10 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         initDataDisposable?.dispose()
         fetchDataDisposable?.dispose()
         cacheDisposable?.dispose()
-        fetchDataDisposable = newsDataManager.getEasyNews()
+        fetchDataDisposable = Observable.timer(500, TimeUnit.MILLISECONDS)
+                .concatMap { newsDataManager.getEasyNews() }
                 .doOnNext { appDatabase.newsDao().insertAll(it.toTypedArray()) }
-                .flatMap { appDatabase.newsDao().loadAll().take(1).toObservable() }
+                .concatMap { appDatabase.newsDao().loadAll().take(1).toObservable() }
                 .subscribe({
                     mvpView?.showData(it)
                     onFetchFinished()
@@ -82,7 +86,8 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         cacheDisposable?.dispose()
         nowSyncingSize = 0
         mvpView?.showLoadingText(context.getString(R.string.caching_articles))
-        cacheDisposable = appDatabase.newsDao().loadAllNoContent()
+        cacheDisposable = Flowable.timer(500, TimeUnit.MILLISECONDS)
+                .concatMap { appDatabase.newsDao().loadAllNoContent() }
                 .take(1)
                 .concatMap { Flowable.fromIterable(it).onBackpressureBuffer() }
                 .filter { it.content.isNullOrEmpty() }
