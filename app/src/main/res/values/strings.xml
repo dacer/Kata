@@ -55,6 +55,7 @@
     <string name="inbox_max">Inbox Max</string>
     <string name="news_caching_wifi_only">News Caching WiFi Only</string>
     <string name="clear_cache">Clear cache</string>
+    <string name="no_internet">No Internet</string>
 
     <string name="tts_error_title">Text-to-speech not work</string>
     <string name="tts_error_content">Try to:\n\nSettings - Accessibility - Text-to-speech output - Select Google TTS Engine and install Japanese voice data</string>

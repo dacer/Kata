@@ -6,6 +6,7 @@ import android.text.Html
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.data.model.news.EasyNews
 import im.dacer.kata.util.extension.urlEncode
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -30,7 +31,9 @@ class WebParser {
 
         val DEFAULT_PARSER = Parser.MERCURY
 
-        fun fetchContent(targetUrl: String, pref: MultiprocessPref): Observable<String>{
+        fun fetchContent(targetUrl: String?, pref: MultiprocessPref): Observable<String>{
+            if (targetUrl == null) throw NullPointerException("targetUrl cannot be null")
+
             if (EasyNewsParser.checkUrlAvailable(targetUrl)) {
                 return EasyNewsParser.fetchContent(targetUrl)
             }
@@ -40,6 +43,14 @@ class WebParser {
                 Parser.URL2IO -> fetchContentByURL2IO(targetUrl)
                 Parser.DO_NOT_USE -> Observable.just(targetUrl)
             }
+        }
+
+        fun fetchNewsContent(easyNews: EasyNews, pref: MultiprocessPref): Observable<EasyNews>{
+            return fetchContent(easyNews.news_web_url, pref)
+                    .map {
+                        easyNews.content = it
+                        return@map easyNews
+                    }
         }
 
         private fun fetchContentByMercury(targetUrl: String): Observable<String> {

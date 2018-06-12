@@ -9,4 +9,5 @@ interface NewsMvp : MvpView {
     fun showLoading(show: Boolean)
     fun showRefreshing(show: Boolean)
     fun getMyActivity(): Activity?
+    fun showLoadingText(msg: String?)
 }

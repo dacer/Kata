@@ -2,6 +2,7 @@ package im.dacer.kata.ui.main.news
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +18,9 @@ import kotlinx.android.synthetic.main.fragment_news.*
 import org.jetbrains.anko.dip
 import javax.inject.Inject
 
-class NewsFragment: BaseFragment(), NewsMvp {
 
+
+class NewsFragment: BaseFragment(), NewsMvp {
     override fun layoutId() = R.layout.fragment_news
     @Inject lateinit var newsPresenter: NewsPresenter
 
@@ -47,6 +49,10 @@ class NewsFragment: BaseFragment(), NewsMvp {
         refreshLayout.setRefreshView(PacmanIndicator(activity!!),
                 ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, context!!.dip(30)))
         newsPresenter.initData()
+    }
+
+    override fun showLoadingText(msg: String?) {
+        (activity as AppCompatActivity).supportActionBar!!.subtitle = msg
     }
 
     override fun showRefreshing(show: Boolean) {

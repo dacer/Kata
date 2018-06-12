@@ -9,6 +9,12 @@ interface NewsDao {
     @Query("SELECT * FROM easy_news ORDER BY news_publication_time DESC")
     fun loadAll(): Flowable<List<EasyNews>>
 
+    @Query("SELECT * FROM easy_news WHERE content is null ORDER BY news_publication_time DESC")
+    fun loadAllNoContent(): Flowable<List<EasyNews>>
+
+    @Query("SELECT * FROM easy_news WHERE news_id=:id")
+    fun get(id: String): Flowable<EasyNews>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(users: EasyNews)
 
@@ -16,5 +22,8 @@ interface NewsDao {
     fun insertAll(users: Array<EasyNews>)
 
     @Update
-    fun updateUsers(vararg users: EasyNews)
+    fun updateNewsList(vararg news: EasyNews)
+
+    @Update
+    fun updateNews(news: EasyNews)
 }

@@ -7,6 +7,8 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.safety.Whitelist
+import timber.log.Timber
+import java.net.URL
 
 object EasyNewsParser {
     private const val URL_PATTERN = "^http(|s):\\/\\/www3\\.nhk\\.or\\.jp\\/news\\/html\\/.+\\/.+\\.html\$"
@@ -20,24 +22,31 @@ object EasyNewsParser {
 
     fun fetchContent(targetUrl: String): Observable<String> {
         return Observable.fromCallable {
-            val doc = Jsoup.connect(targetUrl).get()
-            doc.outputSettings(Document.OutputSettings().prettyPrint(false))   //makes html() preserve linebreaks and spacing
+            Timber.e("parser $targetUrl")
+            try {
+                val doc = Jsoup.parse(URL(targetUrl), 20000)
 
-            //v1
-            val article = doc.select(".news_add div").first()
-            if (article != null) {
-                return@fromCallable article.outputElement()
-            }
+                doc.outputSettings(Document.OutputSettings().prettyPrint(false))   //makes html() preserve linebreaks and spacing
 
-            //v2
-            val newsBody = doc.select("#news_textbody").first()
-            val newsBodyMore = doc.select("#news_textmore").first()
-            if (newsBody != null && newsBodyMore != null) {
+                //v1
+                val article = doc.select(".news_add div").first()
+                if (article != null) {
+                    return@fromCallable article.outputElement()
+                }
 
-                return@fromCallable "${newsBody.outputElement()}\n${newsBodyMore.outputElement()}"
-            }
+                //v2
+                val newsBody = doc.select("#news_textbody").first()
+                val newsBodyMore = doc.select("#news_textmore").first()
+                if (newsBody != null && newsBodyMore != null) {
+
+                    return@fromCallable "${newsBody.outputElement()}\n${newsBodyMore.outputElement()}"
+                }
 
             throw ContentNotFound()
+
+            } catch (e: Throwable) {
+                return@fromCallable ""
+            }
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

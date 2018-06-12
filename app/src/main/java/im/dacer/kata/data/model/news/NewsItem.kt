@@ -1,6 +1,7 @@
 package im.dacer.kata.data.model.news
 
 interface NewsItem {
+    fun id(): String
     fun title(): String?
     fun coverUrl(): String?
     fun videoUrl(): String?

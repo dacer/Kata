@@ -17,6 +17,10 @@ data class EasyNews(@PrimaryKey var news_id: String,
                     var content: String? = null,
                     var hasRead: Boolean = false) : NewsItem {
 
+    override fun id(): String {
+        return news_id
+    }
+
     override fun link(): String? {
         return news_web_url
     }
