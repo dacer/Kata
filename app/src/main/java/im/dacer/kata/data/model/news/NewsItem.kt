@@ -8,5 +8,8 @@ interface NewsItem {
     fun voiceUrl(): String?
     fun link(): String?
     fun time(): String?
+    fun content(): String?
     fun hasRead(): Boolean
+
+    fun news_type(): String
 }

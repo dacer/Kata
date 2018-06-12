@@ -16,6 +16,17 @@ data class EasyNews(@PrimaryKey var news_id: String,
                     var news_easy_movie_uri: String? = null,
                     var content: String? = null,
                     var hasRead: Boolean = false) : NewsItem {
+
+    @Ignore
+    override fun news_type(): String {
+        return "easy_news"
+    }
+
+    @Ignore
+    override fun content(): String? {
+        return content
+    }
+
     @Ignore
     override fun hasRead(): Boolean {
         return hasRead
