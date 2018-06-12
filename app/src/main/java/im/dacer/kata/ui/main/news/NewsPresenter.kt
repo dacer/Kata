@@ -8,7 +8,6 @@ import im.dacer.kata.R
 import im.dacer.kata.data.NewsDataManager
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
-import im.dacer.kata.data.model.news.EasyNews
 import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.data.room.AppDatabase
 import im.dacer.kata.injection.ApplicationContext
@@ -57,7 +56,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
 
     private fun fetchData(hasData: Boolean = true) {
         if (!networkConnected()) {
-            onFetchFinished(null)
+            onFetchFinished()
             if (!hasData) context.toast(R.string.no_internet)
             return
         }
@@ -66,8 +65,11 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         fetchDataDisposable?.dispose()
         cacheDisposable?.dispose()
         fetchDataDisposable = newsDataManager.getEasyNews()
+                .doOnNext { appDatabase.newsDao().insertAll(it.toTypedArray()) }
+                .flatMap { appDatabase.newsDao().loadAll().take(1).toObservable() }
                 .subscribe({
-                    onFetchFinished(it)
+                    mvpView?.showData(it)
+                    onFetchFinished()
                     mvpView?.showLoadingText(null)
                     if (!(!isWifi() && settingUtility.newsCachingWifiOnly)) {
                         cacheAllData()
@@ -129,13 +131,9 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         }
     }
 
-    private fun onFetchFinished(newsList: ArrayList<EasyNews>?) {
+    private fun onFetchFinished() {
         mvpView?.showLoading(false)
         mvpView?.showRefreshing(false)
-        newsList?.run {
-            mvpView?.showData(this)
-            appDatabase.newsDao().insertAll(this.toTypedArray())
-        }
     }
 
     override fun onRefresh() {
