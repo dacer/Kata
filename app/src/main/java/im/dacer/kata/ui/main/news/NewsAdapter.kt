@@ -2,6 +2,7 @@ package im.dacer.kata.ui.main.news
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.support.v4.content.ContextCompat
 import android.widget.ImageView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
@@ -18,6 +19,7 @@ class NewsAdapter : BaseQuickAdapter<NewsItem, BaseViewHolder>(R.layout.item_new
         helper.setText(R.id.titleTv, item.title() ?: "")
                 .setText(R.id.timeTv, item.time() ?: "")
                 .setVisible(R.id.playIcon, !item.videoUrl().isNullOrEmpty())
+                .setTextColor(R.id.titleTv, if(item.hasRead()) getColor(R.color.newsSubTitle) else getColor(R.color.newsTitle) )
                 .addOnClickListener(R.id.coverImage)
         if (!item.coverUrl().isNullOrEmpty()) {
             Picasso.get()
@@ -29,5 +31,9 @@ class NewsAdapter : BaseQuickAdapter<NewsItem, BaseViewHolder>(R.layout.item_new
         }
     }
 
+
+    private fun getColor(resId: Int): Int {
+        return ContextCompat.getColor(mContext, resId)
+    }
 
 }

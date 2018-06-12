@@ -97,10 +97,14 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     }
 
 
-    fun onNewsItemClicked(item: NewsItem?) {
+    fun onNewsItemClicked(index: Int, item: NewsItem?) {
         val id = item?.id() ?: return
-
         appDatabase.newsDao().get(id).take(1)
+                .map {
+                    it.hasRead = true
+                    appDatabase.newsDao().updateNews(it)
+                    return@map it
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -111,6 +115,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                     } else {
                         SchemeHelper.startKata(context, it.content!!)
                     }
+                    mvpView?.updateItem(index, it)
                 }
     }
 

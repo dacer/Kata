@@ -19,7 +19,6 @@ import org.jetbrains.anko.dip
 import javax.inject.Inject
 
 
-
 class NewsFragment: BaseFragment(), NewsMvp {
     override fun layoutId() = R.layout.fragment_news
     @Inject lateinit var newsPresenter: NewsPresenter
@@ -38,7 +37,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
         recyclerView.layoutManager = LinearLayoutManager(context)
         newsAdapter.bindToRecyclerView(recyclerView)
         newsAdapter.setOnItemClickListener { _, _, pos ->
-            newsPresenter.onNewsItemClicked(newsAdapter.getItem(pos))
+            newsPresenter.onNewsItemClicked(pos, newsAdapter.getItem(pos))
         }
         newsAdapter.setOnItemChildClickListener { _, v, pos ->
             if (v.id == R.id.coverImage) {
@@ -57,6 +56,10 @@ class NewsFragment: BaseFragment(), NewsMvp {
 
     override fun showRefreshing(show: Boolean) {
         refreshLayout.setRefreshing(show)
+    }
+
+    override fun updateItem(index: Int, item: NewsItem) {
+        newsAdapter.setData(index, item)
     }
 
     override fun onDestroy() {

@@ -10,4 +10,5 @@ interface NewsMvp : MvpView {
     fun showRefreshing(show: Boolean)
     fun getMyActivity(): Activity?
     fun showLoadingText(msg: String?)
+    fun updateItem(index: Int, item: NewsItem)
 }
