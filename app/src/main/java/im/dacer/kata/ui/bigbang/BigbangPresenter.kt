@@ -23,7 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -71,7 +70,6 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         mvpView?.resetBigBangScrollViewPos()
         mvpView?.resetMeaningViewPos()
         segmentDis?.dispose()
-        Timber.e(text)
         segmentDis = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(text) }
                 .flatMap { Observable.fromIterable(it.toKanjiResultList()) }

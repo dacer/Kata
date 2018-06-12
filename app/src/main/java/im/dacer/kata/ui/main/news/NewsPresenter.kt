@@ -120,7 +120,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                             startService(UrlAnalysisService.getIntent(this, it.link()!!, false))
                         }
                     } else {
-                        SchemeHelper.startKata(context, it.content!!)
+                        SchemeHelper.startKata(context, it.content!!, saveInHistory = false)
                     }
                     mvpView?.updateItem(index, it)
                 }
