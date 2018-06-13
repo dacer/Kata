@@ -9,6 +9,7 @@ import android.arch.persistence.room.PrimaryKey
 data class EasyNews(@PrimaryKey var news_id: String,
                     var title: String? = null,
                     var news_publication_time: String? = null,
+                    var news_prearranged_time: String? = null,
                     var news_web_url: String? = null,
                     var news_web_image_uri: String? = null,
                     var news_web_movie_uri: String? = null,
@@ -61,7 +62,7 @@ data class EasyNews(@PrimaryKey var news_id: String,
     }
 
     override fun time(): String? {
-        return news_publication_time?.substring(5)
+        return news_prearranged_time?.substring(5)
     }
 
     /**
