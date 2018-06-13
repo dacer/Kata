@@ -35,7 +35,7 @@ data class NhkNews(
     override fun hasRead(): Boolean = hasRead
 
     @Ignore
-    override fun id(): String = id!!
+    override fun id(): String = id
 
     @Ignore
     override fun link(): String? {
@@ -56,7 +56,7 @@ data class NhkNews(
     override fun voiceUrl(): String? = null
 
     override fun time(): String? {
-        return pubDate?.substring(5)
+        return pubDate?.substring(5, pubDate!!.length - 5)
     }
 
 
