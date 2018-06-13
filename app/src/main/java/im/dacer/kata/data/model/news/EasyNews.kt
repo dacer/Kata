@@ -37,7 +37,7 @@ data class EasyNews(@PrimaryKey var news_id: String,
     }
 
     override fun link(): String? {
-        return news_web_url
+        return "https://www3.nhk.or.jp/news/easy/$news_id/$news_id.html"
     }
 
     @Ignore

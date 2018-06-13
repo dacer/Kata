@@ -10,8 +10,8 @@ import org.jsoup.safety.Whitelist
 import timber.log.Timber
 import java.net.URL
 
-object EasyNewsParser {
-    private const val URL_PATTERN = "^http(|s)://www3\\.nhk\\.or\\.jp/news/easy/.+/.+\\.html\$"
+object NHKNewsParser {
+    private const val URL_PATTERN = "^http(|s):\\/\\/www3\\.nhk\\.or\\.jp\\/news\\/html\\/.+\\/.+\\.html\$"
 
 
     class ContentNotFound: Exception("Content not found")
@@ -29,18 +29,18 @@ object EasyNewsParser {
                 doc.outputSettings(Document.OutputSettings().prettyPrint(false))   //makes html() preserve linebreaks and spacing
 
                 //v1
-                val article = doc.select("#js-article-body").first()
+                val article = doc.select(".news_add div").first()
                 if (article != null) {
                     return@fromCallable article.outputElement()
                 }
 
                 //v2
-//                val newsBody = doc.select("#news_textbody").first()
-//                val newsBodyMore = doc.select("#news_textmore").first()
-//                if (newsBody != null && newsBodyMore != null) {
-//
-//                    return@fromCallable "${newsBody.outputElement()}\n${newsBodyMore.outputElement()}"
-//                }
+                val newsBody = doc.select("#news_textbody").first()
+                val newsBodyMore = doc.select("#news_textmore").first()
+                if (newsBody != null && newsBodyMore != null) {
+
+                    return@fromCallable "${newsBody.outputElement()}\n${newsBodyMore.outputElement()}"
+                }
 
             } catch (e: Throwable) {
             }
