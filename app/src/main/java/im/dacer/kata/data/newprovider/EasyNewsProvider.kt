@@ -4,7 +4,6 @@ import android.content.Context
 import im.dacer.kata.data.NewsDataManager
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
-import im.dacer.kata.data.model.news.EasyNews
 import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.data.room.AppDatabase
 import im.dacer.kata.injection.ApplicationContext
@@ -33,7 +32,7 @@ class EasyNewsProvider @Inject constructor(@ApplicationContext val context: Cont
                 .concatMap {  appDatabase.newsDao().loadAll().take(1).toObservable() }
     }
 
-    override fun cacheAllNoContentArticles(): Observable<EasyNews> {
+    override fun cacheAllNoContentArticles(): Observable<NewsItem> {
         return appDatabase.newsDao().loadAllNoContent()
                 .take(1)
                 .toObservable()
@@ -41,14 +40,15 @@ class EasyNewsProvider @Inject constructor(@ApplicationContext val context: Cont
                 .filter { it.content.isNullOrEmpty() }
                 .concatMap { WebParser.fetchNewsContent(it, pref).onExceptionResumeNext(Observable.empty()) }
                 .doOnNext { appDatabase.newsDao().updateNews(it) }
+                .map { it as NewsItem }
     }
 
-    override fun markRead(id: String): Observable<EasyNews> {
+    override fun markRead(id: String): Observable<NewsItem> {
         return appDatabase.newsDao().get(id).take(1)
                 .map {
                     it.hasRead = true
                     appDatabase.newsDao().updateNews(it)
-                    return@map it
+                    return@map it as NewsItem
                 }
                 .toObservable()
     }

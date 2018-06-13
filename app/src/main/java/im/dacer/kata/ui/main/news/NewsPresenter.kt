@@ -83,7 +83,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Timber.e("${it.id()} : ${it.title}")
+                    Timber.e("${it.id()} : ${it.title()}")
                     nowSyncingSize++
                     mvpView?.showLoadingText("${context.getString(R.string.caching_articles)} $nowSyncingSize")
 
@@ -97,12 +97,12 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if (it.content.isNullOrEmpty()) {
+                    if (it.content().isNullOrEmpty()) {
                         mvpView?.getMyActivity()?.run {
                             startService(UrlAnalysisService.getIntent(this, it.link()!!, false, it.voiceUrl()))
                         }
                     } else {
-                        SchemeHelper.startKata(context, it.content!!, saveInHistory = false, voiceUrl = it.voiceUrl())
+                        SchemeHelper.startKata(context, it.content()!!, saveInHistory = false, voiceUrl = it.voiceUrl())
                     }
                     mvpView?.updateItem(index, it)
                 }
