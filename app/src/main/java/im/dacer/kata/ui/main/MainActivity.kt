@@ -58,8 +58,8 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
     private fun initDrawer() : Drawer {
         val itemInbox = SecondaryDrawerItem().withIdentifier(DrawerItem.INBOX.id).withName(R.string.inbox)
         val itemLyric = SecondaryDrawerItem().withIdentifier(DrawerItem.LYRIC.id).withName(R.string.lyric).withSelectable(false)
-        val itemNhkEasy = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK_EASY.id).withName(R.string.nhk_easy)
-        val itemNhk = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK.id).withName(R.string.nhk)
+        val itemNhkEasy = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK_EASY.id).withName(R.string.nhk_news_easy)
+        val itemNhk = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK.id).withName(R.string.nhk_news)
         val itemSettings = SecondaryDrawerItem().withIdentifier(DrawerItem.SETTINGS.id).withName(R.string.settings).withSelectable(false)
         val itemAbout = SecondaryDrawerItem().withIdentifier(DrawerItem.ABOUT.id).withName(R.string.about).withSelectable(false)
         val headerResult = AccountHeaderBuilder()
@@ -84,8 +84,8 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
                     when(drawerItem.identifier) {
                         DrawerItem.INBOX.id -> switchFragment(InboxFragment(), R.string.inbox)
                         DrawerItem.LYRIC.id -> startActivity(LyricActivity::class.java)
-                        DrawerItem.NHK_EASY.id -> switchFragment(NewsFragment(), R.string.nhk_easy)
-                        DrawerItem.NHK.id -> {}
+                        DrawerItem.NHK_EASY.id -> switchFragment(NewsFragment.newInstance(NewsFragment.NewsType.NHK_EASY), R.string.nhk_news_easy)
+                        DrawerItem.NHK.id -> switchFragment(NewsFragment.newInstance(NewsFragment.NewsType.NHK), R.string.nhk_news)
                         DrawerItem.SETTINGS.id -> startActivity(SettingsActivity::class.java)
                         DrawerItem.ABOUT.id -> startActivity(AboutActivity::class.java)
                     }

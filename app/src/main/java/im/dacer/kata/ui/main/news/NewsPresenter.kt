@@ -7,7 +7,9 @@ import com.dinuscxj.refresh.RecyclerRefreshLayout
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.news.NewsItem
+import im.dacer.kata.data.newprovider.BaseProvider
 import im.dacer.kata.data.newprovider.EasyNewsProvider
+import im.dacer.kata.data.newprovider.NhkNewsProvider
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.service.UrlAnalysisService
@@ -29,17 +31,26 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         BasePresenter<NewsMvp>(), RecyclerRefreshLayout.OnRefreshListener {
 
     @Inject lateinit var easyNewsProvider: EasyNewsProvider
+    @Inject lateinit var nhkNewsProvider: NhkNewsProvider
     @Inject lateinit var settingUtility: SettingUtility
 
+    var newsType = NewsFragment.NewsType.NHK_EASY
     private var initDataDisposable: Disposable? = null
     private var fetchDataDisposable: Disposable? = null
     private var cacheDisposable: Disposable? = null
+
+    private fun newsProvider(): BaseProvider {
+        return when(newsType) {
+            NewsFragment.NewsType.NHK_EASY -> easyNewsProvider
+            NewsFragment.NewsType.NHK -> nhkNewsProvider
+        }
+    }
 
     fun initData() {
         mvpView?.showLoading(true)
         initDataDisposable?.dispose()
         initDataDisposable = Observable.timer(200, TimeUnit.MILLISECONDS)
-                .flatMap { easyNewsProvider.loadLocalData() }
+                .flatMap { newsProvider().loadLocalData() }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
@@ -60,7 +71,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         fetchDataDisposable?.dispose()
         cacheDisposable?.dispose()
         fetchDataDisposable = Observable.timer(300, TimeUnit.MILLISECONDS)
-                .concatMap { easyNewsProvider.saveOnlineListAndReturnLocal() }
+                .concatMap { newsProvider().saveOnlineListAndReturnLocal() }
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -79,11 +90,10 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         nowSyncingSize = 0
         mvpView?.showLoadingText(context.getString(R.string.caching_articles))
         cacheDisposable = Observable.timer(300, TimeUnit.MILLISECONDS)
-                .concatMap { easyNewsProvider.cacheAllNoContentArticles() }
+                .concatMap { newsProvider().cacheAllNoContentArticles() }
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Timber.e("${it.id()} : ${it.title()}")
                     nowSyncingSize++
                     mvpView?.showLoadingText("${context.getString(R.string.caching_articles)} $nowSyncingSize")
 
@@ -93,7 +103,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
 
     fun onNewsItemClicked(index: Int, item: NewsItem?) {
         val id = item?.id() ?: return
-        easyNewsProvider.markRead(id)
+        newsProvider().markRead(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {

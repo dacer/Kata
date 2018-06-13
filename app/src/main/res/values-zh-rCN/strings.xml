@@ -24,8 +24,8 @@
 
     <string name="lyric">歌词</string>
     <string name="inbox">收件箱</string>
-    <string name="nhk_easy">NHK News Easy</string>
-    <string name="nhk">NHK News</string>
+    <string name="nhk_news_easy">NHK News Easy</string>
+    <string name="nhk_news">NHK News</string>
 
     <string name="about">关于</string>
     <string name="description">Kata (片) - 一个比较好用的日语阅读帮助软件\n</string>

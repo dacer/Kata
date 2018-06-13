@@ -33,6 +33,8 @@ class NewsFragment: BaseFragment(), NewsMvp {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val args = arguments
+        newsPresenter.newsType = NewsType.get(args?.getInt(ARG_NEWS_TYPE))
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         newsAdapter.bindToRecyclerView(recyclerView)
@@ -89,5 +91,30 @@ class NewsFragment: BaseFragment(), NewsMvp {
 
     override fun showLoading(show: Boolean) {
         loadingView.visibility = if (show) { View.VISIBLE } else { View.GONE }
+    }
+
+    enum class NewsType(val id: Int) {
+        NHK_EASY(0), NHK(1);
+
+        companion object {
+            fun get(id: Int?) : NewsType {
+                for (item in NewsType.values()) {
+                    if (item.id == id) return item
+                }
+                return NewsType.NHK_EASY
+            }
+        }
+    }
+
+    companion object {
+        fun newInstance(newsType: NewsType): NewsFragment {
+            val args = Bundle()
+            args.putInt(ARG_NEWS_TYPE, newsType.id)
+            val fragment = NewsFragment()
+            fragment.arguments = args
+            return fragment
+        }
+
+        private const val ARG_NEWS_TYPE = "news_type"
     }
 }

@@ -24,8 +24,8 @@
 
     <string name="lyric">Lyric</string>
     <string name="inbox">Inbox</string>
-    <string name="nhk_easy">NHK News Easy</string>
-    <string name="nhk">NHK News</string>
+    <string name="nhk_news_easy">NHK News Easy</string>
+    <string name="nhk_news">NHK News</string>
 
     <string name="about">About</string>
     <string name="description">Kata (片) - A Japanese text segmentation app\n</string>
