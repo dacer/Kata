@@ -7,12 +7,10 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.safety.Whitelist
-import timber.log.Timber
 import java.net.URL
 
 object NHKNewsParser {
     private const val URL_PATTERN = "^http(|s):\\/\\/www3\\.nhk\\.or\\.jp\\/news\\/html\\/.+\\/.+\\.html\$"
-
 
     class ContentNotFound: Exception("Content not found")
 
@@ -22,7 +20,6 @@ object NHKNewsParser {
 
     fun fetchContent(targetUrl: String): Observable<String> {
         return Observable.fromCallable {
-            Timber.e("parser $targetUrl")
             try {
                 val doc = Jsoup.parse(URL(targetUrl), 20000)
 
@@ -53,7 +50,7 @@ object NHKNewsParser {
     }
 
     private fun Element.outputElement() : String {
-        this.select("br").append("\\n")
+        this.select("br").append("\\n\\n")
         this.select("p").prepend("\\n\\n")
         val s = this.html().replace("\\n", "\n")
         return Jsoup.clean(s, "", Whitelist.none(), Document.OutputSettings().prettyPrint(false))

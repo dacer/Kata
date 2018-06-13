@@ -22,25 +22,14 @@ object EasyNewsParser {
 
     fun fetchContent(targetUrl: String): Observable<String> {
         return Observable.fromCallable {
-            Timber.e("parser $targetUrl")
             try {
                 val doc = Jsoup.parse(URL(targetUrl), 20000)
-
                 doc.outputSettings(Document.OutputSettings().prettyPrint(false))   //makes html() preserve linebreaks and spacing
 
-                //v1
                 val article = doc.select("#js-article-body").first()
                 if (article != null) {
                     return@fromCallable article.outputElement()
                 }
-
-                //v2
-//                val newsBody = doc.select("#news_textbody").first()
-//                val newsBodyMore = doc.select("#news_textmore").first()
-//                if (newsBody != null && newsBodyMore != null) {
-//
-//                    return@fromCallable "${newsBody.outputElement()}\n${newsBodyMore.outputElement()}"
-//                }
 
             } catch (e: Throwable) {
             }
@@ -53,7 +42,7 @@ object EasyNewsParser {
     }
 
     private fun Element.outputElement() : String {
-        this.select("br").append("\\n")
+        this.select("br").append("\\n\\n")
         this.select("p").prepend("\\n\\n")
         val s = this.html().replace("\\n", "\n")
         return Jsoup.clean(s, "", Whitelist.none(), Document.OutputSettings().prettyPrint(false))
