@@ -10,7 +10,7 @@ data class BigBangStyle(val itemSpace: Int, val lineSpace: Int, val textSize: In
     }
 
     companion object {
-        fun getDefault() : BigBangStyle = BigBangStyle(10, 0, 15, 10)
+        fun getDefault() : BigBangStyle = BigBangStyle(0, 6, 15, 10)
 
         fun getFrom(str: String?) : BigBangStyle {
             if (str == null) return getDefault()
