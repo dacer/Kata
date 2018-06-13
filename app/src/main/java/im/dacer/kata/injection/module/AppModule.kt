@@ -6,7 +6,8 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import im.dacer.kata.data.room.AppDatabase
-import im.dacer.kata.data.room.NewsDao
+import im.dacer.kata.data.room.EasyNewsDao
+import im.dacer.kata.data.room.NhkNewsDao
 import im.dacer.kata.injection.ApplicationContext
 import javax.inject.Singleton
 
@@ -29,7 +30,11 @@ class AppModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun providesTaskDao(database: AppDatabase): NewsDao = database.newsDao()
+    fun providesEasyNewsDao(database: AppDatabase): EasyNewsDao = database.easyNewsDao()
+
+    @Provides
+    @Singleton
+    fun providesNhkNewsDao(database: AppDatabase): NhkNewsDao = database.nhkNewsDao()
 
     companion object {
     }

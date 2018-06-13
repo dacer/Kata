@@ -18,6 +18,10 @@ data class EasyNews(@PrimaryKey var news_id: String,
                     var content: String? = null,
                     var hasRead: Boolean = false) : NewsItem {
 
+    override fun updateContent(content: String?) {
+        this.content = content
+    }
+
     @Ignore
     override fun news_type(): String {
         return "easy_news"

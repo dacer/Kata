@@ -5,7 +5,7 @@ import im.dacer.kata.data.model.news.EasyNews
 import io.reactivex.Flowable
 
 @Dao
-interface NewsDao {
+interface EasyNewsDao {
     @Query("SELECT * FROM easy_news ORDER BY news_publication_time DESC")
     fun loadAll(): Flowable<List<EasyNews>>
 

@@ -11,5 +11,6 @@ interface NewsItem {
     fun content(): String?
     fun hasRead(): Boolean
 
+    fun updateContent(content: String?)
     fun news_type(): String
 }

@@ -6,7 +6,7 @@ import android.text.Html
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
-import im.dacer.kata.data.model.news.EasyNews
+import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.util.extension.urlEncode
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -15,12 +15,20 @@ import io.reactivex.schedulers.Schedulers
  * Created by Dacer on 04/02/2018.
  * Thanks Mercury
  */
-class WebParser {
+class WebParser<T: NewsItem> {
 
     enum class Parser(val stringRes: Int) {
         DO_NOT_USE(R.string.web_page_parser_not_use),
         MERCURY(R.string.web_page_parser_mercury),
         URL2IO(R.string.web_page_parser_url2io)
+    }
+
+    fun fetchNewsContent(easyNews: T, pref: MultiprocessPref): Observable<T>{
+        return fetchContent(easyNews.link(), pref)
+                .map {
+                    easyNews.updateContent(it)
+                    return@map easyNews
+                }
     }
 
     companion object {
@@ -38,19 +46,15 @@ class WebParser {
                 return EasyNewsParser.fetchContent(targetUrl)
             }
 
+            if (NHKNewsParser.checkUrlAvailable(targetUrl)) {
+                return NHKNewsParser.fetchContent(targetUrl)
+            }
+
             return when (pref.webParser) {
                 Parser.MERCURY -> fetchContentByMercury(targetUrl)
                 Parser.URL2IO -> fetchContentByURL2IO(targetUrl)
                 Parser.DO_NOT_USE -> Observable.just(targetUrl)
             }
-        }
-
-        fun fetchNewsContent(easyNews: EasyNews, pref: MultiprocessPref): Observable<EasyNews>{
-            return fetchContent(easyNews.news_web_url, pref)
-                    .map {
-                        easyNews.content = it
-                        return@map easyNews
-                    }
         }
 
         private fun fetchContentByMercury(targetUrl: String): Observable<String> {

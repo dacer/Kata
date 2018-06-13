@@ -3,10 +3,12 @@ package im.dacer.kata.data.room
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import im.dacer.kata.data.model.news.EasyNews
+import im.dacer.kata.data.model.news.NhkNews
 
 
-@Database(entities = [(EasyNews::class)], version = 1, exportSchema = false)
+@Database(entities = [(EasyNews::class), (NhkNews::class)], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun newsDao(): NewsDao
+    abstract fun easyNewsDao(): EasyNewsDao
+    abstract fun nhkNewsDao(): NhkNewsDao
 }
 

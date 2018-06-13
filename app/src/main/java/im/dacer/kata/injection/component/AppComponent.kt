@@ -9,7 +9,8 @@ import im.dacer.kata.data.local.PreferencesHelper
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.room.AppDatabase
-import im.dacer.kata.data.room.NewsDao
+import im.dacer.kata.data.room.EasyNewsDao
+import im.dacer.kata.data.room.NhkNewsDao
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.injection.module.AppModule
 import im.dacer.kata.util.LangUtils
@@ -38,5 +39,7 @@ interface AppComponent {
 
     fun appDatabase(): AppDatabase
 
-    fun newsDao(): NewsDao
+    fun easyNewsDao(): EasyNewsDao
+
+    fun nhkNewsDao(): NhkNewsDao
 }
