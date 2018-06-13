@@ -51,7 +51,9 @@ class UrlAnalysisService : Service() {
             disableForOneMin()
         }
         if (intent?.getStringExtra(EXTRA_URL) != null) {
-            fetchUrlContent(intent.getStringExtra(EXTRA_URL), intent.getBooleanExtra(SAVE_IN_HISTORY, true))
+            fetchUrlContent(intent.getStringExtra(EXTRA_URL),
+                    intent.getBooleanExtra(SAVE_IN_HISTORY, true),
+                    intent.getStringExtra(VOICE_URL))
         }
         return START_NOT_STICKY
     }
@@ -61,7 +63,7 @@ class UrlAnalysisService : Service() {
         return true
     }
 
-    private fun fetchUrlContent(url: String, saveInHistory: Boolean) {
+    private fun fetchUrlContent(url: String, saveInHistory: Boolean, voiceUrl: String? = "") {
         toast(R.string.fetching_content_from_web_page, Toast.LENGTH_SHORT)
         disposable?.dispose()
         disposable = WebParser.fetchContent(url, pref)
@@ -69,7 +71,7 @@ class UrlAnalysisService : Service() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     floatingView.dismiss()
-                    SchemeHelper.startKata(this, it, saveInHistory = saveInHistory)
+                    SchemeHelper.startKata(this, it, saveInHistory = saveInHistory, voiceUrl = voiceUrl)
                     stopSelf()
                 }, {
                     if (it is EasyNewsParser.ContentNotFound) {
@@ -91,11 +93,13 @@ class UrlAnalysisService : Service() {
     companion object {
         private const val EXTRA_URL = "url"
         private const val SAVE_IN_HISTORY = "save_in_history"
+        private const val VOICE_URL = "voice_url"
         private const val TEMP_DISABLE_TIME_IN_SEC = 60L
 
-        fun getIntent(c: Context, url: String, saveInHistory: Boolean = true): Intent =
+        fun getIntent(c: Context, url: String, saveInHistory: Boolean = true, voiceUrl: String? = ""): Intent =
                 Intent(c, UrlAnalysisService::class.java)
                         .putExtra(EXTRA_URL, url)
                         .putExtra(SAVE_IN_HISTORY,  saveInHistory)
+                        .putExtra(VOICE_URL,  voiceUrl)
     }
 }

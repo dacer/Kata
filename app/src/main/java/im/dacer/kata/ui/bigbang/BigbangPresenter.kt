@@ -60,12 +60,17 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
     fun handIntent(intent: Intent) {
         val text = intent.data.getQueryParameter(BigBangActivity.EXTRA_TEXT)
         val alias = intent.data.getQueryParameter(BigBangActivity.EXTRA_ALIAS)
-        val preselectedIndex = intent.data.getQueryParameter(BigBangActivity.PRESELECTED_INDEX)?.toInt()
-        val saveInHistory = intent.data.getBooleanQueryParameter(BigBangActivity.SAVE_IN_HISTORY, true)
+        val preselectedIndex = intent.data.getQueryParameter(BigBangActivity.EXTRA_PRESELECTED_INDEX)?.toInt()
+        val saveInHistory = intent.data.getBooleanQueryParameter(BigBangActivity.EXTRA_SAVE_IN_HISTORY, true)
+        val voiceUrl = intent.data.getQueryParameter(BigBangActivity.EXTRA_VOICE_URL)
+
 
         if (text.isEmpty()) {
             mvpView?.finish()
             return
+        }
+        if (voiceUrl.isNotEmpty()) {
+            //todo
         }
         mvpView?.resetBigBangScrollViewPos()
         mvpView?.resetMeaningViewPos()

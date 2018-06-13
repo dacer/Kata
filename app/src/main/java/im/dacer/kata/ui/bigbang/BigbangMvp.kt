@@ -13,6 +13,7 @@ interface BigbangMvp : MvpView {
     fun resetMeaningViewPos()
     fun resetBigBangScrollViewPos()
     fun finish()
+    fun showVoiceBtn()
 
     var descText: String?
     var meaningText: String

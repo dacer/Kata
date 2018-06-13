@@ -27,6 +27,7 @@ import javax.inject.Inject
 
 
 class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.ItemClickListener, View.OnSystemUiVisibilityChangeListener {
+
     private var dictDisposable: Disposable? = null
 
     @Inject lateinit var bigbangPresenter: BigbangPresenter
@@ -199,13 +200,17 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
     override fun resetBigBangScrollViewPos() {
         if (bigBangScrollView.scrollY != 0) bigBangScrollView.smoothScrollTo(0,0)
     }
+    override fun showVoiceBtn() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     companion object {
         const val EXTRA_TEXT = "extra_text"
         const val EXTRA_ALIAS = "extra_alias"
-        const val PRESELECTED_INDEX = "preselected_index"
-        const val SAVE_IN_HISTORY = "save_in_history"
+        const val EXTRA_PRESELECTED_INDEX = "preselected_index"
+        const val EXTRA_SAVE_IN_HISTORY = "save_in_history"
+        const val EXTRA_VOICE_URL = "voice_url"
 
         const val UI_ANIM_DURATION = 300L
     }

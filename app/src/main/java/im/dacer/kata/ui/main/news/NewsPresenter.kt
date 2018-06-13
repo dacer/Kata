@@ -99,10 +99,10 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                 .subscribe {
                     if (it.content.isNullOrEmpty()) {
                         mvpView?.getMyActivity()?.run {
-                            startService(UrlAnalysisService.getIntent(this, it.link()!!, false))
+                            startService(UrlAnalysisService.getIntent(this, it.link()!!, false, it.voiceUrl()))
                         }
                     } else {
-                        SchemeHelper.startKata(context, it.content!!, saveInHistory = false)
+                        SchemeHelper.startKata(context, it.content!!, saveInHistory = false, voiceUrl = it.voiceUrl())
                     }
                     mvpView?.updateItem(index, it)
                 }
