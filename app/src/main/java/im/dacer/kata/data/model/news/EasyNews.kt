@@ -62,7 +62,7 @@ data class EasyNews(@PrimaryKey var news_id: String,
     }
 
     override fun time(): String? {
-        return news_prearranged_time?.substring(5)
+        return news_prearranged_time?.substring(5, 10)
     }
 
     /**
