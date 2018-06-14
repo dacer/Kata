@@ -40,7 +40,6 @@ class NewsFragment: BaseFragment(), NewsMvp {
         newsPresenter.newsType = NewsType.get(args?.getInt(ARG_NEWS_TYPE))
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        newsAdapter.downloadPicWifiOnly = settingUtility.newsCachingWifiOnly
         newsAdapter.bindToRecyclerView(recyclerView)
         newsAdapter.setOnItemClickListener { _, _, pos ->
             newsPresenter.onNewsItemClicked(pos, newsAdapter.getItem(pos))
@@ -54,6 +53,11 @@ class NewsFragment: BaseFragment(), NewsMvp {
         refreshLayout.setRefreshView(PacmanIndicator(activity!!),
                 ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, context!!.dip(30)))
         newsPresenter.initData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        newsAdapter.downloadPicWifiOnly = settingUtility.newsCachingWifiOnly
     }
 
     override fun showLoadingText(msg: String?) {
