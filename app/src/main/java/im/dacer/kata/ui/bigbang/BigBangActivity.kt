@@ -18,6 +18,7 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.engine.SearchEngine
+import im.dacer.kata.util.extension.getNavBarHeight
 import im.dacer.kata.view.KataLayout
 import im.dacer.kata.view.MyScrollView
 import io.reactivex.disposables.Disposable
@@ -56,6 +57,8 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         appPre.tutorialFinished = true
         loadingProgressBar.indeterminateDrawable.setColorFilter(Color.parseColor("#EEEEEE"), PorterDuff.Mode.MULTIPLY)
         window.decorView.setOnSystemUiVisibilityChangeListener(this)
+
+        musicPlayerView.setPadding(0, 0, 0, getNavBarHeight())
 
         handleIntent(intent)
         searchBtn.setOnClickListener { bigbangPresenter.onClickSearch() }
@@ -200,8 +203,8 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
     override fun resetBigBangScrollViewPos() {
         if (bigBangScrollView.scrollY != 0) bigBangScrollView.smoothScrollTo(0,0)
     }
-    override fun showVoiceBtn() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showVoiceBtn(url: String) {
+        musicPlayerView.setDataSource(url)
     }
 
 

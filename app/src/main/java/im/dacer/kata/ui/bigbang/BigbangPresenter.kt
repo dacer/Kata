@@ -69,9 +69,8 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
             mvpView?.finish()
             return
         }
-        if (voiceUrl != null && voiceUrl.isNotEmpty()) {
-            //todo
-        }
+        if (voiceUrl != null && voiceUrl.isNotEmpty()) { mvpView?.showVoiceBtn(voiceUrl) }
+
         mvpView?.resetBigBangScrollViewPos()
         mvpView?.resetMeaningViewPos()
         segmentDis?.dispose()

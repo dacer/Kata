@@ -101,6 +101,13 @@
         </RelativeLayout>
     </ScrollView>
 
+    <im.dacer.kata.view.MusicPlayerView
+        android:id="@+id/musicPlayerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/meaningScrollView"
+        android:layout_alignBottom="@+id/bigBangScrollView"
+        />
     <ProgressBar
         android:id="@+id/loadingProgressBar"
         android:layout_width="100dp"
@@ -108,4 +115,5 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="100dp"
         android:indeterminate="true"/>
+
 </RelativeLayout>
