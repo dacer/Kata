@@ -1,5 +1,6 @@
 package im.dacer.kata.view
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -13,6 +14,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.MotionEvent.*
 import android.view.View
+import android.view.animation.BounceInterpolator
 import com.devbrackets.android.exomedia.AudioPlayer
 import im.dacer.kata.R
 import im.dacer.kata.util.LogUtils
@@ -21,9 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import org.jetbrains.anko.sp
 import java.util.concurrent.TimeUnit
-
-
-
 
 
 class MusicPlayerView @JvmOverloads constructor(
@@ -35,6 +34,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private val textPaint: Paint = Paint(ANTI_ALIAS_FLAG)
 
     private var process: Float = 0f
+    private var initProcess: Float = 0f
     private var updateProcessDisposable: Disposable? = null
     private var textInCenter: String? = null
 
@@ -45,8 +45,15 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     fun setDataSource(voiceUrl: String) {
-        audioPlayer.setOnPreparedListener{
-            // todo animation
+        audioPlayer.setOnPreparedListener {
+            var initAnim = ValueAnimator.ofFloat(0f, 1f)
+            initAnim.duration = 1000
+            initAnim.interpolator = BounceInterpolator()
+            initAnim.addUpdateListener {
+                initProcess = it.animatedValue as Float
+                postInvalidate()
+            }
+            initAnim.start()
         }
         audioPlayer.setDataSource(Uri.parse(voiceUrl))
     }
@@ -72,7 +79,7 @@ class MusicPlayerView @JvmOverloads constructor(
         audioPlayer.start()
     }
 
-    fun isPlaying(): Boolean = audioPlayer.isPlaying
+    private fun isPlaying(): Boolean = audioPlayer.isPlaying
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -90,6 +97,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private var freeModeX = 0
     private var freeModeY = 0
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (initProcess < 1f) return false
         if (keepOnTouch || getBtnBounds().contains(event.x.toInt(), event.y.toInt())) {
             val result = gestureDetector.onTouchEvent(event)
             if (result) { return result }
@@ -137,7 +145,7 @@ class MusicPlayerView @JvmOverloads constructor(
             l = freeModeX - btnWidth / 2
             t = freeModeY - btnHeight / 2
         } else {
-            l = actualWidth - btnWidth
+            l = actualWidth - (btnWidth * initProcess).toInt()
             t = (paddingTop + (actualHeight -  btnHeight) * (1 - process)).toInt()
         }
 
