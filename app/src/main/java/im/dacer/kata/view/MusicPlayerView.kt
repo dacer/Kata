@@ -72,6 +72,8 @@ class MusicPlayerView @JvmOverloads constructor(
         audioPlayer.start()
     }
 
+    fun isPlaying(): Boolean = audioPlayer.isPlaying
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         btnDrawable.bounds = getBtnBounds()
@@ -84,20 +86,35 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     private var keepOnTouch = false
+    private var freeMoveMode = false
+    private var freeModeX = 0
+    private var freeModeY = 0
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (keepOnTouch || getBtnBounds().contains(event.x.toInt(), event.y.toInt())) {
             val result = gestureDetector.onTouchEvent(event)
             if (result) { return result }
+            if (!isPlaying() && process == 0f) return false
 
             when (event.action) {
                 ACTION_MOVE -> {
-                    process = 1 - (event.y - paddingTop) / (actualHeight -  btnDrawable.intrinsicHeight / 2f)
-                    process = process.coerceIn(0f, 1f)
+                    if (freeMoveMode) {
+                        freeModeX = event.x.toInt()
+                        freeModeY = event.y.toInt()
+
+                    } else {
+                        if (event.x < width / 3 * 2) {
+                            freeMoveMode = true
+                            return true
+                        }
+                        process = 1 - (event.y - paddingTop) / (actualHeight -  btnDrawable.intrinsicHeight / 2f)
+                        process = process.coerceIn(0f, 1f)
+                        keepOnTouch = true
+                    }
                     invalidate()
-                    keepOnTouch = true
                 }
                 ACTION_UP, ACTION_CANCEL -> {
                     keepOnTouch = false
+                    freeMoveMode = false
                 }
             }
             return true
@@ -112,10 +129,19 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     private fun getBtnBounds(): Rect {
-        val left = actualWidth - btnDrawable.intrinsicWidth
-        val top = (paddingTop + (actualHeight -  btnDrawable.intrinsicHeight) * (1 - process)).toInt()
+        val btnWidth = btnDrawable.intrinsicWidth
+        val btnHeight = btnDrawable.intrinsicHeight
+        val l: Int
+        val t: Int
+        if (freeMoveMode) {
+            l = freeModeX - btnWidth / 2
+            t = freeModeY - btnHeight / 2
+        } else {
+            l = actualWidth - btnWidth
+            t = (paddingTop + (actualHeight -  btnHeight) * (1 - process)).toInt()
+        }
 
-        return Rect(left, top, left + btnDrawable.intrinsicWidth, top + btnDrawable.intrinsicHeight)
+        return Rect(l, t, l + btnWidth, t + btnHeight)
     }
 
     private inner class MyGestureDetector : GestureDetector.SimpleOnGestureListener() {
