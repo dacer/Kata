@@ -2,12 +2,9 @@ package im.dacer.kata.view
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Paint.Align
-import android.graphics.Rect
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.GestureDetector
@@ -31,7 +28,10 @@ class MusicPlayerView @JvmOverloads constructor(
     private val audioPlayer: AudioPlayer by lazy { AudioPlayer(context) }
     private val btnDrawable = resources.getDrawable(R.drawable.floating_empty_button)
     private val gestureDetector: GestureDetector = GestureDetector(context, MyGestureDetector())
+
     private val textPaint: Paint = Paint(ANTI_ALIAS_FLAG)
+    private val playPaint: Paint = Paint(ANTI_ALIAS_FLAG)
+    private val playPath: Path = Path()
 
     private var process: Float = 0f
     private var initProcess: Float = 0f
@@ -42,11 +42,14 @@ class MusicPlayerView @JvmOverloads constructor(
         textPaint.textSize = sp(20).toFloat()
         textPaint.textAlign = Align.CENTER
         textPaint.color = Color.WHITE
+
+        playPaint.color = Color.WHITE
+        playPaint.style = Paint.Style.FILL_AND_STROKE
     }
 
     fun setDataSource(voiceUrl: String) {
         audioPlayer.setOnPreparedListener {
-            var initAnim = ValueAnimator.ofFloat(0f, 1f)
+            val initAnim = ValueAnimator.ofFloat(0f, 1f)
             initAnim.duration = 1000
             initAnim.interpolator = BounceInterpolator()
             initAnim.addUpdateListener {
@@ -86,7 +89,7 @@ class MusicPlayerView @JvmOverloads constructor(
         btnDrawable.bounds = getBtnBounds()
         btnDrawable.draw(canvas)
         if (textInCenter.isNullOrEmpty()) {
-            // draw play icon
+            drawPlayTriangle(canvas)
         } else {
             canvas.drawRectText(textInCenter!!, getBtnBounds())
         }
@@ -178,9 +181,33 @@ class MusicPlayerView @JvmOverloads constructor(
     private fun Canvas.drawRectText(text: String, r: Rect) {
         val numOfChars = textPaint.breakText(text, true, width.toFloat(), null)
         val start = (text.length - numOfChars) / 2
-
-
         drawText(text, start, start + numOfChars, r.exactCenterX(), r.exactCenterY() - (textPaint.descent() + textPaint.ascent()) / 2, textPaint)
+    }
 
+
+    private fun drawPlayTriangle(c: Canvas) {
+        c.drawPath(getTrianglePath(playPath), playPaint)
+    }
+
+    private fun getTrianglePath(path: Path): Path {
+        path.reset()
+        val cirX = getBtnBounds().centerX()
+        val cirY = getBtnBounds().centerY()
+        val cirInnerRadius = getBtnBounds().width() / 2f
+        var triangleSideLength = cirInnerRadius * 2 / 3
+
+        val tan30 = Math.tan(Math.toRadians(30.0))
+        val cos30 = Math.cos(Math.toRadians(30.0))
+        val leftX = cirX - (triangleSideLength / 2 * tan30).toFloat()
+        val leftUpY = cirY - triangleSideLength / 2
+        val leftBottomY = cirY + triangleSideLength / 2
+        val rightX = cirX + (triangleSideLength.toDouble() / 2.0 / cos30).toFloat()
+        val rightY = cirY
+        path.moveTo(leftX, leftUpY)
+        path.lineTo(leftX, leftBottomY)
+        path.lineTo(rightX, rightY.toFloat())
+        path.lineTo(leftX, leftUpY)
+        path.close()
+        return path
     }
 }
