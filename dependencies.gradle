@@ -84,7 +84,6 @@ ext {
             recyclerrefreshlayout: 'com.dinuscxj:recyclerrefreshlayout:2.0.5',
             EasingInterpolator: 'com.daasuu:EasingInterpolator:1.0.0',
             jsoup          : "org.jsoup:jsoup:1.10.1",
-            openm3u8       : 'com.iheartradio.m3u8:open-m3u8:0.2.4',
             exomedia       : 'com.devbrackets.android:exomedia:4.2.1',
     ]
 
