@@ -5,16 +5,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
-import org.jsoup.safety.Whitelist
 import java.net.URL
 
-object NHKNewsParser {
+object NHKNewsParser: BaseParser() {
     private const val URL_PATTERN = "^http(|s):\\/\\/www3\\.nhk\\.or\\.jp\\/news\\/html\\/.+\\/.+\\.html\$"
 
-    class ContentNotFound: Exception("Content not found")
-
-    fun checkUrlAvailable(url: String) : Boolean {
+    override fun checkUrlAvailable(url: String) : Boolean {
         return url.matches(Regex(URL_PATTERN))
     }
 
@@ -41,19 +37,10 @@ object NHKNewsParser {
 
             } catch (e: Throwable) {
             }
-
-            return@fromCallable ""
-//            throw ContentNotFound()
+            throw ContentNotFound()
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    private fun Element.outputElement() : String {
-        this.select("br").append("\\n\\n")
-        this.select("p").prepend("\\n\\n")
-        val s = this.html().replace("\\n", "\n")
-        return Jsoup.clean(s, "", Whitelist.none(), Document.OutputSettings().prettyPrint(false))
-
-    }
 }
