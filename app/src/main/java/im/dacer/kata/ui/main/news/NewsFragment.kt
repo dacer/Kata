@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import im.dacer.kata.R
+import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.view.PacmanIndicator
@@ -21,7 +22,9 @@ import javax.inject.Inject
 
 class NewsFragment: BaseFragment(), NewsMvp {
     override fun layoutId() = R.layout.fragment_news
+
     @Inject lateinit var newsPresenter: NewsPresenter
+    @Inject lateinit var settingUtility: SettingUtility
 
     private val newsAdapter = NewsAdapter()
 
@@ -37,6 +40,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
         newsPresenter.newsType = NewsType.get(args?.getInt(ARG_NEWS_TYPE))
 
         recyclerView.layoutManager = LinearLayoutManager(context)
+        newsAdapter.downloadPicWifiOnly = settingUtility.newsCachingWifiOnly
         newsAdapter.bindToRecyclerView(recyclerView)
         newsAdapter.setOnItemClickListener { _, _, pos ->
             newsPresenter.onNewsItemClicked(pos, newsAdapter.getItem(pos))

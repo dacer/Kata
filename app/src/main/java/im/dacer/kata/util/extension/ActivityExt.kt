@@ -2,8 +2,11 @@ package im.dacer.kata.util.extension
 
 import android.app.Activity
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.KeyCharacterMap
@@ -77,4 +80,11 @@ fun Activity.getNavBarHeight(): Int {
 
 fun Activity.isTablet(): Boolean {
     return resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
+}
+
+
+fun Context.isWifi(): Boolean {
+    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+    return activeNetwork?.type == ConnectivityManager.TYPE_WIFI
 }

@@ -16,13 +16,13 @@ import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.VideoPlayerActivity
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.LogUtils
+import im.dacer.kata.util.extension.isWifi
 import im.dacer.kata.util.helper.SchemeHelper
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.toast
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -78,7 +78,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                     mvpView?.showData(it)
                     onFetchFinished()
                     mvpView?.showLoadingText(null)
-                    if (!(!isWifi() && settingUtility.newsCachingWifiOnly)) {
+                    if (!(!context.isWifi() && settingUtility.newsCachingWifiOnly)) {
                         cacheAllData()
                     }
                 }, { log(it) })
@@ -156,9 +156,4 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         return activeNetwork?.isConnectedOrConnecting == true
     }
 
-    private fun isWifi(): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        return activeNetwork?.type == ConnectivityManager.TYPE_WIFI
-    }
 }
