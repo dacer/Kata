@@ -10,15 +10,15 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
-import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
+import im.dacer.kata.ui.base.BaseSettingActivity
 import im.dacer.kata.util.LangUtils
-import im.dacer.kata.util.webparse.WebParser
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.extension.setMyActionBar
+import im.dacer.kata.util.webparse.WebParser
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
 
-class SettingsActivity : BaseTransparentSwipeActivity() {
+class SettingsActivity : BaseSettingActivity() {
     @Inject lateinit var settingUtility: SettingUtility
     @Inject lateinit var appPref: MultiprocessPref
 
@@ -39,10 +39,16 @@ class SettingsActivity : BaseTransparentSwipeActivity() {
                     .show()
         }
 
-        enhancedModeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            appPref.enhancedMode = isChecked
+        arrayOf(listenClipboardLayout, listenClipboardSwitch).setSwitchListener {
+            settingUtility.isListenClipboard = it
             refreshService()
-            updateUI()
+        }
+        arrayOf(enhancedModeLayout, enhancedModeSwitch).setSwitchListener {
+            appPref.enhancedMode = it
+            refreshService()
+        }
+        arrayOf(showFloatDialogLayout, showFloatDialogSwit).setSwitchListener {
+            appPref.showFloatDialog = it
         }
 
         translationTarget.setOnClickListener {
@@ -69,16 +75,6 @@ class SettingsActivity : BaseTransparentSwipeActivity() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutActivity.YOUTUBE_LINK)))
         }
 
-        showFloatDialogSwit.setOnCheckedChangeListener { _, isChecked ->
-            appPref.showFloatDialog = isChecked
-            updateUI()
-        }
-
-        listenClipboardSwitch.setOnCheckedChangeListener { _, isChecked ->
-            settingUtility.isListenClipboard = isChecked
-            refreshService()
-            updateUI()
-        }
         cacheLayout.setOnClickListener { startActivity(Intent(this@SettingsActivity, CacheSettingsActivity::class.java)) }
         bigbangStyle.setOnClickListener { startActivity(Intent(this@SettingsActivity, StyleActivity::class.java)) }
         updateUI()
@@ -93,7 +89,7 @@ class SettingsActivity : BaseTransparentSwipeActivity() {
         }
     }
 
-    private fun updateUI() {
+    override fun updateUI() {
         searchEngineTv.text = appPref.searchEngine
         showFloatDialogSwit.isChecked = appPref.showFloatDialog
         listenClipboardSwitch.isChecked = settingUtility.isListenClipboard

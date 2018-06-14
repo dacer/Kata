@@ -17,7 +17,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout style="@style/SettingsItem">
+            <RelativeLayout
+                android:id="@+id/listenClipboardLayout"
+                style="@style/SettingsItem">
 
                 <TextView
                     style="@style/SettingsItemLeft.Title"
@@ -91,6 +93,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/showFloatDialogLayout"
                 android:layout_width="match_parent"
                 style="@style/SettingsItem">
 

@@ -45,7 +45,9 @@
 
             </RelativeLayout>
 
-            <RelativeLayout style="@style/SettingsItem">
+            <RelativeLayout
+                android:id="@+id/newsCachingWifiOnlyLayout"
+                style="@style/SettingsItem">
 
                 <TextView
                     style="@style/SettingsItemLeft.Title"
