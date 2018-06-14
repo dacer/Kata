@@ -69,7 +69,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
             mvpView?.finish()
             return
         }
-        if (voiceUrl.isNotEmpty()) {
+        if (voiceUrl != null && voiceUrl.isNotEmpty()) {
             //todo
         }
         mvpView?.resetBigBangScrollViewPos()
@@ -84,18 +84,6 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
                     mvpView?.onDataInitFinished(it, preselectedIndex)
                     kanjiResultList = it
                 }, { mvpView?.toastError(it) })
-
-
-//        segmentDis = Observable.fromIterable(text.split("\n"))
-//                .flatMap { BigBang.getSegmentParser().parse(it) }
-//                .flatMap { Observable.fromIterable(it.toKanjiResultList()) }
-//                .toList()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe ({
-//                    mvpView?.onDataInitFinished(it, preselectedIndex)
-//                    kanjiResultList = it
-//                }, { mvpView?.toastError(it) })
 
         if(saveInHistory) HistoryHelper.saveAsync(context, text, alias)
     }

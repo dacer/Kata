@@ -37,7 +37,7 @@ class SchemeHelper {
                         "&${BigBangActivity.EXTRA_PRESELECTED_INDEX}=$preselectedIndex" +
                         "&${BigBangActivity.EXTRA_SAVE_IN_HISTORY}=$saveInHistory" +
                         "&${BigBangActivity.EXTRA_ALIAS}=$alias" +
-                        "&${BigBangActivity.EXTRA_VOICE_URL}=$voiceUrl")
+                        "&${BigBangActivity.EXTRA_VOICE_URL}=${voiceUrl?: ""}")
 
         private fun getFloatUri(text: String) =
                 Uri.parse("kata-float://?${BigBangActivity.EXTRA_TEXT}=${URLEncoder.encode(text, "utf-8")}")
