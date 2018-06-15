@@ -183,7 +183,7 @@ class MusicPlayerView @JvmOverloads constructor(
         if (keepOnTouch || insideBtn) {
             val result = gestureDetector.onTouchEvent(event)
             if (result) { return result }
-            if (!isPlaying() && posProcess == 0f) return false
+            if (!isPlaying() && posProcess == 0f) return true
 
             when (event.action) {
                 ACTION_MOVE -> {
@@ -199,6 +199,7 @@ class MusicPlayerView @JvmOverloads constructor(
                             freeMoveMode = true
                             return true
                         }
+
                         posProcess = 1 - (event.y - paddingTop) / (actualHeight -  btnDrawable.intrinsicHeight / 2f)
                         posProcess = posProcess.coerceIn(0f, 1f)
                         keepOnTouch = true
@@ -212,18 +213,24 @@ class MusicPlayerView @JvmOverloads constructor(
                         textInBtnCenter = audioPlayer.currentPosition.toMmSs()
                         invalidate()
                     }
-                    keepOnTouch = false
-                    freeMoveMode = false
-                    startUpdateProcess()
+                    doOnTouchUp()
                 }
             }
             return true
         }
 
-        if (event.action == ACTION_UP || event.action == ACTION_CANCEL) {
-            startUpdateProcess()
+        if (event.action == ACTION_MOVE) {
+            keepOnTouch = true
         }
+        if (event.action == ACTION_UP || event.action == ACTION_CANCEL) { doOnTouchUp() }
         return super.onTouchEvent(event)
+    }
+
+    private fun doOnTouchUp() {
+        keepOnTouch = false
+        freeMoveMode = false
+        startUpdateProcess()
+        invalidate()
     }
 
     private fun canIgnoreThisTouch(event: MotionEvent): Boolean {
