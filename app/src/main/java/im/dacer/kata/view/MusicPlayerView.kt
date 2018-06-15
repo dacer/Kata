@@ -47,6 +47,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private var textInBtnCenter: String? = null
     private var initAnim: ValueAnimator? = null
     private var playerPrepared = false
+    private var audioUrl: String? = null
 
     init {
         btnTextPaint.textSize = sp(18).toFloat()
@@ -68,11 +69,13 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     fun setDataSource(voiceUrl: String) {
+        audioUrl = voiceUrl
         audioPlayer.setOnPreparedListener {
             playerPrepared = true
             show()
         }
         audioPlayer.setDataSource(Uri.parse(voiceUrl))
+        postInvalidate()
     }
 
     fun show() {
@@ -139,6 +142,8 @@ class MusicPlayerView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        if (audioUrl.isNullOrEmpty()) return
+        
         btnDrawable.bounds = getBtnBounds()
         btnDrawable.draw(canvas)
         if (textInBtnCenter.isNullOrEmpty()) {
@@ -164,6 +169,8 @@ class MusicPlayerView @JvmOverloads constructor(
     private var actionDownX = 0f
     private var actionDownY = 0f
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (audioUrl.isNullOrEmpty()) return false
+
         val insideBtn = getBtnBounds().contains(event.x.toInt(), event.y.toInt())
         if (initProcess < 1f && insideBtn) {
             if (playerPrepared) {
