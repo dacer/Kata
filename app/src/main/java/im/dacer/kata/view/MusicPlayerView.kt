@@ -18,6 +18,7 @@ import im.dacer.kata.util.LogUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import org.jetbrains.anko.dip
 import org.jetbrains.anko.sp
 import java.util.concurrent.TimeUnit
 
@@ -29,19 +30,34 @@ class MusicPlayerView @JvmOverloads constructor(
     private val btnDrawable = resources.getDrawable(R.drawable.floating_empty_button)
     private val gestureDetector: GestureDetector = GestureDetector(context, MyGestureDetector())
 
-    private val textPaint: Paint = Paint(ANTI_ALIAS_FLAG)
+    private val btnTextPaint: Paint = Paint(ANTI_ALIAS_FLAG)
     private val playPaint: Paint = Paint(ANTI_ALIAS_FLAG)
+    private val leftMainTextPaint: Paint = Paint(ANTI_ALIAS_FLAG)
+    private val leftSubTextPaint: Paint = Paint(ANTI_ALIAS_FLAG)
+    private val textBackgroundPaint: Paint = Paint(ANTI_ALIAS_FLAG)
     private val playPath: Path = Path()
+    private var leftSubTextRect: Rect? = null
+    private var leftMainTextRect: Rect? = null
 
-    private var process: Float = 0f
+    private var posProcess: Float = 0f   // position process [0 - 1]
     private var initProcess: Float = 0f
     private var updateProcessDisposable: Disposable? = null
-    private var textInCenter: String? = null
+    private var textInBtnCenter: String? = null
 
     init {
-        textPaint.textSize = sp(18).toFloat()
-        textPaint.textAlign = Align.CENTER
-        textPaint.color = Color.WHITE
+        btnTextPaint.textSize = sp(18).toFloat()
+        btnTextPaint.textAlign = Align.CENTER
+        btnTextPaint.color = Color.WHITE
+
+        leftMainTextPaint.textSize = sp(36).toFloat()
+        leftMainTextPaint.textAlign = Align.CENTER
+        leftMainTextPaint.color = Color.WHITE
+
+        leftSubTextPaint.textSize = sp(18).toFloat()
+        leftSubTextPaint.textAlign = Align.CENTER
+        leftSubTextPaint.color = Color.WHITE
+
+        textBackgroundPaint.color = Color.parseColor("#8f000000")
 
         playPaint.color = Color.WHITE
         playPaint.style = Paint.Style.FILL_AND_STROKE
@@ -64,7 +80,7 @@ class MusicPlayerView @JvmOverloads constructor(
     fun play() {
         audioPlayer.setOnCompletionListener {
             stopUpdateProcess()
-            textInCenter = null
+            textInBtnCenter = null
             invalidate()
         }
         audioPlayer.start()
@@ -75,10 +91,9 @@ class MusicPlayerView @JvmOverloads constructor(
         if (!isPlaying()) return
         updateProcessDisposable?.dispose()
         updateProcessDisposable = Observable.interval(50, TimeUnit.MILLISECONDS)
-                .map { audioPlayer.currentPosition }
                 .doOnNext {
-                    process = if (it == 0L) { 0f } else { it.toFloat() / audioPlayer.duration }
-                    textInCenter = it.toMmSs()
+                    posProcess = getProcessByPlayerCurrentPos()
+                    textInBtnCenter = audioPlayer.currentPosition.toMmSs()
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -87,7 +102,7 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     private fun stopUpdateProcess() {
-        updateProcessDisposable?.dispose()
+        if (updateProcessDisposable?.isDisposed != true) updateProcessDisposable?.dispose()
     }
 
     private fun isPlaying(): Boolean = audioPlayer.isPlaying
@@ -96,10 +111,19 @@ class MusicPlayerView @JvmOverloads constructor(
         super.onDraw(canvas)
         btnDrawable.bounds = getBtnBounds()
         btnDrawable.draw(canvas)
-        if (textInCenter.isNullOrEmpty()) {
+        if (textInBtnCenter.isNullOrEmpty()) {
             drawPlayTriangle(canvas)
         } else {
-            canvas.drawRectText(textInCenter!!, getBtnBounds())
+            canvas.drawRectText(textInBtnCenter!!, getBtnBounds(), btnTextPaint)
+            if (keepOnTouch) {
+                canvas.drawRect(leftMainTextRect, textBackgroundPaint)
+                canvas.drawRect(leftSubTextRect, textBackgroundPaint)
+
+                canvas.drawRectText((audioPlayer.duration * posProcess).toLong().toMmSs(),
+                        leftMainTextRect!!, leftMainTextPaint)
+                canvas.drawRectText(textInBtnCenter!!,
+                        leftSubTextRect!!, leftSubTextPaint)
+            }
         }
     }
 
@@ -112,10 +136,11 @@ class MusicPlayerView @JvmOverloads constructor(
         if (keepOnTouch || getBtnBounds().contains(event.x.toInt(), event.y.toInt())) {
             val result = gestureDetector.onTouchEvent(event)
             if (result) { return result }
-            if (!isPlaying() && process == 0f) return false
+            if (!isPlaying() && posProcess == 0f) return false
 
             when (event.action) {
                 ACTION_MOVE -> {
+                    stopUpdateProcess()
                     if (freeMoveMode) {
                         freeModeX = event.x.toInt()
                         freeModeY = event.y.toInt()
@@ -126,8 +151,8 @@ class MusicPlayerView @JvmOverloads constructor(
                             freeMoveMode = true
                             return true
                         }
-                        process = 1 - (event.y - paddingTop) / (actualHeight -  btnDrawable.intrinsicHeight / 2f)
-                        process = process.coerceIn(0f, 1f)
+                        posProcess = 1 - (event.y - paddingTop) / (actualHeight -  btnDrawable.intrinsicHeight / 2f)
+                        posProcess = posProcess.coerceIn(0f, 1f)
                         keepOnTouch = true
                     }
                     invalidate()
@@ -135,6 +160,10 @@ class MusicPlayerView @JvmOverloads constructor(
                 ACTION_UP, ACTION_CANCEL -> {
                     keepOnTouch = false
                     freeMoveMode = false
+                    val playerProcess = getProcessByPlayerCurrentPos()
+                    if (playerProcess != posProcess) {
+                        audioPlayer.seekTo((audioPlayer.duration * posProcess).toLong())
+                    }
                     startUpdateProcess()
 
                 }
@@ -150,6 +179,11 @@ class MusicPlayerView @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        updateTextBounds()
+    }
+
     private fun getBtnBounds(): Rect {
         val btnWidth = btnDrawable.intrinsicWidth
         val btnHeight = btnDrawable.intrinsicHeight
@@ -160,9 +194,20 @@ class MusicPlayerView @JvmOverloads constructor(
             t = freeModeY - btnHeight / 2
         } else {
             l = actualWidth - (btnWidth * initProcess).toInt()
-            t = (paddingTop + (actualHeight -  btnHeight) * (1 - process)).toInt()
+            t = (paddingTop + (actualHeight -  btnHeight) * (1 - posProcess)).toInt()
         }
         return Rect(l, t, l + btnWidth, t + btnHeight)
+    }
+
+    private fun updateTextBounds() {
+        leftMainTextRect = Rect(0,
+                height / 2 + dip(5),
+                dip(150),
+                height / 2 + dip(65))
+        leftSubTextRect = Rect(0,
+                height / 2 - dip(35),
+                dip(70),
+                height / 2 - dip(5))
     }
 
     private inner class MyGestureDetector : GestureDetector.SimpleOnGestureListener() {
@@ -187,10 +232,15 @@ class MusicPlayerView @JvmOverloads constructor(
         return String.format("%d:%02d", m, s)
     }
 
-    private fun Canvas.drawRectText(text: String, r: Rect) {
-        val numOfChars = textPaint.breakText(text, true, width.toFloat(), null)
+    private fun getProcessByPlayerCurrentPos(): Float {
+        return audioPlayer.currentPosition.run {if (this == 0L) { 0f } else { toFloat() / audioPlayer.duration } }
+    }
+
+    private fun Canvas.drawRectText(text: String, r: Rect, paint: Paint) {
+        val numOfChars = paint.breakText(text, true, width.toFloat(), null)
         val start = (text.length - numOfChars) / 2
-        drawText(text, start, start + numOfChars, r.exactCenterX(), r.exactCenterY() - (textPaint.descent() + textPaint.ascent()) / 2, textPaint)
+        drawText(text, start, start + numOfChars, r.exactCenterX(), r.exactCenterY() -
+                (paint.descent() + paint.ascent()) / 2, paint)
     }
 
     private fun drawPlayTriangle(c: Canvas) {
