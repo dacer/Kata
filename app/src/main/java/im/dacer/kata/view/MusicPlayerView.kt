@@ -62,6 +62,17 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     fun play() {
+        audioPlayer.setOnCompletionListener {
+            stopUpdateProcess()
+            textInCenter = null
+            invalidate()
+        }
+        audioPlayer.start()
+        startUpdateProcess()
+    }
+
+    private fun startUpdateProcess() {
+        if (!isPlaying()) return
         updateProcessDisposable?.dispose()
         updateProcessDisposable = Observable.interval(50, TimeUnit.MILLISECONDS)
                 .map { audioPlayer.currentPosition }
@@ -73,13 +84,10 @@ class MusicPlayerView @JvmOverloads constructor(
                 .subscribe({
                     invalidate()
                 }, { LogUtils.log(it) })
+    }
 
-        audioPlayer.setOnCompletionListener {
-            updateProcessDisposable?.dispose()
-            textInCenter = null
-            invalidate()
-        }
-        audioPlayer.start()
+    private fun stopUpdateProcess() {
+        updateProcessDisposable?.dispose()
     }
 
     private fun isPlaying(): Boolean = audioPlayer.isPlaying
@@ -114,6 +122,7 @@ class MusicPlayerView @JvmOverloads constructor(
 
                     } else {
                         if (event.x < width / 3 * 2) {
+                            stopUpdateProcess()
                             freeMoveMode = true
                             return true
                         }
@@ -126,6 +135,8 @@ class MusicPlayerView @JvmOverloads constructor(
                 ACTION_UP, ACTION_CANCEL -> {
                     keepOnTouch = false
                     freeMoveMode = false
+                    startUpdateProcess()
+
                 }
             }
             return true
@@ -151,7 +162,6 @@ class MusicPlayerView @JvmOverloads constructor(
             l = actualWidth - (btnWidth * initProcess).toInt()
             t = (paddingTop + (actualHeight -  btnHeight) * (1 - process)).toInt()
         }
-
         return Rect(l, t, l + btnWidth, t + btnHeight)
     }
 
@@ -164,7 +174,6 @@ class MusicPlayerView @JvmOverloads constructor(
             return super.onSingleTapConfirmed(e)
         }
     }
-
 
     private var actualHeight: Int = 0
         get() = height - paddingTop - paddingBottom
@@ -183,7 +192,6 @@ class MusicPlayerView @JvmOverloads constructor(
         val start = (text.length - numOfChars) / 2
         drawText(text, start, start + numOfChars, r.exactCenterX(), r.exactCenterY() - (textPaint.descent() + textPaint.ascent()) / 2, textPaint)
     }
-
 
     private fun drawPlayTriangle(c: Canvas) {
         c.drawPath(getTrianglePath(playPath), playPaint)
