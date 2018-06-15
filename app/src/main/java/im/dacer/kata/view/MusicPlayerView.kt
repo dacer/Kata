@@ -21,6 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.sp
+import org.jetbrains.anko.toast
 import java.util.concurrent.TimeUnit
 
 
@@ -45,6 +46,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private var updateProcessDisposable: Disposable? = null
     private var textInBtnCenter: String? = null
     private var initAnim: ValueAnimator? = null
+    private var playerPrepared = false
 
     init {
         btnTextPaint.textSize = sp(18).toFloat()
@@ -66,12 +68,15 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     fun setDataSource(voiceUrl: String) {
-        audioPlayer.setOnPreparedListener { show() }
+        audioPlayer.setOnPreparedListener {
+            playerPrepared = true
+            show()
+        }
         audioPlayer.setDataSource(Uri.parse(voiceUrl))
     }
 
     fun show() {
-        if (initProcess > 0) return
+        if (!playerPrepared || initProcess > 0) return
         initAnim?.end()
 
         initAnim = ValueAnimator.ofFloat(0f, 1f)
@@ -161,7 +166,11 @@ class MusicPlayerView @JvmOverloads constructor(
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val insideBtn = getBtnBounds().contains(event.x.toInt(), event.y.toInt())
         if (initProcess < 1f && insideBtn) {
-            show()
+            if (playerPrepared) {
+                show()
+            } else {
+                context.toast(R.string.voice_file_is_loading)
+            }
             return false
         }
         if (keepOnTouch || insideBtn) {

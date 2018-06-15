@@ -69,4 +69,7 @@
 
     <string name="syncing">Syncing…</string>
     <string name="caching_articles">Caching articles…</string>
+
+    <string name="drag_and_drop_here_to_stop">Drag and drop here to stop</string>
+    <string name="voice_file_is_loading">Voice file is still loading…</string>
 </resources>
