@@ -1,6 +1,7 @@
 package im.dacer.kata.util.webparse
 
 import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
@@ -15,7 +16,7 @@ object NHKNewsParser: BaseParser() {
     }
 
     fun fetchContent(targetUrl: String): Observable<String> {
-        return Observable.fromCallable {
+        return Observable.create(ObservableOnSubscribe<String> { emmit ->
             try {
                 val doc = Jsoup.parse(URL(targetUrl), 20000)
 
@@ -24,21 +25,24 @@ object NHKNewsParser: BaseParser() {
                 //v1
                 val article = doc.select(".news_add div").first()
                 if (article != null) {
-                    return@fromCallable article.outputElement()
+                    emmit.onNext(article.outputElement())
+                    emmit.onComplete()
+                    return@ObservableOnSubscribe
                 }
 
                 //v2
                 val newsBody = doc.select("#news_textbody").first()
                 val newsBodyMore = doc.select("#news_textmore").first()
                 if (newsBody != null && newsBodyMore != null) {
-
-                    return@fromCallable "${newsBody.outputElement()}\n${newsBodyMore.outputElement()}"
+                    emmit.onNext("${newsBody.outputElement()}\n${newsBodyMore.outputElement()}")
+                    emmit.onComplete()
+                    return@ObservableOnSubscribe
                 }
 
-            } catch (e: Throwable) {
-            }
-            throw ContentNotFound()
-        }
+            } catch (e: Throwable) {}
+
+            if (!emmit.isDisposed) { throw ContentNotFound() }
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }

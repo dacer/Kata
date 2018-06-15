@@ -6,7 +6,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.safety.Whitelist
 
 abstract class BaseParser {
-    class ContentNotFound: Exception("Content not found")
+    class ContentNotFound: RuntimeException("Content not found")
 
     abstract fun checkUrlAvailable(url: String) : Boolean
 
