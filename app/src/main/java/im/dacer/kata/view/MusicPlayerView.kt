@@ -49,7 +49,7 @@ class MusicPlayerView @JvmOverloads constructor(
         btnTextPaint.textAlign = Align.CENTER
         btnTextPaint.color = Color.WHITE
 
-        leftMainTextPaint.textSize = sp(36).toFloat()
+        leftMainTextPaint.textSize = sp(50).toFloat()
         leftMainTextPaint.textAlign = Align.CENTER
         leftMainTextPaint.color = Color.WHITE
 
@@ -57,7 +57,7 @@ class MusicPlayerView @JvmOverloads constructor(
         leftSubTextPaint.textAlign = Align.CENTER
         leftSubTextPaint.color = Color.WHITE
 
-        textBackgroundPaint.color = Color.parseColor("#8f000000")
+        textBackgroundPaint.color = Color.parseColor("#c8000000")
 
         playPaint.color = Color.WHITE
         playPaint.style = Paint.Style.FILL_AND_STROKE
@@ -200,14 +200,16 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     private fun updateTextBounds() {
+        val mainHeight = dip(70)
+        val subHeight = dip(30)
         leftMainTextRect = Rect(0,
-                height / 2 + dip(5),
-                dip(150),
-                height / 2 + dip(65))
+                height / 2 - mainHeight / 2,
+                dip(140),
+                height / 2 + mainHeight / 2)
         leftSubTextRect = Rect(0,
-                height / 2 - dip(35),
-                dip(70),
-                height / 2 - dip(5))
+                height / 2 - mainHeight / 2 - dip(5) - subHeight,
+                dip(80),
+                height / 2 - mainHeight / 2 - dip(5))
     }
 
     private inner class MyGestureDetector : GestureDetector.SimpleOnGestureListener() {
