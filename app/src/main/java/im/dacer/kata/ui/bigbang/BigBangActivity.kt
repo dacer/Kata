@@ -82,17 +82,18 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
             if (Math.abs(scrollY - oldScrollY) < 3) return@OnScrollChangeListener
             if (isDown) {
                 if (Math.abs(scrollY) < getDimen(R.dimen.big_bang_meaning_height) - getDimen(R.dimen.big_bang_meaning_mini_height)) return@OnScrollChangeListener
-                if (!systemUiIsHidden) hideSystemUI()
+                hideSystemUI()
             } else {
-                if (systemUiIsHidden) showSystemUI()
+                showSystemUI()
             }
         })
         bigBangScrollView.overScrollListener = object : MyScrollView.OverScrollListener {
             override fun onOverScroll(topOverScroll: Boolean) {
                 if (topOverScroll) {
-                    if (systemUiIsHidden) showSystemUI()
+                    showSystemUI()
                 } else {
-                    if (!systemUiIsHidden) hideSystemUI()
+                    musicPlayerView.hide()
+                    hideSystemUI()
                 }
             }
         }
@@ -111,6 +112,8 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
     }
 
     override fun hideSystemUI() {
+        if (systemUiIsHidden) return
+
         systemUiIsHidden = true
         changeUiAnim?.cancel()
         changeUiAnim = AnimatorSet()
@@ -119,11 +122,15 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
                 ObjectAnimator.ofInt(meaningScrollView, HeightProperty(), meaningScrollView.height, getDimen(R.dimen.big_bang_meaning_mini_height)))
         changeUiAnim?.duration = UI_ANIM_DURATION
         changeUiAnim?.start()
+        musicPlayerView.hide()
         resetMeaningViewPos()
+
         super.hideSystemUI()
     }
 
     override fun showSystemUI() {
+        if (!systemUiIsHidden) return
+
         systemUiIsHidden = false
         changeUiAnim?.cancel()
         changeUiAnim = AnimatorSet()
@@ -132,6 +139,7 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
                 ObjectAnimator.ofInt(meaningScrollView, HeightProperty(), meaningScrollView.height, getDimen(R.dimen.big_bang_meaning_height)))
         changeUiAnim?.duration = UI_ANIM_DURATION
         changeUiAnim?.start()
+        musicPlayerView.show()
 
         super.showSystemUI()
     }

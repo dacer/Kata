@@ -11,7 +11,8 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.MotionEvent.*
 import android.view.View
-import android.view.animation.BounceInterpolator
+import com.daasuu.ei.Ease
+import com.daasuu.ei.EasingInterpolator
 import com.devbrackets.android.exomedia.AudioPlayer
 import im.dacer.kata.R
 import im.dacer.kata.util.LogUtils
@@ -43,6 +44,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private var initProcess: Float = 0f
     private var updateProcessDisposable: Disposable? = null
     private var textInBtnCenter: String? = null
+    private var initAnim: ValueAnimator? = null
 
     init {
         btnTextPaint.textSize = sp(18).toFloat()
@@ -64,17 +66,35 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     fun setDataSource(voiceUrl: String) {
-        audioPlayer.setOnPreparedListener {
-            val initAnim = ValueAnimator.ofFloat(0f, 1f)
-            initAnim.duration = 1000
-            initAnim.interpolator = BounceInterpolator()
-            initAnim.addUpdateListener {
-                initProcess = it.animatedValue as Float
-                postInvalidate()
-            }
-            initAnim.start()
-        }
+        audioPlayer.setOnPreparedListener { show() }
         audioPlayer.setDataSource(Uri.parse(voiceUrl))
+    }
+
+    fun show() {
+        if (initProcess > 0) return
+        initAnim?.end()
+
+        initAnim = ValueAnimator.ofFloat(0f, 1f)
+        initAnim?.duration = 300
+        initAnim?.interpolator = EasingInterpolator(Ease.BACK_OUT)
+        initAnim?.addUpdateListener {
+            initProcess = it.animatedValue as Float
+            postInvalidate()
+        }
+        initAnim?.start()
+    }
+
+    fun hide() {
+        if (initProcess < 1) return
+        initAnim?.end()
+
+        initAnim = ValueAnimator.ofFloat(1f, 0f)
+        initAnim?.duration = 200
+        initAnim?.addUpdateListener {
+            initProcess = it.animatedValue as Float
+            postInvalidate()
+        }
+        initAnim?.start()
     }
 
     fun play() {
@@ -139,8 +159,12 @@ class MusicPlayerView @JvmOverloads constructor(
     private var actionDownX = 0f
     private var actionDownY = 0f
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (initProcess < 1f) return false
-        if (keepOnTouch || getBtnBounds().contains(event.x.toInt(), event.y.toInt())) {
+        val insideBtn = getBtnBounds().contains(event.x.toInt(), event.y.toInt())
+        if (initProcess < 1f && insideBtn) {
+            show()
+            return false
+        }
+        if (keepOnTouch || insideBtn) {
             val result = gestureDetector.onTouchEvent(event)
             if (result) { return result }
             if (!isPlaying() && posProcess == 0f) return false
@@ -211,7 +235,7 @@ class MusicPlayerView @JvmOverloads constructor(
             l = freeModeX - btnWidth / 2
             t = freeModeY - btnHeight / 2
         } else {
-            l = actualWidth - (btnWidth * initProcess).toInt()
+            l = actualWidth - btnWidth / 3 - (btnWidth / 3 * 2 * initProcess).toInt()
             t = (paddingTop + (actualHeight -  btnHeight) * (1 - posProcess)).toInt()
         }
         return Rect(l, t, l + btnWidth, t + btnHeight)
