@@ -39,7 +39,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private var textInCenter: String? = null
 
     init {
-        textPaint.textSize = sp(20).toFloat()
+        textPaint.textSize = sp(18).toFloat()
         textPaint.textAlign = Align.CENTER
         textPaint.color = Color.WHITE
 
@@ -194,7 +194,7 @@ class MusicPlayerView @JvmOverloads constructor(
         val cirX = getBtnBounds().centerX()
         val cirY = getBtnBounds().centerY()
         val cirInnerRadius = getBtnBounds().width() / 2f
-        var triangleSideLength = cirInnerRadius * 2 / 3
+        val triangleSideLength = cirInnerRadius * 2 / 3
 
         val tan30 = Math.tan(Math.toRadians(30.0))
         val cos30 = Math.cos(Math.toRadians(30.0))
