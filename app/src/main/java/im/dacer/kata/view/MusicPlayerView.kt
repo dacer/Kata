@@ -253,7 +253,7 @@ class MusicPlayerView @JvmOverloads constructor(
         path.reset()
         val cirX = getBtnBounds().centerX()
         val cirY = getBtnBounds().centerY()
-        val cirInnerRadius = getBtnBounds().width() / 2f
+        val cirInnerRadius = getBtnBounds().width() / 2.2f
         val triangleSideLength = cirInnerRadius * 2 / 3
 
         val tan30 = Math.tan(Math.toRadians(30.0))
