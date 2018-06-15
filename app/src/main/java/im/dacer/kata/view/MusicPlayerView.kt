@@ -87,6 +87,11 @@ class MusicPlayerView @JvmOverloads constructor(
         startUpdateProcess()
     }
 
+    fun pause() {
+        audioPlayer.pause()
+        stopUpdateProcess()
+    }
+
     private fun startUpdateProcess() {
         if (!isPlaying()) return
         updateProcessDisposable?.dispose()
@@ -131,6 +136,8 @@ class MusicPlayerView @JvmOverloads constructor(
     private var freeMoveMode = false
     private var freeModeX = 0
     private var freeModeY = 0
+    private var actionDownX = 0f
+    private var actionDownY = 0f
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (initProcess < 1f) return false
         if (keepOnTouch || getBtnBounds().contains(event.x.toInt(), event.y.toInt())) {
@@ -140,12 +147,13 @@ class MusicPlayerView @JvmOverloads constructor(
 
             when (event.action) {
                 ACTION_MOVE -> {
-                    stopUpdateProcess()
                     if (freeMoveMode) {
                         freeModeX = event.x.toInt()
                         freeModeY = event.y.toInt()
 
                     } else {
+                        if (canIgnoreThisTouch(event) && !keepOnTouch) return true
+
                         if (event.x < width / 3 * 2) {
                             stopUpdateProcess()
                             freeMoveMode = true
@@ -158,19 +166,29 @@ class MusicPlayerView @JvmOverloads constructor(
                     invalidate()
                 }
                 ACTION_UP, ACTION_CANCEL -> {
-                    keepOnTouch = false
-                    freeMoveMode = false
                     val playerProcess = getProcessByPlayerCurrentPos()
                     if (playerProcess != posProcess) {
                         audioPlayer.seekTo((audioPlayer.duration * posProcess).toLong())
+                        textInBtnCenter = audioPlayer.currentPosition.toMmSs()
+                        invalidate()
                     }
+                    keepOnTouch = false
+                    freeMoveMode = false
                     startUpdateProcess()
-
                 }
             }
             return true
         }
+
+        if (event.action == ACTION_UP || event.action == ACTION_CANCEL) {
+            startUpdateProcess()
+        }
         return super.onTouchEvent(event)
+    }
+
+    private fun canIgnoreThisTouch(event: MotionEvent): Boolean {
+        return Math.abs(actionDownX - event.x) < 5 ||
+                Math.abs(actionDownY - event.y) < 5
     }
 
     override fun onDetachedFromWindow() {
@@ -213,12 +231,21 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     private inner class MyGestureDetector : GestureDetector.SimpleOnGestureListener() {
+
         override fun onDown(e: MotionEvent): Boolean {
+            actionDownX = e.x
+            actionDownY = e.y
+            stopUpdateProcess()
             return true
         }
+
         override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-            play()
-            return super.onSingleTapConfirmed(e)
+            if (isPlaying()) {
+                pause()
+            } else {
+                play()
+            }
+            return true
         }
     }
 
