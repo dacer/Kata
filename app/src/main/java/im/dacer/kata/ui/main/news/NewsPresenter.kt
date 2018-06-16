@@ -99,14 +99,13 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                     mvpView?.showData(it)
                     onFetchFinished()
                     mvpView?.showLoadingText(null)
-                    if (!(!context.isWifi() && multiprocessPref.newsCachingWifiOnly)) {
-                        cacheAllData()
-                    }
+                    cacheAllData()
                 }, { log(it) }).addToComposite()
     }
 
     private var nowSyncingSize = 0
     private fun cacheAllData() {
+        if (!context.isWifi() && multiprocessPref.newsCachingWifiOnly) return
         cacheDisposable?.dispose()
         nowSyncingSize = 0
         mvpView?.showLoadingText(context.getString(R.string.caching_articles))
