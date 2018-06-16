@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Paint.Align
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.GestureDetector
@@ -16,6 +17,7 @@ import com.daasuu.ei.EasingInterpolator
 import com.devbrackets.android.exomedia.AudioPlayer
 import im.dacer.kata.R
 import im.dacer.kata.util.LogUtils
+import im.dacer.kata.view.indicator.BallScaleMultipleIndicator
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -40,6 +42,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private val playPath: Path = Path()
     private var leftSubTextRect: Rect? = null
     private var leftMainTextRect: Rect? = null
+    private val loadingDrawable = BallScaleMultipleIndicator()
 
     private var posProcess: Float = 0f   // position process [0 - 1]
     private var initProcess: Float = 0f
@@ -48,6 +51,9 @@ class MusicPlayerView @JvmOverloads constructor(
     private var initAnim: ValueAnimator? = null
     private var playerPrepared = false
     private var audioUrl: String? = null
+    private var mShouldStartAnimationDrawable = false
+    private var loadingAnimIsRunning = false
+
 
     init {
         btnTextPaint.textSize = sp(18).toFloat()
@@ -66,20 +72,33 @@ class MusicPlayerView @JvmOverloads constructor(
 
         playPaint.color = Color.WHITE
         playPaint.style = Paint.Style.FILL_AND_STROKE
+
+        loadingDrawable.callback = this
+        loadingDrawable.color = Color.WHITE
     }
 
-    fun setDataSource(voiceUrl: String) {
+    fun setDataSource(voiceUrl: String, prepareImmediately: Boolean = true) {
         audioUrl = voiceUrl
+        if (prepareImmediately) {
+            prepare()
+        } else {
+            postInvalidate()
+        }
+    }
+
+    private fun prepare() {
+        startLoadingAnim()
         audioPlayer.setOnPreparedListener {
             playerPrepared = true
+            stopLoadingAnim()
             show()
         }
-        audioPlayer.setDataSource(Uri.parse(voiceUrl))
-        postInvalidate()
+        audioPlayer.setDataSource(Uri.parse(audioUrl))
+        show()
     }
 
     fun show() {
-        if (!playerPrepared || initProcess > 0) return
+        if (initProcess > 0) return
         initAnim?.end()
 
         initAnim = ValueAnimator.ofFloat(0f, 1f)
@@ -143,11 +162,15 @@ class MusicPlayerView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (audioUrl.isNullOrEmpty()) return
-        
+
         btnDrawable.bounds = getBtnBounds()
         btnDrawable.draw(canvas)
         if (textInBtnCenter.isNullOrEmpty()) {
-            drawPlayTriangle(canvas)
+            if (loadingAnimIsRunning) {
+                drawLoading(canvas)
+            } else {
+                drawPlayTriangle(canvas)
+            }
         } else {
             canvas.drawRectText(textInBtnCenter!!, getBtnBounds(), btnTextPaint)
             if (keepOnTouch) {
@@ -173,10 +196,10 @@ class MusicPlayerView @JvmOverloads constructor(
 
         val insideBtn = getBtnBounds().contains(event.x.toInt(), event.y.toInt())
         if (initProcess < 1f && insideBtn) {
-            if (playerPrepared) {
-                show()
-            } else {
-                context.toast(R.string.voice_file_is_loading)
+            when {
+                playerPrepared -> show()
+                audioPlayer.bufferPercentage > 0 -> context.toast(R.string.voice_file_is_loading)
+                else -> prepare()
             }
             return false
         }
@@ -319,6 +342,28 @@ class MusicPlayerView @JvmOverloads constructor(
                 (paint.descent() + paint.ascent()) / 2, paint)
     }
 
+    private fun startLoadingAnim() {
+        loadingAnimIsRunning = true
+        mShouldStartAnimationDrawable = true
+        postInvalidate()
+    }
+
+    private fun stopLoadingAnim() {
+        loadingAnimIsRunning = false
+        loadingDrawable.stop()
+        mShouldStartAnimationDrawable = false
+        postInvalidate()
+    }
+
+    private fun drawLoading(canvas: Canvas) {
+        loadingDrawable.bounds = getBtnBounds()
+        loadingDrawable.draw(canvas)
+
+        if (mShouldStartAnimationDrawable) {
+            loadingDrawable.start()
+            mShouldStartAnimationDrawable = false
+        }
+    }
     private fun drawPlayTriangle(c: Canvas) {
         c.drawPath(getTrianglePath(playPath), playPaint)
     }
@@ -343,5 +388,10 @@ class MusicPlayerView @JvmOverloads constructor(
         path.lineTo(leftX, leftUpY)
         path.close()
         return path
+    }
+
+    override fun invalidateDrawable(drawable: Drawable?) {
+        super.invalidateDrawable(drawable)
+        postInvalidate()
     }
 }
