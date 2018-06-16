@@ -107,3 +107,5 @@
 -keep class * implements com.google.gson.JsonDeserializer
 
 ##---------------End: proguard configuration for Gson  ----------
+
+-keep public class org.jsoup.** { public *; }
