@@ -1,4 +1,4 @@
-package im.dacer.kata.view
+package im.dacer.kata.view.indicator
 
 import android.animation.ValueAnimator
 import android.content.Context

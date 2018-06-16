@@ -10,7 +10,7 @@ import im.dacer.kata.R
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.ui.base.BaseFragment
-import im.dacer.kata.view.PacmanIndicator
+import im.dacer.kata.view.indicator.PacmanIndicator
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
