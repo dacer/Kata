@@ -87,11 +87,26 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     private fun prepare() {
+        playerPrepared = false
         startLoadingAnim()
         audioPlayer.setOnPreparedListener {
             playerPrepared = true
             stopLoadingAnim()
             show()
+        }
+        audioPlayer.setOnBufferUpdateListener {
+            val isLoading = it <= 100 * getProcessByPlayerCurrentPos()
+            if (isLoading) {
+                if (!playerPrepared) return@setOnBufferUpdateListener
+                playerPrepared = false
+                startLoadingAnim()
+            } else {
+                if (playerPrepared) return@setOnBufferUpdateListener
+                playerPrepared = true
+                stopLoadingAnim()
+            }
+            
+//            Timber.e("buffer: $it, percent: ${getProcessByPlayerCurrentPos()}, isLoading ->  $isLoading")
         }
         audioPlayer.setDataSource(Uri.parse(audioUrl))
         show()
@@ -166,9 +181,7 @@ class MusicPlayerView @JvmOverloads constructor(
         btnDrawable.bounds = getBtnBounds()
         btnDrawable.draw(canvas)
         if (textInBtnCenter.isNullOrEmpty()) {
-            if (loadingAnimIsRunning) {
-                drawLoading(canvas)
-            } else {
+            if (!loadingAnimIsRunning) {
                 drawPlayTriangle(canvas)
             }
         } else {
@@ -183,6 +196,9 @@ class MusicPlayerView @JvmOverloads constructor(
                         leftSubTextRect!!, leftSubTextPaint)
             }
         }
+        if (loadingAnimIsRunning) {
+            drawLoading(canvas)
+        }
     }
 
     private var keepOnTouch = false
@@ -193,16 +209,8 @@ class MusicPlayerView @JvmOverloads constructor(
     private var actionDownY = 0f
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (audioUrl.isNullOrEmpty()) return false
-
         val insideBtn = getBtnBounds().contains(event.x.toInt(), event.y.toInt())
-        if (initProcess < 1f && insideBtn) {
-            when {
-                playerPrepared -> show()
-                audioPlayer.bufferPercentage > 0 -> context.toast(R.string.voice_file_is_loading)
-                else -> prepare()
-            }
-            return false
-        }
+
         if (keepOnTouch || insideBtn) {
             val result = gestureDetector.onTouchEvent(event)
             if (result) { return result }
@@ -310,6 +318,15 @@ class MusicPlayerView @JvmOverloads constructor(
         }
 
         override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+            if ((initProcess < 1f || !playerPrepared || loadingAnimIsRunning)) {
+                when {
+                    playerPrepared -> show()
+                    audioPlayer.bufferPercentage > 0 || loadingAnimIsRunning -> context.toast(R.string.voice_file_is_loading)
+                    else -> prepare()
+                }
+                return true
+            }
+
             if (isPlaying()) {
                 pause()
             } else {
