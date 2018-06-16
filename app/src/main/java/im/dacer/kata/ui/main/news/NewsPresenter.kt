@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import com.dinuscxj.refresh.RecyclerRefreshLayout
 import im.dacer.kata.R
+import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.data.newprovider.BaseProvider
@@ -33,6 +34,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     @Inject lateinit var easyNewsProvider: EasyNewsProvider
     @Inject lateinit var nhkNewsProvider: NhkNewsProvider
     @Inject lateinit var settingUtility: SettingUtility
+    @Inject lateinit var multiprocessPref: MultiprocessPref
 
     var newsType = NewsFragment.NewsType.NHK_EASY
     private var initDataDisposable: Disposable? = null
@@ -78,7 +80,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                     mvpView?.showData(it)
                     onFetchFinished()
                     mvpView?.showLoadingText(null)
-                    if (!(!context.isWifi() && settingUtility.newsCachingWifiOnly)) {
+                    if (!(!context.isWifi() && multiprocessPref.newsCachingWifiOnly)) {
                         cacheAllData()
                     }
                 }, { log(it) })

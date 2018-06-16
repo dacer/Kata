@@ -4,8 +4,8 @@ import android.content.Context
 import im.dacer.kata.data.model.bigbang.BigBangStyle
 import im.dacer.kata.injection.ApplicationContext
 import im.dacer.kata.util.LangUtils
-import im.dacer.kata.util.webparse.WebParser
 import im.dacer.kata.util.engine.SearchEngine
+import im.dacer.kata.util.webparse.WebParser
 import net.grandcentrix.tray.TrayPreferences
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -62,6 +62,10 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getBoolean(TUTORIAL_FINISHED, false)
         set(value) { put(TUTORIAL_FINISHED, value) }
 
+    var newsCachingWifiOnly : Boolean
+        get() = getBoolean(PREF_NEWS_CACHING_WIFI_ONLY, true)
+        set(value) { put(PREF_NEWS_CACHING_WIFI_ONLY, value) }
+
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
         private const val SEARCH_ENGINE = "pref_search_engine"
@@ -71,6 +75,7 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         private const val WEB_PARSER = "pref_web_parser"
         private const val ENHANCED_MODE = "pref_enhanced_mode"
         private const val TUTORIAL_FINISHED = "pref_tutorial_finished"
+        private const val PREF_NEWS_CACHING_WIFI_ONLY = "news_caching_wifi_only"
 
     }
 

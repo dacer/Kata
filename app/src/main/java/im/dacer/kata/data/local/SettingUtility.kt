@@ -27,10 +27,6 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         get() = mHelper[PREF_HAS_SHOWN_GO_YOUTUBE, false]
         set(value) { mHelper[PREF_HAS_SHOWN_GO_YOUTUBE] = value }
 
-    var newsCachingWifiOnly : Boolean
-        get() = mHelper[PREF_NEWS_CACHING_WIFI_ONLY, true]
-        set(value) { mHelper[PREF_NEWS_CACHING_WIFI_ONLY] = value }
-
     var lastExitTab : Long
         get() = mHelper[PREF_LAST_EXIT_TAB, MainActivity.DrawerItem.INBOX.id]
         set(value) { mHelper[PREF_LAST_EXIT_TAB] = value }
@@ -45,7 +41,6 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         private const val PREF_DATABASE_IMPORTED = "databaseimported"
         private const val PREF_CACHE_MAX = "cachemax"
         private const val PREF_HAS_SHOWN_GO_YOUTUBE = "hasshowngoyoutube"
-        private const val PREF_NEWS_CACHING_WIFI_ONLY = "news_caching_wifi_only"
         private const val PREF_LAST_EXIT_TAB = "last_exit_tab"
         private const val DEMO_ALERT = "DEMO_ALERT"
     }

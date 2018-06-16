@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import im.dacer.kata.R
+import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.ui.base.BaseFragment
@@ -25,6 +26,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
 
     @Inject lateinit var newsPresenter: NewsPresenter
     @Inject lateinit var settingUtility: SettingUtility
+    @Inject lateinit var multiprocessPref: MultiprocessPref
 
     private val newsAdapter = NewsAdapter()
 
@@ -57,7 +59,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
 
     override fun onResume() {
         super.onResume()
-        newsAdapter.downloadPicWifiOnly = settingUtility.newsCachingWifiOnly
+        newsAdapter.downloadPicWifiOnly = multiprocessPref.newsCachingWifiOnly
     }
 
     override fun showLoadingText(msg: String?) {

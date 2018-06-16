@@ -3,6 +3,7 @@ package im.dacer.kata.ui.settings
 import android.os.Bundle
 import android.view.MenuItem
 import im.dacer.kata.R
+import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.ui.base.BaseSettingActivity
 import im.dacer.kata.util.extension.setMyActionBar
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 class CacheSettingsActivity : BaseSettingActivity() {
     @Inject lateinit var settingUtility: SettingUtility
+    @Inject lateinit var multiprocessPref: MultiprocessPref
 
     override fun layoutId() = R.layout.activity_cache_settings
 
@@ -30,13 +32,13 @@ class CacheSettingsActivity : BaseSettingActivity() {
         })
 
         arrayOf(newsCachingWifiOnlyLayout, newsCachingWifiOnly).setSwitchListener {
-            settingUtility.newsCachingWifiOnly = it
+            multiprocessPref.newsCachingWifiOnly = it
         }
     }
 
     override fun updateUI() {
         cacheMaxNumTv.text = cacheSeekBar.progress.toString()
-        newsCachingWifiOnly.isChecked = settingUtility.newsCachingWifiOnly
+        newsCachingWifiOnly.isChecked = multiprocessPref.newsCachingWifiOnly
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -19,6 +19,7 @@ import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.extension.getNavBarHeight
+import im.dacer.kata.util.extension.isWifi
 import im.dacer.kata.view.KataLayout
 import im.dacer.kata.view.MyScrollView
 import io.reactivex.disposables.Disposable
@@ -212,7 +213,7 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         if (bigBangScrollView.scrollY != 0) bigBangScrollView.smoothScrollTo(0,0)
     }
     override fun showVoiceBtn(url: String) {
-        musicPlayerView.setDataSource(url)
+        musicPlayerView.setDataSource(url, (isWifi() || !appPre.newsCachingWifiOnly))
     }
 
 

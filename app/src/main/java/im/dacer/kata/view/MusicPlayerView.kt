@@ -49,6 +49,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private var updateProcessDisposable: Disposable? = null
     private var textInBtnCenter: String? = null
     private var initAnim: ValueAnimator? = null
+    private var prepareStarted = false
     private var playerPrepared = false
     private var audioUrl: String? = null
     private var mShouldStartAnimationDrawable = false
@@ -77,7 +78,8 @@ class MusicPlayerView @JvmOverloads constructor(
         loadingDrawable.color = Color.WHITE
     }
 
-    fun setDataSource(voiceUrl: String, prepareImmediately: Boolean = true) {
+    fun setDataSource(voiceUrl: String, prepareImmediately: Boolean) {
+        prepareStarted = false
         audioUrl = voiceUrl
         if (prepareImmediately) {
             prepare()
@@ -87,6 +89,7 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     private fun prepare() {
+        prepareStarted = true
         playerPrepared = false
         startLoadingAnim()
         audioPlayer.setOnPreparedListener {
@@ -113,7 +116,7 @@ class MusicPlayerView @JvmOverloads constructor(
     }
 
     fun show() {
-        if (initProcess > 0) return
+        if (initProcess > 0 || !prepareStarted) return
         initAnim?.end()
 
         initAnim = ValueAnimator.ofFloat(0f, 1f)
