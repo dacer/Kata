@@ -30,9 +30,13 @@ class NewsDataManager @Inject constructor() {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getNhkNews(): Observable<ArrayList<NhkNews>> {
+
+    /**
+     * page >= 1
+     */
+    fun getNhkNews(page: Int): Observable<ArrayList<NhkNews>> {
         val gson = Gson()
-        return Rx2AndroidNetworking.get(getNhkNewsUrl())
+        return Rx2AndroidNetworking.get(getNhkNewsUrl(page))
                 .build()
                 .jsonObjectObservable
                 .map { obj -> obj["channel"] as JSONObject }
@@ -48,8 +52,6 @@ class NewsDataManager @Inject constructor() {
 
                     return@map result
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
     }
 
     private fun jsonArrayToEasyNews(jsonArray: JSONArray, gson: Gson): List<EasyNews> {
@@ -62,7 +64,7 @@ class NewsDataManager @Inject constructor() {
 
     companion object {
         private const val NHK_EASY_NEWS_URL = "http://www3.nhk.or.jp/news/easy/news-list.json"
-        private fun getNhkNewsUrl() = "https://www3.nhk.or.jp/news/json16/new_001.json"
+        private fun getNhkNewsUrl(page: Int) = "https://www3.nhk.or.jp/news/json16/new_${String.format("%03d", page)}.json"
     }
 
 }

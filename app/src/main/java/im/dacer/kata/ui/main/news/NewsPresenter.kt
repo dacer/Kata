@@ -41,6 +41,8 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     private var initDataDisposable: Disposable? = null
     private var fetchDataDisposable: Disposable? = null
     private var cacheDisposable: Disposable? = null
+    private var loadMoreDisposable: Disposable? = null
+
 
     private fun newsProvider(): BaseProvider {
         return when(newsType) {
@@ -59,19 +61,27 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                 .subscribe ({
                     mvpView?.showData(it)
                     if (!it.isEmpty()) mvpView?.showLoading(false)
-                    fetchData(it.isNotEmpty())
-                }, { log(it) }, {})
+                    fetchInitData(it.isNotEmpty())
+                }, { log(it) }, {}).addToComposite()
     }
+
 
     override fun onLoadMoreRequested() {
-        initDataDisposable?.dispose()
-        initDataDisposable = newsProvider().loadMore()
+        loadMoreDisposable?.dispose()
+        loadMoreDisposable = newsProvider().loadMoreAndCache()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    mvpView?.addItems(it)
                     mvpView?.loadMoreComplete()
-                }, { mvpView?.loadMoreFail() }, { mvpView?.loadMoreEnd() })
+                    cacheAllData()
+                }, {
+                    mvpView?.loadMoreEnd()
+                    LogUtils.log(it)
+                }, {}).addToComposite()
     }
 
-    private fun fetchData(hasData: Boolean = true) {
+    private fun fetchInitData(hasData: Boolean = true) {
         if (!networkConnected()) {
             onFetchFinished()
             if (!hasData) context.toast(R.string.no_internet)
@@ -92,7 +102,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                     if (!(!context.isWifi() && multiprocessPref.newsCachingWifiOnly)) {
                         cacheAllData()
                     }
-                }, { log(it) })
+                }, { log(it) }).addToComposite()
     }
 
     private var nowSyncingSize = 0
@@ -108,7 +118,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                     nowSyncingSize++
                     mvpView?.showLoadingText("${context.getString(R.string.caching_articles)} $nowSyncingSize")
 
-                }, { log(it) }, { mvpView?.showLoadingText(null) })
+                }, { log(it) }, { mvpView?.showLoadingText(null) }).addToComposite()
     }
 
 
@@ -145,14 +155,11 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     }
 
     override fun onRefresh() {
-        fetchData()
+        fetchInitData()
     }
 
     override fun detachView() {
         super.detachView()
-        initDataDisposable?.dispose()
-        fetchDataDisposable?.dispose()
-        cacheDisposable?.dispose()
     }
 
     private fun log(exception: Throwable) {

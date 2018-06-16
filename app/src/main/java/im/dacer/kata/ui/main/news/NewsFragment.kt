@@ -83,6 +83,10 @@ class NewsFragment: BaseFragment(), NewsMvp {
         newsAdapter.setData(index, item)
     }
 
+    override fun addItems(items: List<NewsItem>) {
+        newsAdapter.addData(items)
+    }
+
     override fun onDestroy() {
         newsPresenter.detachView()
         showDataDisposable?.dispose()
@@ -103,7 +107,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    newsAdapter.setNewData(it)
+                    newsAdapter.setNewData(it.toMutableList())
                 }
     }
 

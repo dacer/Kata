@@ -28,7 +28,7 @@ class NhkNewsProvider @Inject constructor(@ApplicationContext val context: Conte
     }
 
     override fun saveOnlineListAndReturnLocal(): Observable<List<NewsItem>> {
-        return newsDataManager.getNhkNews()
+        return newsDataManager.getNhkNews(1)
                 .doOnNext{nhkNewsDao.insertAll(it.toTypedArray())}
                 .concatMap {  nhkNewsDao.loadAll().take(1).toObservable() }
     }
@@ -54,10 +54,31 @@ class NhkNewsProvider @Inject constructor(@ApplicationContext val context: Conte
                 .toObservable()
     }
 
-    override fun loadMore(): Observable<List<NewsItem>> {
-        //todo
-        return Observable.empty()
+    override fun loadMoreAndCache(): Observable<List<NewsItem>> {
+        page += 1
+        return newsDataManager.getNhkNews(page)
+                .flatMap {
+                    val itemsNotInDb = getItemsNotInDb(it)
+                    if (itemsNotInDb.isEmpty()) {
+                        return@flatMap loadMoreAndCache()
+                    } else {
+                        return@flatMap Observable.just(itemsNotInDb)
+                    }
+                }
+                .map { it.map { it as NhkNews } }
+                .doOnNext{nhkNewsDao.insertAll(it.toTypedArray())}
+                .map { it.map { it as NewsItem } }
+
     }
 
+    private fun getItemsNotInDb(items: ArrayList<NhkNews>): ArrayList<NhkNews> {
+        val result = arrayListOf<NhkNews>()
+        for (item in items) {
+            if (nhkNewsDao.getSync(item.id()) == null) {
+                result.add(item)
+            }
+        }
+        return result
+    }
 
 }

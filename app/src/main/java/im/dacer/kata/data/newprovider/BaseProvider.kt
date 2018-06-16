@@ -4,6 +4,7 @@ import im.dacer.kata.data.model.news.NewsItem
 import io.reactivex.Observable
 
 abstract class BaseProvider {
+    var page = 1
 
     abstract fun loadLocalData(): Observable<List<NewsItem>>
 
@@ -13,5 +14,5 @@ abstract class BaseProvider {
 
     abstract fun markRead(id: String): Observable<NewsItem>
 
-    abstract fun loadMore(): Observable<List<NewsItem>>
+    abstract fun loadMoreAndCache(): Observable<List<NewsItem>>
 }

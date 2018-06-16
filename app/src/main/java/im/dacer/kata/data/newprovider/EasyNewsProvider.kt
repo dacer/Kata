@@ -54,7 +54,7 @@ class EasyNewsProvider @Inject constructor(@ApplicationContext val context: Cont
                 .toObservable()
     }
 
-    override fun loadMore(): Observable<List<NewsItem>> {
+    override fun loadMoreAndCache(): Observable<List<NewsItem>> {
         return Observable.empty()
     }
 

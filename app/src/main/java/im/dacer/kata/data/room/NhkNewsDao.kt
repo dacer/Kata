@@ -15,6 +15,9 @@ interface NhkNewsDao {
     @Query("SELECT * FROM nhk_news WHERE id=:id")
     fun get(id: String): Flowable<NhkNews>
 
+    @Query("SELECT * FROM nhk_news WHERE id=:id")
+    fun getSync(id: String): NhkNews?
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(users: NhkNews)
 
