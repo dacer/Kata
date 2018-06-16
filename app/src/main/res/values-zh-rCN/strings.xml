@@ -69,4 +69,9 @@
 
     <string name="drag_and_drop_here_to_stop">拖放到此处来停止</string>
     <string name="voice_file_is_loading">声音文件仍在加载中…</string>
+
+    <string name="demo_alert">请注意</string>
+    <string name="demo_alert_msg">这是一个预览版本\n\n- 并不能保证历史或设置在将来的版本中能保留\n\n- 使用过程中如出现崩溃闪退情况，请给予理解\n\n- 有任何问题或建议都可以在市场给我反馈\n\n- 如果觉得好用的话请在市场给我点一个赞，这是对我最大的支持，谢谢</string>
+    <string name="demo_alert_ok">我已阅读并理解</string>
+    <string name="demo_alert_no">不！</string>
 </resources>

@@ -72,4 +72,9 @@
 
     <string name="drag_and_drop_here_to_stop">Drag and drop here to stop</string>
     <string name="voice_file_is_loading">Voice file is still loading…</string>
+
+    <string name="demo_alert">CAUTION</string>
+    <string name="demo_alert_msg">It\'s a Beta version\n\n- There is no guarantee that the history or settings will be retained in future versions\n\n- Any questions or suggestions are welcomed</string>
+    <string name="demo_alert_ok">I\'m understand</string>
+    <string name="demo_alert_no">NO!</string>
 </resources>

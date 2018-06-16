@@ -35,6 +35,9 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         get() = mHelper[PREF_LAST_EXIT_TAB, MainActivity.DrawerItem.INBOX.id]
         set(value) { mHelper[PREF_LAST_EXIT_TAB] = value }
 
+    var demoAlertHasShown : Boolean
+        get() = mHelper[DEMO_ALERT, false]
+        set(value) { mHelper[DEMO_ALERT] = value }
 
 
     companion object {
@@ -44,5 +47,6 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         private const val PREF_HAS_SHOWN_GO_YOUTUBE = "hasshowngoyoutube"
         private const val PREF_NEWS_CACHING_WIFI_ONLY = "news_caching_wifi_only"
         private const val PREF_LAST_EXIT_TAB = "last_exit_tab"
+        private const val DEMO_ALERT = "DEMO_ALERT"
     }
 }
