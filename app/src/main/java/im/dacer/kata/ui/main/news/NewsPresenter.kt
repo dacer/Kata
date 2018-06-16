@@ -67,6 +67,10 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
 
 
     override fun onLoadMoreRequested() {
+        if (!networkConnected(showErrorToast = true)) {
+            mvpView?.loadMoreFail()
+            return
+        }
         loadMoreDisposable?.dispose()
         loadMoreDisposable = newsProvider().loadMoreAndCache()
                 .subscribeOn(Schedulers.newThread())
@@ -167,10 +171,14 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         mvpView?.showLoading(false)
     }
 
-    private fun networkConnected() : Boolean {
+    private fun networkConnected(showErrorToast: Boolean = false) : Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        return activeNetwork?.isConnectedOrConnecting == true
+        val result = activeNetwork?.isConnectedOrConnecting == true
+        if (!result && showErrorToast) {
+            context.toast(R.string.no_internet)
+        }
+        return result
     }
 
 }
