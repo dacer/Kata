@@ -7,7 +7,6 @@ import com.androidnetworking.AndroidNetworking
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.squareup.leakcanary.LeakCanary
 import com.tspoon.traceur.Traceur
 import im.dacer.kata.injection.component.AppComponent
 import im.dacer.kata.injection.component.DaggerAppComponent
@@ -41,17 +40,17 @@ class App : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return
-        }
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return
+//        }
         Fabric.with(this, Crashlytics())
 
         val okHttpClient = OkHttpClient().newBuilder()
 
         if (BuildConfig.DEBUG) {
-            LeakCanary.install(this)
+//            LeakCanary.install(this)
             Timber.plant(Timber.DebugTree())
             Traceur.enableLogging()
             Stetho.initializeWithDefaults(this)

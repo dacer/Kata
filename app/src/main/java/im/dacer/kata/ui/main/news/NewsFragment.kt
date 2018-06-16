@@ -11,6 +11,7 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.ui.base.BaseFragment
+import im.dacer.kata.view.RecyclerLoadMoreView
 import im.dacer.kata.view.indicator.PacmanIndicator
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -46,6 +47,10 @@ class NewsFragment: BaseFragment(), NewsMvp {
         newsAdapter.setOnItemClickListener { _, _, pos ->
             newsPresenter.onNewsItemClicked(pos, newsAdapter.getItem(pos))
         }
+        newsAdapter.setOnLoadMoreListener(newsPresenter, recyclerView)
+        newsAdapter.setLoadMoreView(RecyclerLoadMoreView())
+        newsAdapter.disableLoadMoreIfNotFullPage()
+
         newsAdapter.setOnItemChildClickListener { _, v, pos ->
             if (v.id == R.id.coverImage) {
                 newsPresenter.onPlayVideoClicked(newsAdapter.getItem(pos))
@@ -84,6 +89,9 @@ class NewsFragment: BaseFragment(), NewsMvp {
         super.onDestroy()
     }
 
+    override fun loadMoreComplete() { newsAdapter.loadMoreComplete() }
+    override fun loadMoreEnd() { newsAdapter.loadMoreEnd() }
+    override fun loadMoreFail() { newsAdapter.loadMoreFail() }
     override fun getMyActivity(): Activity? { return activity }
 
     private var showDataDisposable: Disposable? = null

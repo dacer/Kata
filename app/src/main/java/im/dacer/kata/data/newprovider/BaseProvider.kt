@@ -12,4 +12,6 @@ abstract class BaseProvider {
     abstract fun cacheAllNoContentArticles(): Observable<NewsItem>
 
     abstract fun markRead(id: String): Observable<NewsItem>
+
+    abstract fun loadMore(): Observable<List<NewsItem>>
 }

@@ -3,6 +3,7 @@ package im.dacer.kata.ui.main.news
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.dinuscxj.refresh.RecyclerRefreshLayout
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
@@ -29,7 +30,7 @@ import javax.inject.Inject
 
 @ConfigPersistent
 class NewsPresenter @Inject constructor(@ApplicationContext val context: Context) :
-        BasePresenter<NewsMvp>(), RecyclerRefreshLayout.OnRefreshListener {
+        BasePresenter<NewsMvp>(), RecyclerRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
 
     @Inject lateinit var easyNewsProvider: EasyNewsProvider
     @Inject lateinit var nhkNewsProvider: NhkNewsProvider
@@ -60,6 +61,14 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                     if (!it.isEmpty()) mvpView?.showLoading(false)
                     fetchData(it.isNotEmpty())
                 }, { log(it) }, {})
+    }
+
+    override fun onLoadMoreRequested() {
+        initDataDisposable?.dispose()
+        initDataDisposable = newsProvider().loadMore()
+                .subscribe({
+                    mvpView?.loadMoreComplete()
+                }, { mvpView?.loadMoreFail() }, { mvpView?.loadMoreEnd() })
     }
 
     private fun fetchData(hasData: Boolean = true) {

@@ -54,5 +54,10 @@ class NhkNewsProvider @Inject constructor(@ApplicationContext val context: Conte
                 .toObservable()
     }
 
+    override fun loadMore(): Observable<List<NewsItem>> {
+        //todo
+        return Observable.empty()
+    }
+
 
 }

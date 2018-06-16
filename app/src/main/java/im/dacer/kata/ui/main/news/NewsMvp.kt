@@ -11,4 +11,8 @@ interface NewsMvp : MvpView {
     fun getMyActivity(): Activity?
     fun showLoadingText(msg: String?)
     fun updateItem(index: Int, item: NewsItem)
+
+    fun loadMoreComplete()
+    fun loadMoreEnd()
+    fun loadMoreFail()
 }
