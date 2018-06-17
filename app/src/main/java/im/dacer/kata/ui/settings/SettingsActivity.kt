@@ -78,7 +78,7 @@ class SettingsActivity : BaseSettingActivity() {
         }
 
         tutorialVideoLayout.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutActivity.YOUTUBE_LINK)))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutActivity.getIntroVideoUrl(this))))
         }
 
         cacheLayout.setOnClickListener { startActivity(Intent(this@SettingsActivity, CacheSettingsActivity::class.java)) }

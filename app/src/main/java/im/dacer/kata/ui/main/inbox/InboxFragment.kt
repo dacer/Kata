@@ -117,7 +117,7 @@ class InboxFragment : BaseFragment(), InboxMvp {
         goToYoutubeView.startAnimation(slideUp)
         goToYoutubeView.setOnClickListener {
             goToYoutubeView.visibility = View.GONE
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutActivity.YOUTUBE_LINK)))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutActivity.getIntroVideoUrl(context!!))))
         }
     }
 

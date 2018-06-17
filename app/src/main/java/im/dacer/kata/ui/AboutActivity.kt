@@ -1,11 +1,14 @@
 package im.dacer.kata.ui
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.telephony.TelephonyManager
+import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -19,6 +22,8 @@ import me.imid.swipebacklayout.lib.SwipeBackLayout
 import me.imid.swipebacklayout.lib.Utils
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper
+import java.util.*
+
 
 class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivityBase {
     private var easterEgg = 0
@@ -137,6 +142,36 @@ class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivit
 
     companion object {
         private const val CC_LICENSE = "Creative Commons Attribution-ShareAlike Licence (V3.0)"
-        const val YOUTUBE_LINK = "https://www.youtube.com/watch?v=2XgRTL_W0Z0"
+        private const val YOUTUBE_LINK = "https://www.youtube.com/watch?v=2XgRTL_W0Z0"
+        private const val YOUKU_LINK = "https://v.youku.com/v_show/id_XMzM5NDMxODU0NA==.html"
+
+        fun getIntroVideoUrl(context: Context):String {
+            return if (languageIsCN(context) || localeIsCN() || simIsCN(context)) {
+                YOUKU_LINK
+            } else {
+                YOUTUBE_LINK
+            }
+        }
+
+        private fun simIsCN(context: Context): Boolean {
+            val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            var countryIso = tm.simCountryIso
+            var isCN = false
+            if (!TextUtils.isEmpty(countryIso)) {
+                countryIso = countryIso.toUpperCase(Locale.US)
+                if (countryIso.contains("CN")) {
+                    isCN = true
+                }
+            }
+            return isCN
+        }
+
+        private fun languageIsCN(context: Context): Boolean {
+            return context.resources.configuration.locale.country == "CN"
+        }
+
+        private fun localeIsCN(): Boolean {
+            return Locale.getDefault().country == "CN"
+        }
     }
 }
