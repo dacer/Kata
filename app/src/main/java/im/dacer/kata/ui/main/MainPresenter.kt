@@ -2,7 +2,7 @@ package im.dacer.kata.ui.main
 
 import android.content.Context
 import im.dacer.kata.data.local.SettingUtility
-import im.dacer.kata.injection.ApplicationContext
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.base.BasePresenter

@@ -5,7 +5,7 @@ import im.dacer.kata.data.model.bigbang.BigbangSearchResult
 import im.dacer.kata.data.model.bigbang.DictEntry
 import im.dacer.kata.data.model.bigbang.DictKanji
 import im.dacer.kata.data.model.bigbang.DictReading
-import im.dacer.kata.injection.ApplicationContext
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 

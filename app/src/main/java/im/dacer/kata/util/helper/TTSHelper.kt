@@ -5,7 +5,7 @@ import android.content.Context
 import android.speech.tts.TextToSpeech
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
-import im.dacer.kata.injection.ApplicationContext
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import java.util.*
 import javax.inject.Inject
 

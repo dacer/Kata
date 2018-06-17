@@ -2,7 +2,7 @@ package im.dacer.kata.data.local
 
 import android.content.Context
 import im.dacer.kata.data.model.bigbang.BigBangStyle
-import im.dacer.kata.injection.ApplicationContext
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.webparse.WebParser

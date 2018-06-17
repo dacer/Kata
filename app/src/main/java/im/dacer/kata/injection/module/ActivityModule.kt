@@ -5,7 +5,7 @@ import android.content.Context
 
 import dagger.Module
 import dagger.Provides
-import im.dacer.kata.injection.ActivityContext
+import im.dacer.kata.injection.qualifier.ActivityContext
 
 @Module
 class ActivityModule(private val activity: Activity) {

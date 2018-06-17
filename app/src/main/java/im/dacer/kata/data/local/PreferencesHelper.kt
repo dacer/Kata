@@ -3,7 +3,7 @@ package im.dacer.kata.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import im.dacer.kata.injection.ApplicationContext
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 

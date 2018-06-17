@@ -18,7 +18,7 @@ import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.History
-import im.dacer.kata.injection.ApplicationContext
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.helper.SchemeHelper

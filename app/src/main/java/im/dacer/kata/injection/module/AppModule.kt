@@ -8,7 +8,7 @@ import dagger.Provides
 import im.dacer.kata.data.room.AppDatabase
 import im.dacer.kata.data.room.EasyNewsDao
 import im.dacer.kata.data.room.NhkNewsDao
-import im.dacer.kata.injection.ApplicationContext
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import javax.inject.Singleton
 
 

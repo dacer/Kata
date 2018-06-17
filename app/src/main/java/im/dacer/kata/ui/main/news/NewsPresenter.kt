@@ -12,7 +12,7 @@ import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.data.newprovider.BaseProvider
 import im.dacer.kata.data.newprovider.EasyNewsProvider
 import im.dacer.kata.data.newprovider.NhkNewsProvider
-import im.dacer.kata.injection.ApplicationContext
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.VideoPlayerActivity

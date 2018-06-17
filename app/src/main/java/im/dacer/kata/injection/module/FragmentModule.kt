@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import dagger.Module
 import dagger.Provides
-import im.dacer.kata.injection.ActivityContext
+import im.dacer.kata.injection.qualifier.ActivityContext
 
 @Module
 class FragmentModule(private val fragment: Fragment) {

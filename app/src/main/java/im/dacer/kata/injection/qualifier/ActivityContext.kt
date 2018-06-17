@@ -1,4 +1,4 @@
-package im.dacer.kata.injection
+package im.dacer.kata.injection.qualifier
 
 
 import javax.inject.Qualifier
