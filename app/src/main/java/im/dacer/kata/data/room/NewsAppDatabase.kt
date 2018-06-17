@@ -7,7 +7,7 @@ import im.dacer.kata.data.model.news.NhkNews
 
 
 @Database(entities = [(EasyNews::class), (NhkNews::class)], version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase() {
+abstract class NewsAppDatabase : RoomDatabase() {
     abstract fun easyNewsDao(): EasyNewsDao
     abstract fun nhkNewsDao(): NhkNewsDao
 }

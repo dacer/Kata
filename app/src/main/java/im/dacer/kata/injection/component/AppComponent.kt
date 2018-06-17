@@ -8,7 +8,7 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.PreferencesHelper
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
-import im.dacer.kata.data.room.AppDatabase
+import im.dacer.kata.data.room.NewsAppDatabase
 import im.dacer.kata.data.room.EasyNewsDao
 import im.dacer.kata.data.room.NhkNewsDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
@@ -37,7 +37,7 @@ interface AppComponent {
 
     fun langUtils(): LangUtils
 
-    fun appDatabase(): AppDatabase
+    fun appDatabase(): NewsAppDatabase
 
     fun easyNewsDao(): EasyNewsDao
 

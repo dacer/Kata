@@ -5,7 +5,6 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import im.dacer.kata.data.room.AppDatabase
 import im.dacer.kata.data.room.EasyNewsDao
 import im.dacer.kata.data.room.NhkNewsDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
@@ -24,17 +23,18 @@ class AppModule(private val application: Application) {
 
     @Provides
     @Singleton
-    fun providesAppDatabase(@ApplicationContext context: Context): AppDatabase =
-            Room.databaseBuilder(context, AppDatabase::class.java, "news")
+    @NewsAppDatabase
+    fun providesAppDatabase(@ApplicationContext context: Context): im.dacer.kata.data.room.NewsAppDatabase =
+            Room.databaseBuilder(context, NewsAppDatabase::class.java, "news")
                     .allowMainThreadQueries().build()
 
     @Provides
     @Singleton
-    fun providesEasyNewsDao(database: AppDatabase): EasyNewsDao = database.easyNewsDao()
+    fun providesEasyNewsDao(@NewsAppDatabase database: im.dacer.kata.data.room.NewsAppDatabase): EasyNewsDao = database.easyNewsDao()
 
     @Provides
     @Singleton
-    fun providesNhkNewsDao(database: AppDatabase): NhkNewsDao = database.nhkNewsDao()
+    fun providesNhkNewsDao(@NewsAppDatabase database: im.dacer.kata.data.room.NewsAppDatabase): NhkNewsDao = database.nhkNewsDao()
 
     companion object {
     }
