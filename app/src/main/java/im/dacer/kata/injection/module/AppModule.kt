@@ -1,12 +1,13 @@
 package im.dacer.kata.injection.module
 
 import android.app.Application
+import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Room
+import android.arch.persistence.room.migration.Migration
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import im.dacer.kata.data.room.EasyNewsDao
-import im.dacer.kata.data.room.NhkNewsDao
+import im.dacer.kata.data.room.*
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import javax.inject.Singleton
 
@@ -23,18 +24,33 @@ class AppModule(private val application: Application) {
 
     @Provides
     @Singleton
-    @NewsAppDatabase
-    fun providesAppDatabase(@ApplicationContext context: Context): im.dacer.kata.data.room.NewsAppDatabase =
+    fun providesNewsAppDatabase(@ApplicationContext context: Context): NewsAppDatabase =
             Room.databaseBuilder(context, NewsAppDatabase::class.java, "news")
                     .allowMainThreadQueries().build()
 
     @Provides
     @Singleton
-    fun providesEasyNewsDao(@NewsAppDatabase database: im.dacer.kata.data.room.NewsAppDatabase): EasyNewsDao = database.easyNewsDao()
+    fun providesHistoryAppDatabase(@ApplicationContext context: Context): HistoryAppDatabase =
+            Room.databaseBuilder(context, HistoryAppDatabase::class.java, "History")
+                    .addMigrations(object : Migration(1, 2){
+                        override fun migrate(database: SupportSQLiteDatabase) {}
+                    })
+                    .allowMainThreadQueries().build()
 
     @Provides
     @Singleton
-    fun providesNhkNewsDao(@NewsAppDatabase database: im.dacer.kata.data.room.NewsAppDatabase): NhkNewsDao = database.nhkNewsDao()
+    fun providesEasyNewsDao(database: NewsAppDatabase): EasyNewsDao = database.easyNewsDao()
+
+    @Provides
+    @Singleton
+    fun providesNhkNewsDao(database: NewsAppDatabase): NhkNewsDao = database.nhkNewsDao()
+
+
+    @Provides
+    @Singleton
+    fun providesHistoryDao(database: HistoryAppDatabase): HistoryDao = database.historyDao()
+
+
 
     companion object {
     }

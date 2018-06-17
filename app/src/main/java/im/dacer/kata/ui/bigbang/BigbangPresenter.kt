@@ -4,14 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
 import im.dacer.kata.R
-import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.DictEntry
 import im.dacer.kata.data.model.bigbang.DictReading
+import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.data.model.segment.KanjiResult
-import im.dacer.kata.injection.qualifier.ApplicationContext
+import im.dacer.kata.data.room.HistoryDao
 import im.dacer.kata.injection.ConfigPersistent
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
@@ -35,6 +36,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
     @Inject lateinit var langUtils: LangUtils
     @Inject lateinit var searchDictHelper: SearchDictHelper
     @Inject lateinit var ttsHelper: TTSHelper
+    @Inject lateinit var historyDao: HistoryDao
     private var searchAction = SearchEngine.getDefaultSearchAction(context)
 
     private var currentSelectedToken: KanjiResult? = null
@@ -84,7 +86,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
                     kanjiResultList = it
                 }, { mvpView?.toastError(it) })
 
-        if(saveInHistory) HistoryHelper.saveAsync(context, text, alias)
+        if(saveInHistory) historyDao.insert(History(text = text, alias = alias))
     }
 
     fun onItemClicked(index: Int) {

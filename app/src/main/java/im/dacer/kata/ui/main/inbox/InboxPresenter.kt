@@ -13,20 +13,21 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import im.dacer.kata.R
 import im.dacer.kata.data.DictImporter
-import im.dacer.kata.data.local.HistoryDbHelper
-import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.History
-import im.dacer.kata.injection.qualifier.ApplicationContext
+import im.dacer.kata.data.room.HistoryDao
 import im.dacer.kata.injection.ConfigPersistent
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
+import im.dacer.kata.util.LogUtils
 import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.view.PopupView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -35,13 +36,12 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
 
     @Inject lateinit var settingUtility: SettingUtility
     @Inject lateinit var appPref: MultiprocessPref
+    @Inject lateinit var historyDao: HistoryDao
 
     private var nothingHappenedCountdown: Disposable? = null
     private var showGoYoutubeCountdown: Disposable? = null
     private var refreshHistoryDis: Disposable? = null
 
-    private val historyDbHelper by lazy { HistoryDbHelper(context) }
-    private val db by lazy { historyDbHelper.readableDatabase }
     private var historyList: List<History>? = null
 
 
@@ -51,10 +51,10 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
         override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
             val history = historyList?.get(pos)
             if (history != null) {
-                HistoryHelper.delete(db, history.id())
-                Snackbar.make(mvpView!!.getDecorView(), context.getString(R.string.deleted_sth, history.text()), Snackbar.LENGTH_SHORT)
+                historyDao.delete(history)
+                Snackbar.make(mvpView!!.getDecorView(), context.getString(R.string.deleted_sth, history.text), Snackbar.LENGTH_SHORT)
                         .setAction(R.string.redo, {
-                            HistoryHelper.save(db, history.text()!!)
+                            historyDao.insert(history)
                             refreshHistoryList()
                         })
                         .show()
@@ -86,21 +86,26 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
 
     override fun detachView() {
         super.detachView()
-        db.close()
     }
 
     fun refreshHistoryList() {
         refreshHistoryDis?.dispose()
         if (appPref.tutorialFinished && settingUtility.cacheMax > 0) {
-            refreshHistoryDis = Observable.fromCallable { HistoryHelper.get(db, settingUtility.cacheMax) }
-                    .subscribeOn(Schedulers.io())
+            refreshHistoryDis = Observable.fromCallable {
+                val result = arrayListOf<History>()
+                result.addAll(historyDao.loadAllAllStarredSync())
+                result.addAll(historyDao.loadUnstarredLimitSync(settingUtility.cacheMax))
+                return@fromCallable result
+            }
+                    .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        historyList = it
-                        if (historyList?.isNotEmpty() == true) {
+                    .subscribe ({
+                        Timber.e("size ${it.size}")
+                        if (it.isNotEmpty()) {
+                            historyList = it
                             mvpView?.showHistory(historyList!!)
                         }
-                    }
+                    }, { LogUtils.log(it) })
         } else {
             mvpView?.showHistory(null)
         }
@@ -124,7 +129,7 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
     fun onHistoryClicked(position: Int) {
         val history = historyList?.get(position)
         history?.run {
-            SchemeHelper.startKata(context, this.text()!!, saveInHistory =  false, activity = mvpView?.activity)
+            SchemeHelper.startKata(context, this.text!!, saveInHistory =  false, activity = mvpView?.activity)
         }
 
     }
@@ -145,17 +150,17 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
     }
 
     private fun starHistory(index: Int, h: History) {
-        val isStar = h.star() == true
-        mvpView?.updateHistory(index, History.newInstance(h.id(), h.text(), h.alias(), !isStar, h.createdAt()))
-        HistoryHelper.update(db, h.id(), h.alias(), !isStar)
+        h.star = h.star != true
+        mvpView?.updateHistory(index, h)
+        historyDao.update(h)
     }
 
     private fun setHistoryAlias(activity: Activity, index: Int, h: History) {
         MaterialDialog.Builder(activity)
-                .input(context.getString(R.string.set_alias), h.alias(), true,
+                .input(context.getString(R.string.set_alias), h.alias, true,
                         { _, char ->
-                            mvpView?.updateHistory(index, History.newInstance(h.id(), h.text(), char.toString(), h.star(), h.createdAt()))
-                            HistoryHelper.update(db, h.id(), char.toString(), h.star())
+                            h.alias = char.toString()
+                            historyDao.update(h)
                         })
                 .show()
     }
@@ -171,8 +176,7 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
     }
 
     private fun getHistoryLongClickItems(history: History?): ArrayList<String> =
-            arrayListOf(context.getString(if (history?.star() != true) { R.string.star } else { R.string.unstar }),
+            arrayListOf(context.getString(if (history?.star != true) { R.string.star } else { R.string.unstar }),
                     context.getString(R.string.set_alias))
-    companion object {
-    }
+
 }

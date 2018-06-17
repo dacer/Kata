@@ -5,8 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import im.dacer.kata.R
-import im.dacer.kata.data.local.HistoryHelper
 import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.data.model.bigbang.History
+import im.dacer.kata.data.room.HistoryDao
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.ui.bigbang.BigBangActivity
@@ -30,6 +31,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
     private var disposable: Disposable? = null
     private var sharedText: String? = null
     @Inject lateinit var appPre: MultiprocessPref
+    @Inject lateinit var historyDao: HistoryDao
 
     override fun layoutId() = R.layout.activity_float
 
@@ -102,7 +104,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
             return
         }
 
-        HistoryHelper.saveAsync(this, sharedText!!)
+        historyDao.insert(History(text = sharedText))
         applyData()
     }
 

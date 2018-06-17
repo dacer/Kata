@@ -8,11 +8,12 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.PreferencesHelper
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
-import im.dacer.kata.data.room.NewsAppDatabase
 import im.dacer.kata.data.room.EasyNewsDao
+import im.dacer.kata.data.room.HistoryDao
+import im.dacer.kata.data.room.NewsAppDatabase
 import im.dacer.kata.data.room.NhkNewsDao
-import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.injection.module.AppModule
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.LangUtils
 import javax.inject.Singleton
 
@@ -42,4 +43,6 @@ interface AppComponent {
     fun easyNewsDao(): EasyNewsDao
 
     fun nhkNewsDao(): NhkNewsDao
+
+    fun historyDao(): HistoryDao
 }
