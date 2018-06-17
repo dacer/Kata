@@ -32,3 +32,6 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+task assembleALL(type: GradleBuild) {
+    tasks = ['assembleCoolapkRelease', 'assembleGooglePlayRelease']
+}
