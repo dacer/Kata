@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Kata (Beta)</string>
     <string name="style">Style</string>
-    <string name="bigbang_hold_tip">Try to hold and copy ↓</string>
+    <string name="bigbang_intro_tip">When the app is running in the background, you can copy any paragraph or even a web link containing Japanese at any place. This app will automatically analyze its structure and show it to you.</string>
+    <string name="bigbang_hold_tip">Now, try to hold and copy ↓</string>
     <string name="initializing_database">Initializing database…</string>
     <string name="example_sentence">日本語は、主に日本国内や日本人同士の間で使われている言語である。日本は法令によって公用語を規定していないが、法令その他の公用文は全て日本語で記述され、各種法令において日本語を用いることが定められ、学校教育においては「国語」として教えられるなど、事実上、唯一の公用語となっている。</string>
     <string name="copy">Copy</string>

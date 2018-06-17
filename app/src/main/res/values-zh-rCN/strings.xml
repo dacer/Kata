@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Kata (Beta)</string>
     <string name="style">风格</string>
-    <string name="bigbang_hold_tip">尝试按住并复制 ↓</string>
+    <string name="bigbang_intro_tip">当程序运行在后台时，你可以在任何地方复制含有日语的段落甚至网页链接，本程序会自动分析其语法结构并展示给你。</string>
+    <string name="bigbang_hold_tip">那么先尝试按住并复制下面一段话试试吧 ↓</string>
     <string name="initializing_database">初始化数据库中…</string>
     <string name="example_sentence">日本語は、主に日本国内や日本人同士の間で使われている言語である。日本は法令によって公用語を規定していないが、法令その他の公用文は全て日本語で記述され、各種法令において日本語を用いることが定められ、学校教育においては「国語」として教えられるなど、事実上、唯一の公用語となっている。</string>
     <string name="copy">复制</string>

@@ -165,9 +165,9 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
         service.primaryClip = ClipData.newPlainText("", mvpView?.getClipTvText())
         Toast.makeText(context, context.getString(R.string.copied), Toast.LENGTH_SHORT).show()
 
-        nothingHappenedCountdown = Observable.timer(8, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { mvpView?.showNothingHappenedView()}
+//        nothingHappenedCountdown = Observable.timer(8, TimeUnit.SECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe { mvpView?.showNothingHappenedView()}
     }
 
     private fun getHistoryLongClickItems(history: History?): ArrayList<String> =

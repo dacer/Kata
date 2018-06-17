@@ -84,7 +84,7 @@ class InboxFragment : BaseFragment(), InboxMvp {
             permissionBottomMargin.layoutParams.height = activity!!.getNavBarHeight()
             permissionBottomMargin.layoutParams = permissionBottomMargin.layoutParams
         }
-        nothingHappenedView.visibility = View.GONE
+//        nothingHappenedView.visibility = View.GONE
         goToYoutubeView.visibility = View.GONE
     }
 
