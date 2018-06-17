@@ -1,10 +1,15 @@
 package im.dacer.kata.ui.settings
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.MenuItem
 import com.afollestad.materialdialogs.MaterialDialog
+import im.dacer.kata.BuildConfig
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
@@ -44,6 +49,7 @@ class SettingsActivity : BaseSettingActivity() {
             refreshService()
         }
         arrayOf(enhancedModeLayout, enhancedModeSwitch).setSwitchListener {
+            if (it) showIgnoreBatteryOptimizationDialog()
             appPref.enhancedMode = it
             refreshService()
         }
@@ -109,4 +115,19 @@ class SettingsActivity : BaseSettingActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun showIgnoreBatteryOptimizationDialog() {
+        if (BuildConfig.FLAVOR != "coolapk") return
+        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+
+                val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                intent.data = Uri.parse("package:$packageName")
+                startActivity(intent)
+            }
+        }
+    }
+
 }

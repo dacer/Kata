@@ -54,6 +54,16 @@ android {
         }
     }
 
+    flavorDimensions "tier"
+    productFlavors {
+        googlePlay {
+            dimension "tier"
+        }
+        coolapk {
+            dimension "tier"
+        }
+
+    }
     packagingOptions {
         exclude 'META-INF/CONTRIBUTORS.md'
         exclude 'META-INF/LICENSE.md'
