@@ -1,4 +1,4 @@
-package im.dacer.kata.ui
+package im.dacer.kata.ui.about
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -19,24 +19,18 @@ import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import me.drakeet.multitype.Items
 import me.drakeet.support.about.*
-import me.imid.swipebacklayout.lib.SwipeBackLayout
-import me.imid.swipebacklayout.lib.Utils
-import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase
-import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper
 import org.jetbrains.anko.toast
 import java.util.*
 
 
-class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivityBase {
-    private var easterEgg = 0
+class AboutActivity : BaseAboutActivity() {
 
-    private var mHelper: SwipeBackActivityHelper? = null
+    private var easterEgg = 0
     private val appPref by lazy { MultiprocessPref(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mHelper = SwipeBackActivityHelper(this)
-        mHelper!!.onActivityCreate()
+        activityComponent().inject(this)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
@@ -46,29 +40,6 @@ class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivit
         }
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        mHelper!!.onPostCreate()
-    }
-
-
-    override fun <T : View?> findViewById(id: Int): T {
-        val v = super.findViewById<View>(id)
-        return if (v == null && mHelper != null) mHelper?.findViewById(id) as T else v as T
-    }
-
-    override fun getSwipeBackLayout(): SwipeBackLayout {
-        return mHelper!!.swipeBackLayout
-    }
-
-    override fun setSwipeBackEnable(enable: Boolean) {
-        swipeBackLayout.setEnableGesture(enable)
-    }
-
-    override fun scrollToFinishActivity() {
-        Utils.convertActivityToTranslucent(this)
-        swipeBackLayout.scrollToFinishActivity()
-    }
     override fun onCreateHeader(icon: ImageView, slogan: TextView, version: TextView) {
         icon.setImageResource(R.drawable.icon)
         icon.setOnClickListener {
@@ -93,6 +64,12 @@ class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivit
 
         items.add(Line())
 
+        items.add(Category(s(R.string.my_other_projects)))
+        items.add(NewContributor(R.drawable.pomodoto, s(R.string.pomotodo), s(R.string.pomotodo_desc), "https://pomotodo.com"))
+        items.add(NewContributor(R.drawable.kari, s(R.string.simple_pomodoro), s(R.string.simple_pomodoro_desc), "market://details?id=com.dacer.simplepomodoro"))
+
+        items.add(Line())
+
         items.add(Category("Thanks"))
         items.add(License("URL2io", "", "", "http://www.url2io.com/"))
         items.add(License("Mercury", "", "", "https://mercury.postlight.com/web-parser/"))
@@ -114,10 +91,8 @@ class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivit
                 "https://github.com/drakeet/about-page"))
     }
 
-    override fun onActionClick(action: View?) {
+    override fun onActionClick(action: View) {
         super.onActionClick(action)
-//        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/dacer/Kata"))
-//        startActivity(intent)
         goGooglePlay()
     }
 

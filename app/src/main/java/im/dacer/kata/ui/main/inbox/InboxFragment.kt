@@ -17,7 +17,7 @@ import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
 import im.dacer.kata.R
 import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.service.ListenClipboardService
-import im.dacer.kata.ui.AboutActivity
+import im.dacer.kata.ui.about.AboutActivity
 import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.util.extension.getNavBarHeight
 import im.dacer.kata.util.extension.timberAndToast

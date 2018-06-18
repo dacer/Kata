@@ -14,7 +14,7 @@ import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.service.ListenClipboardService
-import im.dacer.kata.ui.AboutActivity
+import im.dacer.kata.ui.about.AboutActivity
 import im.dacer.kata.ui.base.BaseSettingActivity
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine

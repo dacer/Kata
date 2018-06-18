@@ -36,6 +36,11 @@
     <string name="no_result">无结果</string>
     <string name="developer">开发者</string>
     <string name="dacer">Dacer</string>
+    <string name="my_other_projects">我的其他项目</string>
+    <string name="pomotodo">Pomotodo</string>
+    <string name="pomotodo_desc">编写了代码部分</string>
+    <string name="simple_pomodoro">极简番茄</string>
+    <string name="simple_pomodoro_desc">重写中…</string>
 
     <string name="settings">设置</string>
     <string name="enable">启用</string>

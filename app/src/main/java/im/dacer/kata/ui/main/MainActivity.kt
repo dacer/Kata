@@ -14,7 +14,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SettingUtility
-import im.dacer.kata.ui.AboutActivity
+import im.dacer.kata.ui.about.AboutActivity
 import im.dacer.kata.ui.base.BaseTransparentActivity
 import im.dacer.kata.ui.lyric.LyricActivity
 import im.dacer.kata.ui.main.inbox.InboxFragment
