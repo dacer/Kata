@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.PopupMenu
 import android.util.Property
+import android.view.Gravity
 import android.view.View
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
@@ -65,7 +66,7 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         searchBtn.setOnClickListener { bigbangPresenter.onClickSearch() }
         audioBtn.setOnClickListener { bigbangPresenter.onClickAudio() }
         searchBtn.setOnLongClickListener {
-            val popup = PopupMenu(this, it)
+            val popup = PopupMenu(this, it, Gravity.RIGHT)
             it.setOnTouchListener(popup.dragToOpenListener)
             SearchEngine.getSupportSearchEngineList().forEach { popup.menu.add(it) }
             popup.setOnMenuItemClickListener { bigbangPresenter.changeAndFireSearchAction(it) }
