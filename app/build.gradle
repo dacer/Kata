@@ -19,8 +19,8 @@ android {
         applicationId "im.dacer.kata"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 41
-        versionName "1.0.0-Beta.2"
+        versionCode 42
+        versionName "1.0.0-Beta.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
