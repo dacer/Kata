@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
-apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'kotlin-kapt'
 
 // enable it when you need to check method count
@@ -91,7 +90,6 @@ dependencies {
     annotationProcessor immutablesValue // <-- for annotation processor
     compileOnly immutablesValue // <-- for annotation API
     compileOnly immutablesGson
-    compileOnly compileOnlyLibs
 
     implementation(crashlyticsSdk) { transitive = true }
     implementation(materialdrawer) { transitive = true }

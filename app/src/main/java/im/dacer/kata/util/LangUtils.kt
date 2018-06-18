@@ -2,7 +2,7 @@ package im.dacer.kata.util
 
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import im.dacer.kata.data.local.MultiprocessPref
-import im.dacer.kata.data.model.bigbang.DictEntry
+import im.dacer.kata.data.model.bigbang.generated.autovalue.DictEntry
 import im.dacer.kata.util.extension.urlEncode
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers

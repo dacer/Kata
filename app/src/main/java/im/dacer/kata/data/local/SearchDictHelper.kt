@@ -2,9 +2,9 @@ package im.dacer.kata.data.local
 
 import android.content.Context
 import im.dacer.kata.data.model.bigbang.BigbangSearchResult
-import im.dacer.kata.data.model.bigbang.DictEntry
-import im.dacer.kata.data.model.bigbang.DictKanji
-import im.dacer.kata.data.model.bigbang.DictReading
+import im.dacer.kata.data.model.bigbang.generated.autovalue.DictEntry
+import im.dacer.kata.data.model.bigbang.generated.autovalue.DictKanji
+import im.dacer.kata.data.model.bigbang.generated.autovalue.DictReading
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

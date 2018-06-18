@@ -1,18 +1,14 @@
-package im.dacer.kata.data.model.bigbang;
+package im.dacer.kata.data.model.bigbang.generated.autovalue;
 
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 
-import com.google.auto.value.AutoValue;
-import com.squareup.sqldelight.RowMapper;
-
-import im.dacer.kata.core.model.DictEntryModel;
+import im.dacer.kata.data.model.bigbang.generated.sql.DictEntryModel;
+import im.dacer.kata.data.model.bigbang.generated.sql.RowMapper;
 
 /**
  * Created by Dacer on 11/01/2018.
  */
 
-@AutoValue
 public abstract class DictEntry implements Parcelable, DictEntryModel {
 
     public static final DictEntryModel.Factory<DictEntry> FACTORY =
