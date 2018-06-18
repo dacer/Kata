@@ -45,6 +45,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private val loadingDrawable = BallScaleMultipleIndicator()
 
     private var posProcess: Float = 0f   // position process [0 - 1]
+    private var touchDownPosProcess: Float = 0f
     private var initProcess: Float = 0f
     private var updateProcessDisposable: Disposable? = null
     private var textInBtnCenter: String? = null
@@ -98,7 +99,7 @@ class MusicPlayerView @JvmOverloads constructor(
             show()
         }
         audioPlayer.setOnBufferUpdateListener {
-            val isLoading = it <= 100 * getProcessByPlayerCurrentPos()
+            val isLoading = (it <= 100 * getProcessByPlayerCurrentPos()) && (it < 100)
             if (isLoading) {
                 if (!playerPrepared) return@setOnBufferUpdateListener
                 playerPrepared = false
@@ -242,10 +243,12 @@ class MusicPlayerView @JvmOverloads constructor(
                 }
                 ACTION_UP, ACTION_CANCEL -> {
                     val playerProcess = getProcessByPlayerCurrentPos()
-                    if (playerProcess != posProcess) {
+                    if (freeMoveMode) {
+                        posProcess = touchDownPosProcess
+
+                    } else if (playerProcess != posProcess) {
                         audioPlayer.seekTo((audioPlayer.duration * posProcess).toLong())
                         textInBtnCenter = audioPlayer.currentPosition.toMmSs()
-                        invalidate()
                     }
                     doOnTouchUp()
                 }
@@ -314,6 +317,7 @@ class MusicPlayerView @JvmOverloads constructor(
     private inner class MyGestureDetector : GestureDetector.SimpleOnGestureListener() {
 
         override fun onDown(e: MotionEvent): Boolean {
+            touchDownPosProcess = posProcess
             actionDownX = e.x
             actionDownY = e.y
             stopUpdateProcess()
@@ -333,6 +337,10 @@ class MusicPlayerView @JvmOverloads constructor(
             if (isPlaying()) {
                 pause()
             } else {
+                if (audioPlayer.duration - audioPlayer.currentPosition < 50 ) {
+                    textInBtnCenter = ""
+                    audioPlayer.seekTo(0L)
+                }
                 play()
             }
             return true
