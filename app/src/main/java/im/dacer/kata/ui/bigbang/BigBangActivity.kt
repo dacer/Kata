@@ -214,9 +214,9 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         if (bigBangScrollView.scrollY != 0) bigBangScrollView.smoothScrollTo(0,0)
     }
     override fun showVoiceBtn(url: String) {
+        if (!(url.startsWith("http", true) || url.startsWith("file", true))) return
         musicPlayerView.setDataSource(url, (isWifi() || !appPre.newsCachingWifiOnly))
     }
-
 
     companion object {
         const val EXTRA_TEXT = "extra_text"

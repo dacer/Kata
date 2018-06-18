@@ -16,12 +16,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import im.dacer.kata.BuildConfig
 import im.dacer.kata.R
+import im.dacer.kata.data.local.MultiprocessPref
 import me.drakeet.multitype.Items
 import me.drakeet.support.about.*
 import me.imid.swipebacklayout.lib.SwipeBackLayout
 import me.imid.swipebacklayout.lib.Utils
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper
+import org.jetbrains.anko.toast
 import java.util.*
 
 
@@ -29,6 +31,7 @@ class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivit
     private var easterEgg = 0
 
     private var mHelper: SwipeBackActivityHelper? = null
+    private val appPref by lazy { MultiprocessPref(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,12 +71,13 @@ class AboutActivity : me.drakeet.support.about.AboutActivity(), SwipeBackActivit
     }
     override fun onCreateHeader(icon: ImageView, slogan: TextView, version: TextView) {
         icon.setImageResource(R.drawable.icon)
-//        icon.setOnClickListener {
-//            easterEgg++
-//            if (easterEgg > 5) {
-//                toast("\uD83E\uDD21")
-//            }
-//        }
+        icon.setOnClickListener {
+            easterEgg++
+            if (easterEgg > 5) {
+                toast("\uD83E\uDD21")
+                appPref.easterEgg = true
+            }
+        }
         slogan.setText(R.string.app_name)
         version.text = BuildConfig.VERSION_NAME
     }

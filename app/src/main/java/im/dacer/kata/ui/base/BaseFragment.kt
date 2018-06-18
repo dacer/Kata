@@ -23,14 +23,6 @@ abstract class BaseFragment: Fragment(), MvpView {
     private var fragmentComponent: FragmentComponent? = null
     private var fragmentId = 0L
 
-    private val progressDialog: MaterialDialog by lazy {
-        //todo i18n
-        MaterialDialog.Builder(activity!!)
-                .title("Loading...")
-                .progress(true, 0)
-                .build()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

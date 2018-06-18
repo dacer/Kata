@@ -7,12 +7,16 @@ import android.text.TextWatcher
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
+import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.util.helper.LyricsHelper
 import im.dacer.kata.util.helper.SchemeHelper
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_lyric.*
 
 class LyricActivity : BaseTransparentSwipeActivity() {
@@ -22,6 +26,7 @@ class LyricActivity : BaseTransparentSwipeActivity() {
     private val progressDialog: MaterialDialog by lazy { MaterialDialog.Builder(this).progress(true, 0).build() }
     private var pageIndex = 1
     private var searchKeyWord: String? = null
+    private val appPref by lazy { MultiprocessPref(this) }
 
     override fun layoutId() = R.layout.activity_lyric
 
@@ -57,20 +62,17 @@ class LyricActivity : BaseTransparentSwipeActivity() {
         adapter.setOnItemClickListener { _, _, pos ->
             adapter.getItem(pos)?.id?.run {
                 progressDialog.show()
-                searchDisposable = LyricsHelper.getLyric(this)
-                        .map {
-                            it.split("\n").filter {
-                                        !(it.matches(Regex("^\\[(by|ti|ar|al).+]")) ||
-                                        it.matches(Regex("^.*作曲.*[:：].+")) ||
-                                        it.matches(Regex("^.*(作词|作詞).*[:：].+")))
-                            }.joinToString("\n")
-                        }
-                        .map { it.replace(Regex("^\n+"), "") }
+                searchDisposable = getSearchObservable(this)
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             progressDialog.dismiss()
-                            SchemeHelper.startKata(this@LyricActivity, it, alias = adapter.getItem(pos)!!.name)
-                        }, { timberAndToast(it) })
+                            SchemeHelper.startKata(this@LyricActivity, it.text,
+                                    alias = adapter.getItem(pos)!!.name, voiceUrl = it.voiceUrl)
+                        }, {
+                            progressDialog.dismiss()
+                            timberAndToast(it)
+                        })
             }
         }
 
@@ -95,6 +97,17 @@ class LyricActivity : BaseTransparentSwipeActivity() {
         }
 
     }
+
+    private fun getSearchObservable(id: Long): Observable<KataInfo> {
+        return if (appPref.easterEgg) {
+            Observable.zip(LyricsHelper.getLyric(id), LyricsHelper.getMusicUrl(id),
+                    BiFunction<String, String, KataInfo> { t, u -> KataInfo(t, u) })
+        } else {
+            LyricsHelper.getLyric(id).map { KataInfo(it, "") }
+        }
+    }
+
+    private data class KataInfo(val text: String, val voiceUrl: String?)
 
     override fun onDestroy() {
         super.onDestroy()

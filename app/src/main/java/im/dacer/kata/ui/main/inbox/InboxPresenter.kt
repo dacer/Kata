@@ -27,7 +27,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -100,7 +99,6 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({
-                        Timber.e("size ${it.size}")
                         if (it.isNotEmpty()) {
                             historyList = it
                             mvpView?.showHistory(historyList!!)
