@@ -6,7 +6,7 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.data.model.news.NhkNews
-import im.dacer.kata.data.room.NhkNewsDao
+import im.dacer.kata.data.room.dao.NhkNewsDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.webparse.WebParser
 import io.reactivex.Observable

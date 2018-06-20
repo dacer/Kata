@@ -10,7 +10,7 @@ import im.dacer.kata.data.model.bigbang.generated.autovalue.DictEntry
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictReading
 import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.data.model.segment.KanjiResult
-import im.dacer.kata.data.room.HistoryDao
+import im.dacer.kata.data.room.dao.HistoryDao
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter

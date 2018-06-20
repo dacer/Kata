@@ -1,13 +1,16 @@
 package im.dacer.kata.injection.module
 
 import android.app.Application
-import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Room
-import android.arch.persistence.room.migration.Migration
 import android.content.Context
 import dagger.Module
 import dagger.Provides
 import im.dacer.kata.data.room.*
+import im.dacer.kata.data.room.dao.EasyNewsDao
+import im.dacer.kata.data.room.dao.HistoryDao
+import im.dacer.kata.data.room.dao.NhkNewsDao
+import im.dacer.kata.data.room.database.HistoryAppDatabase
+import im.dacer.kata.data.room.database.NewsAppDatabase
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import javax.inject.Singleton
 
@@ -26,15 +29,14 @@ class AppModule(private val application: Application) {
     @Singleton
     fun providesNewsAppDatabase(@ApplicationContext context: Context): NewsAppDatabase =
             Room.databaseBuilder(context, NewsAppDatabase::class.java, "news")
+                    .addMigrations(*NewsMigrationHelper.get())
                     .allowMainThreadQueries().build()
 
     @Provides
     @Singleton
     fun providesHistoryAppDatabase(@ApplicationContext context: Context): HistoryAppDatabase =
             Room.databaseBuilder(context, HistoryAppDatabase::class.java, "History")
-                    .addMigrations(object : Migration(1, 2){
-                        override fun migrate(database: SupportSQLiteDatabase) {}
-                    })
+                    .addMigrations(*HistoryMigrationHelper.get())
                     .allowMainThreadQueries().build()
 
     @Provides

@@ -7,7 +7,7 @@ import android.util.DisplayMetrics
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.model.bigbang.History
-import im.dacer.kata.data.room.HistoryDao
+import im.dacer.kata.data.room.dao.HistoryDao
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.ui.bigbang.BigBangActivity

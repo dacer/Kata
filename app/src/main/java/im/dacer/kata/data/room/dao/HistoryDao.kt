@@ -1,4 +1,4 @@
-package im.dacer.kata.data.room
+package im.dacer.kata.data.room.dao
 
 import android.arch.persistence.room.*
 import im.dacer.kata.data.model.bigbang.History
