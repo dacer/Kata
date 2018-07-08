@@ -21,7 +21,7 @@ class NewsAdapter : BaseQuickAdapter<NewsItem, BaseViewHolder>(R.layout.item_new
 
     override fun convert(helper: BaseViewHolder, item: NewsItem) {
         helper.setText(R.id.titleTv, item.title() ?: "")
-                .setText(R.id.timeTv, item.time() ?: "")
+                .setText(R.id.timeTv, item.timeForDisplay(mContext))
                 .setVisible(R.id.playIcon, !item.videoUrl().isNullOrEmpty())
                 .setTextColor(R.id.titleTv, if(item.hasRead()) getColor(R.color.newsSubTitle) else getColor(R.color.newsTitle) )
                 .addOnClickListener(R.id.coverImage)

@@ -3,6 +3,7 @@ package im.dacer.kata.data.model.news
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import java.util.*
 
 
 @Entity(tableName = "easy_news")
@@ -16,7 +17,7 @@ data class EasyNews(@PrimaryKey var news_id: String,
                     var news_easy_voice_uri: String? = null,
                     var news_easy_movie_uri: String? = null,
                     var content: String? = null,
-                    var hasRead: Boolean = false) : NewsItem {
+                    var hasRead: Boolean = false) : NewsItem() {
 
     override fun updateContent(content: String?) {
         this.content = content
@@ -65,9 +66,12 @@ data class EasyNews(@PrimaryKey var news_id: String,
         return "https://nhks-vh.akamaihd.net/i/news/easy/$news_easy_voice_uri/master.m3u8"
     }
 
-    override fun time(): String? {
-        return news_prearranged_time?.substring(5, 10)
+    override fun timeForParse(): String? {
+        return news_prearranged_time
     }
+
+    @Ignore override val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    @Ignore override val DATE_LOCALE = Locale.ENGLISH
 
     /**
      * check string is something like k10011424371_201805011818_201805011819.mp4 or k10011424371000.mp4
@@ -76,25 +80,4 @@ data class EasyNews(@PrimaryKey var news_id: String,
         if (isNullOrEmpty()) return false
         return this?.contains(".") == true
     }
-    /**
-     * a simple parser for m3u8 file
-     */
-//    private fun getNextLineBy(condition: (String) -> Boolean): Single<String> {
-//        return Rx2AndroidNetworking.get(MOVIE_VOICE_URL)
-//                .build()
-//                .stringSingle
-//                .map {
-//                    var returnNextLine = false
-//                    for (line in it.split("\n")) {
-//                        if (returnNextLine) return@map line
-//                        Timber.e("$line --> ${condition(line)}")
-//                        if (condition(line)) {
-//                            returnNextLine = true
-//                        }
-//                    }
-//                    return@map ""
-//                }
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//    }
 }

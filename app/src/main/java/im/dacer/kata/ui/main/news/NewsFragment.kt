@@ -102,7 +102,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
     override fun showData(newsItems: List<NewsItem>) {
         showDataDisposable?.dispose()
         showDataDisposable = Observable.fromCallable {
-            newsItems.sortedByDescending { it.time() }
+            newsItems.sortedByDescending { it.timeInMillis() }
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

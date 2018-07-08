@@ -3,6 +3,7 @@ package im.dacer.kata.data.model.news
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import java.util.*
 
 
 @Entity(tableName = "nhk_news")
@@ -18,7 +19,7 @@ data class NhkNews(
 
         //↓ need generate
         var content: String? = null,
-        var hasRead: Boolean = false) : NewsItem {
+        var hasRead: Boolean = false) : NewsItem() {
 
 
     override fun updateContent(content: String?) {
@@ -55,10 +56,12 @@ data class NhkNews(
 
     override fun voiceUrl(): String? = null
 
-    override fun time(): String? {
-        return pubDate?.substring(5, pubDate!!.length - 5)
+    override fun timeForParse(): String? {
+        return pubDate?.replace(" +0900", "")
     }
 
+    @Ignore override val DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss"
+    @Ignore override val DATE_LOCALE = Locale.ENGLISH
 
     private fun String?.pathToUrl(): String? {
         if (this == null) return null
