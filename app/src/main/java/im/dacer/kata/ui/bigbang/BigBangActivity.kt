@@ -65,6 +65,7 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         handleIntent(intent)
         searchBtn.setOnClickListener { bigbangPresenter.onClickSearch() }
         audioBtn.setOnClickListener { bigbangPresenter.onClickAudio() }
+        audioBtn.setOnLongClickListener { bigbangPresenter.onLongClickAudio() }
         searchBtn.setOnLongClickListener {
             val popup = PopupMenu(this, it, Gravity.RIGHT)
             it.setOnTouchListener(popup.dragToOpenListener)

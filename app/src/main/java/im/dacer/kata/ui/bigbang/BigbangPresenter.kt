@@ -6,9 +6,9 @@ import android.view.MenuItem
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
+import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictEntry
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictReading
-import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.data.room.dao.HistoryDao
 import im.dacer.kata.injection.ConfigPersistent
@@ -43,6 +43,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
     private var kanjiResultList: List<KanjiResult>? = null
     private var segmentDis: Disposable? = null
     private var dictDisposable: Disposable? = null
+    private var originText: String = ""
 
 
     override fun detachView() {
@@ -73,6 +74,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         }
         if (voiceUrl != null && voiceUrl.isNotEmpty()) { mvpView?.showVoiceBtn(voiceUrl) }
 
+        originText = text
         mvpView?.resetBigBangScrollViewPos()
         mvpView?.resetMeaningViewPos()
         segmentDis?.dispose()
@@ -138,7 +140,16 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
 
     fun onClickAudio() : Boolean {
         try {
-            currentSelectedToken?.run { ttsHelper.play(mvpView?.activity!!, this.baseForm) }
+            ttsHelper.play(mvpView?.activity!!, currentSelectedToken?.baseForm)
+        } catch (e: Exception) {
+            mvpView?.toastError(e)
+        }
+        return true
+    }
+
+    fun onLongClickAudio() : Boolean {
+        try {
+            ttsHelper.play(mvpView?.activity!!, originText)
         } catch (e: Exception) {
             mvpView?.toastError(e)
         }
