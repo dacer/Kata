@@ -30,14 +30,18 @@ class TTSHelper @Inject constructor(@ApplicationContext appContext: Context): Ut
     private val tts: TextToSpeech = TextToSpeech(appContext, initListener)
     private var ttsStarted = false
 
+    var progressListener: TTSPlayingListener? = null
+
     override fun onDone(utteranceId: String?) {
         ttsStarted = false
+        progressListener?.isPlaying(false)
     }
 
     override fun onError(utteranceId: String?) {}
 
     override fun onStart(utteranceId: String?) {
         ttsStarted = true
+        progressListener?.isPlaying(true)
     }
 
     fun play(activity: Activity, string: String?) {
@@ -69,5 +73,7 @@ class TTSHelper @Inject constructor(@ApplicationContext appContext: Context): Ut
         tts.shutdown()
     }
 
-
+    interface TTSPlayingListener {
+        fun isPlaying(playing: Boolean)
+    }
 }

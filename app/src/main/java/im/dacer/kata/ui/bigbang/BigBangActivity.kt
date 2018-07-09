@@ -114,6 +114,10 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         }
     }
 
+    override fun showAudioBtnPlaying(playing: Boolean) {
+        runOnUiThread { audioBtn.text = if (playing) "{gmd-pause-circle-filled}" else "{gmd-play-circle-filled}" }
+    }
+
     override fun hideSystemUI() {
         if (systemUiIsHidden) return
 

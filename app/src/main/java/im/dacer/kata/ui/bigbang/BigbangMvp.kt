@@ -14,6 +14,7 @@ interface BigbangMvp : MvpView {
     fun resetBigBangScrollViewPos()
     fun finish()
     fun showVoiceBtn(url: String)
+    fun showAudioBtnPlaying(playing: Boolean)
 
     var descText: String?
     var meaningText: String

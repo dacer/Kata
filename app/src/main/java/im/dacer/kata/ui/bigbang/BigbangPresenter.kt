@@ -45,6 +45,14 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
     private var dictDisposable: Disposable? = null
     private var originText: String = ""
 
+    override fun attachView(mvpView: BigbangMvp) {
+        super.attachView(mvpView)
+        ttsHelper.progressListener = object : TTSHelper.TTSPlayingListener {
+            override fun isPlaying(playing: Boolean) {
+                mvpView.showAudioBtnPlaying(playing)
+            }
+        }
+    }
 
     override fun detachView() {
         super.detachView()
