@@ -22,7 +22,6 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         get() = mHelper[PREF_CACHE_MAX, 10]
         set(value) { mHelper[PREF_CACHE_MAX] = value }
 
-
     var hasShownGoYoutube : Boolean
         get() = mHelper[PREF_HAS_SHOWN_GO_YOUTUBE, false]
         set(value) { mHelper[PREF_HAS_SHOWN_GO_YOUTUBE] = value }
@@ -31,17 +30,11 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         get() = mHelper[PREF_LAST_EXIT_TAB, MainActivity.DrawerItem.INBOX.id]
         set(value) { mHelper[PREF_LAST_EXIT_TAB] = value }
 
-    var demoAlertHasShown : Boolean
-        get() = mHelper[DEMO_ALERT, false]
-        set(value) { mHelper[DEMO_ALERT] = value }
-
-
     companion object {
         private const val PREF_LISTEN_CLIPBOARD = "listenclipboard"
         private const val PREF_DATABASE_IMPORTED = "databaseimported"
         private const val PREF_CACHE_MAX = "cachemax"
         private const val PREF_HAS_SHOWN_GO_YOUTUBE = "hasshowngoyoutube"
         private const val PREF_LAST_EXIT_TAB = "last_exit_tab"
-        private const val DEMO_ALERT = "DEMO_ALERT"
     }
 }

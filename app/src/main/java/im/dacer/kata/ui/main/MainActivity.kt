@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
-import com.afollestad.materialdialogs.MaterialDialog
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
@@ -54,18 +53,6 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
         setSupportActionBar(myToolbar as Toolbar)
 
         drawer.setSelection(DrawerItem.get(settingUtility.lastExitTab).id, true)
-
-        if (!settingUtility.demoAlertHasShown) {
-            MaterialDialog.Builder(this)
-                    .title(R.string.demo_alert)
-                    .content(R.string.demo_alert_msg)
-                    .cancelable(false)
-                    .negativeText(R.string.demo_alert_no)
-                    .onNegative { _, _ -> finish() }
-                    .positiveText(R.string.demo_alert_ok)
-                    .onPositive { _, _ -> settingUtility.demoAlertHasShown = true }
-                    .show()
-        }
     }
 
     private fun initDrawer() : Drawer {
