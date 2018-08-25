@@ -37,7 +37,7 @@ class WebParser<T: NewsItem> {
 
         fun getParseBy(name: String): Parser = Parser.valueOf(name)
 
-        val DEFAULT_PARSER = Parser.MERCURY
+        val DEFAULT_PARSER = Parser.URL2IO
 
         fun fetchContent(targetUrl: String?, pref: MultiprocessPref): Observable<String>{
             if (targetUrl == null) throw NullPointerException("targetUrl cannot be null")
@@ -60,6 +60,7 @@ class WebParser<T: NewsItem> {
         private fun fetchContentByMercury(targetUrl: String): Observable<String> {
             return Rx2AndroidNetworking.get(getMercuryUrl(targetUrl))
                     .addHeaders("x-api-key", MERCURY_TOKEN)
+                    .doNotCacheResponse()
                     .build()
                     .jsonObjectObservable
                     .map { return@map parseHtml(it.getString("content")) }
