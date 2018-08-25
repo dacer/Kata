@@ -92,7 +92,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
             return
         }
 
-        if (!sharedText!!.isFewWords()) {
+        if (!sharedText!!.isFewWords() || !appPre.showFloatDialog) {
             if (skipFloatBtn) {
                 SchemeHelper.startKata(this, sharedText!!, 0)
             } else {
