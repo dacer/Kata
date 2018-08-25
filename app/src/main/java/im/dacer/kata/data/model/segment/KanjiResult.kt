@@ -7,7 +7,7 @@ import im.dacer.kata.util.helper.isKana
  * Created by Dacer on 10/01/2018.
  */
 data class KanjiResult(val surface: String, val baseForm: String = "", val furigana: String = "",
-                       val isKnown: Boolean = false, val subtitle: String = "") {
+                       val isKnown: Boolean = false, val subtitle: String = "", val isUrl: Boolean = false) {
 
     /**
      * remove the exist kana in the surface for furigana

@@ -115,8 +115,6 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
         disposable?.dispose()
         disposable = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(sharedText!!) }
-                .flatMap { Observable.fromIterable(it.toKanjiResultList()) }
-                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     kataLayout.reset()

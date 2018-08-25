@@ -16,7 +16,6 @@ import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
-import im.dacer.kata.util.extension.toKanjiResultList
 import im.dacer.kata.util.helper.TTSHelper
 import im.dacer.kata.util.segment.BigBang
 import io.reactivex.Observable
@@ -88,8 +87,6 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         segmentDis?.dispose()
         segmentDis = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(text) }
-                .flatMap { Observable.fromIterable(it.toKanjiResultList()) }
-                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     mvpView?.onDataInitFinished(it, preselectedIndex)

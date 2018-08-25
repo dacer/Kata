@@ -21,15 +21,21 @@ fun Token.getSubtitle(): String {
     return "$partOfSpeechLevel1 (${list.joinToString(", ")})"
 }
 
-//fun Token.toKanjiResult(): KanjiResult {
-//    return KanjiResult(surface, baseForm,
-//            KanaHelper.toHiragana(reading), isKnown, getSubtitle())
-//}
-
+/**
+ * Will add a new line in the end
+ */
 fun List<Token>.toKanjiResultList(): List<KanjiResult> {
     val result: ArrayList<KanjiResult> = arrayListOf()
     for (token in this) {
         var surface = token.surface
+
+        //split multi spaces to different KanjiResult
+        if (surface.matches(Regex("^\\s+$"))) {
+            repeat(surface.length) {result.add(KanjiResult(" "))}
+            continue
+        }
+
+        //remove \n in the end of surface and add KanjiResult.NEW_LINE instead
         var newLineNumber = 0
         while (surface.endsWith("\n") && !surface.isNewLine()) {
             surface = surface.substring(0, surface.length - 1)
@@ -37,13 +43,9 @@ fun List<Token>.toKanjiResultList(): List<KanjiResult> {
         }
         result.add(KanjiResult(surface, token.baseForm,
                 KanaHelper.toHiragana(token.reading), token.isKnown, token.getSubtitle()))
-        while (newLineNumber > 0) {
-            result.add(KanjiResult.NEW_LINE)
-            newLineNumber--
-        }
-
+        repeat(newLineNumber) { result.add(KanjiResult.NEW_LINE) }
     }
-
+    result.add(KanjiResult.NEW_LINE)
     return result
 }
 
