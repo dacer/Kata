@@ -83,4 +83,7 @@
     <string name="demo_alert_msg">It\'s a Beta version\n\n- There is no guarantee that the history or settings will be retained in future versions\n\n- Any questions or suggestions are welcomed</string>
     <string name="demo_alert_ok">I\'m understand</string>
     <string name="demo_alert_no">NO!</string>
+
+    <string name="open_in_browser">Open in browser</string>
+    <string name="parse_content">Parse content</string>
 </resources>

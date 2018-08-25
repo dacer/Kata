@@ -80,4 +80,7 @@
     <string name="demo_alert_msg">这是一个预览版本\n\n- 并不能保证历史或设置在将来的版本中能保留\n\n- 使用过程中如出现崩溃闪退情况，请给予理解\n\n- 有任何问题或建议都可以在市场给我反馈\n\n- 如果觉得好用的话请在市场给我点一个赞，这是对我最大的支持，谢谢</string>
     <string name="demo_alert_ok">我已阅读并理解</string>
     <string name="demo_alert_no">不！</string>
+
+    <string name="open_in_browser">在浏览器中打开</string>
+    <string name="parse_content">分析网页内容</string>
 </resources>

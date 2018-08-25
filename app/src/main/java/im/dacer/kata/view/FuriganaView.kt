@@ -33,6 +33,7 @@ class FuriganaView @JvmOverloads constructor(
 
     val isUrl: Boolean get() = kanjiResult?.isUrl == true
     val isEmpty: Boolean get() = kanjiResult?.baseForm.isNullOrEmpty()
+    val surface: String? get() = kanjiResult?.surface
 
     var showFurigana: Boolean = true
         set(value) {
@@ -62,6 +63,7 @@ class FuriganaView @JvmOverloads constructor(
 
     fun setText(kanjiResult: KanjiResult): FuriganaView {
         this.kanjiResult = kanjiResult
+        if (kanjiResult.isUrl) normalPaint.color = BLUE
         return this
     }
 
@@ -147,5 +149,6 @@ class FuriganaView @JvmOverloads constructor(
     companion object {
         val RED = Color.parseColor("#F44336")
         val GRAY = Color.parseColor("#424242")
+        val BLUE = Color.parseColor("#3f51b5")
     }
 }

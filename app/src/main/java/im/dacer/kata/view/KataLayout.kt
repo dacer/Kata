@@ -1,14 +1,22 @@
 package im.dacer.kata.view
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
+import android.support.v4.content.ContextCompat.startActivity
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
+import com.afollestad.materialdialogs.MaterialDialog
+import im.dacer.kata.R
 import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.util.ViewUtil
+import im.dacer.kata.util.helper.SchemeHelper
+
 
 /**
  * Created by Dacer on 20/01/2018.
@@ -208,10 +216,31 @@ class KataLayout @JvmOverloads constructor(
     }
 
     private fun onItemSelected(item: Item) {
+        if (item.view.isUrl && item.view.surface != null) {
+            MaterialDialog.Builder(context)
+                    .title(item.view.surface!!)
+                    .items(arrayOf(R.string.parse_content, R.string.open_in_browser).map { context.getString(it) })
+                    .itemsCallback{_, _, pos, _ ->
+                        when(pos) {
+                            0 -> SchemeHelper.startKataFloatDialog(context, item.view.surface!!)
+                            1 -> openInBrowser(item.view.surface)
+                        }
+                    }
+                    .show()
+            return
+        }
         lastSelectedItem?.isSelected = false
         item.isSelected = true
         lastSelectedItem = item
         itemClickListener?.onItemClicked(item.index)
+    }
+
+    private fun openInBrowser(url: String?) {
+        if (url.isNullOrEmpty()) return
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(context, intent, null)
+        } catch (_: ActivityNotFoundException) {}
     }
 
     private fun findItemByPoint(x: Int, y: Int): Item? {
