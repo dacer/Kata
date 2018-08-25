@@ -1,5 +1,6 @@
 package im.dacer.kata.util.extension
 
+import android.support.v4.util.PatternsCompat.WEB_URL
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -18,4 +19,8 @@ fun String.findUrl(): String? {
         return this.value
     }
     return null
+}
+
+fun String.isUrl(): Boolean {
+    return WEB_URL.matcher(this).matches()
 }

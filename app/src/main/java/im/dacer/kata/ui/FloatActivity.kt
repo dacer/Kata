@@ -11,7 +11,7 @@ import im.dacer.kata.data.room.dao.HistoryDao
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.ui.bigbang.BigBangActivity
-import im.dacer.kata.util.extension.findUrl
+import im.dacer.kata.util.extension.isUrl
 import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.util.extension.toKanjiResultList
 import im.dacer.kata.util.helper.SchemeHelper
@@ -86,8 +86,8 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
 
         sharedText = sharedText!!.trim() //remove whitespaces from the beginning and end
 
-        sharedText!!.findUrl()?.run {
-            startService(UrlAnalysisService.getIntent(this@FloatActivity, this))
+        if (sharedText!!.isUrl()) {
+            startService(UrlAnalysisService.getIntent(this@FloatActivity, sharedText!!))
             finish()
             return
         }
