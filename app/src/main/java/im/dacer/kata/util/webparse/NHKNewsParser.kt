@@ -9,7 +9,7 @@ import org.jsoup.nodes.Document
 import java.net.URL
 
 object NHKNewsParser: BaseParser() {
-    private const val URL_PATTERN = "^http(|s):\\/\\/www3\\.nhk\\.or\\.jp\\/news\\/html\\/.+\\/.+\\.html\$"
+    private const val URL_PATTERN = "^http(|s):\\/\\/www3\\.nhk\\.or\\.jp\\/news\\/html\\/.+\\/.+\\.html.*"
 
     override fun checkUrlAvailable(url: String) : Boolean {
         return url.matches(Regex(URL_PATTERN))
