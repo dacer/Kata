@@ -31,6 +31,9 @@ class FuriganaView @JvmOverloads constructor(
     private val furiganaContainerWidth: Float get() = kanjiResult?.run { getFuriganaContainerWidth(this) } ?: 0f
     private val normalWidth: Float get() = normalPaint.measureText(kanjiResult?.surface ?: "")
 
+    val isUrl: Boolean get() = kanjiResult?.isUrl == true
+    val isEmpty: Boolean get() = kanjiResult?.baseForm.isNullOrEmpty()
+
     var showFurigana: Boolean = true
         set(value) {
             field = value
@@ -43,13 +46,6 @@ class FuriganaView @JvmOverloads constructor(
 
         furiganaPaint.textAlign = Paint.Align.CENTER
         normalPaint.textAlign = Paint.Align.CENTER
-
-//        if (attrs != null) {
-//            val typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BigBangLayout)
-//            val textSize = typedArray.getDimensionPixelSize(R.styleable.BigBangLayout_textSize, resources.getDimensionPixelSize(R.dimen.big_bang_default_text_size))
-//            setTextSpSize(textSize)
-//            typedArray.recycle()
-//        }
     }
 
     fun setTextSpSize(sizeInSp: Float) {

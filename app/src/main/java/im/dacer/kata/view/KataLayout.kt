@@ -56,11 +56,20 @@ class KataLayout @JvmOverloads constructor(
                 .forEach { it.view.showFurigana = show }
     }
 
+    /**
+     * will skip empty or url item
+     */
     fun select(index: Int) {
         preselectedIndex = index
         var i = 0
         loop@ for (line in mLines) {
             for (item in line.itemList) {
+                if (item.view.isUrl || item.view.isEmpty) {
+                    preselectedIndex++
+                    i++
+                    continue
+                }
+
                 if (preselectedIndex == i) {
                     onItemSelected(item)
                     preselectedIndex = -1
