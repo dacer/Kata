@@ -73,6 +73,9 @@
     <string name="web_page_parser_url2io">URL2io(推荐)</string>
     <string name="web_page_parser_not_use">不使用</string>
 
+    <string name="syncing">同步中…</string>
+    <string name="caching_articles">缓存文章中…</string>
+
     <string name="drag_and_drop_here_to_stop">拖放到此处来停止</string>
     <string name="voice_file_is_loading">声音文件仍在加载中…</string>
 
