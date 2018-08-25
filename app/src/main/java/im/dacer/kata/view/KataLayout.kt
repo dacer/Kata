@@ -69,6 +69,7 @@ class KataLayout @JvmOverloads constructor(
      */
     fun select(index: Int) {
         preselectedIndex = index
+        if (index < 0) return
         var i = 0
         loop@ for (line in mLines) {
             for (item in line.itemList) {
