@@ -62,7 +62,7 @@ class WebParser<T: NewsItem> {
                     .addHeaders("x-api-key", MERCURY_TOKEN)
                     .build()
                     .jsonObjectObservable
-                    .map { return@map pareseHtml(it.getString("content")) }
+                    .map { return@map parseHtml(it.getString("content")) }
                     .subscribeOn(Schedulers.io())
         }
 
@@ -70,11 +70,11 @@ class WebParser<T: NewsItem> {
             return Rx2AndroidNetworking.get(getURL2IOUrl(targetUrl))
                     .build()
                     .jsonObjectObservable
-                    .map { return@map pareseHtml(it.getString("content")) }
+                    .map { return@map parseHtml(it.getString("content")) }
                     .subscribeOn(Schedulers.io())
         }
 
-        private fun pareseHtml(htmlContent: String): String {
+        private fun parseHtml(htmlContent: String): String {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_COMPACT).toString().replace("\uFFFC", "")
             } else {
