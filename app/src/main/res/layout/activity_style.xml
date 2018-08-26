@@ -35,6 +35,13 @@
             </im.dacer.kata.view.KataLayout>
         </FrameLayout>
 
+        <Button
+            android:id="@+id/backgroundColorBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/background_color"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

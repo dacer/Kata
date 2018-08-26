@@ -1,6 +1,7 @@
 package im.dacer.kata.data.local
 
 import android.content.Context
+import android.graphics.Color
 import im.dacer.kata.data.model.bigbang.BigBangStyle
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.LangUtils
@@ -74,6 +75,10 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getBoolean(PREF_SHOW_PIC_WIFI_ONLY, false)
         set(value) { put(PREF_SHOW_PIC_WIFI_ONLY, value) }
 
+    var backgroundColor : Int
+        get() = getInt(PREF_BACKGROUND_COLOR, Color.WHITE)
+        set(value) { put(PREF_BACKGROUND_COLOR, value) }
+
 
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
@@ -86,6 +91,7 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         private const val TUTORIAL_FINISHED = "pref_tutorial_finished"
         private const val PREF_NEWS_CACHING_WIFI_ONLY = "news_caching_wifi_only"
         private const val PREF_SHOW_PIC_WIFI_ONLY = "show_pic_wifi_only"
+        private const val PREF_BACKGROUND_COLOR = "background_color"
 
         private const val EASTER_EGG = "EASTER_EGG"
 

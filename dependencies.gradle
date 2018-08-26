@@ -81,6 +81,7 @@ ext {
             EasingInterpolator: 'com.daasuu:EasingInterpolator:1.0.0',
             jsoup          : "org.jsoup:jsoup:1.10.1",
             exomedia       : 'com.devbrackets.android:exomedia:4.2.1',
+            colorpicker    : 'com.jaredrummler:colorpicker:1.0.2'
     ]
 
     compilers = [

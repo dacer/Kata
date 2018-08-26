@@ -25,6 +25,7 @@ import im.dacer.kata.view.KataLayout
 import im.dacer.kata.view.MyScrollView
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_big_bang.*
+import org.jetbrains.anko.backgroundColor
 import qiu.niorgai.StatusBarCompat
 import javax.inject.Inject
 
@@ -166,6 +167,7 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
     override fun onResume() {
         super.onResume()
         refreshIconStatus()
+        bigBangScrollView.backgroundColor = appPre.backgroundColor
     }
 
     override fun onDestroy() {

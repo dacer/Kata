@@ -2,6 +2,8 @@ package im.dacer.kata.ui.settings
 
 import android.os.Bundle
 import android.view.MenuItem
+import com.jaredrummler.android.colorpicker.ColorPickerDialog
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.model.bigbang.BigBangStyle
@@ -12,9 +14,10 @@ import im.dacer.kata.util.extension.getNavBarHeight
 import im.dacer.kata.util.extension.setMyActionBar
 import kotlinx.android.synthetic.main.activity_style.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+import org.jetbrains.anko.backgroundColor
 import javax.inject.Inject
 
-class StyleActivity : BaseTransparentSwipeActivity() {
+class StyleActivity : BaseTransparentSwipeActivity(), ColorPickerDialogListener{
     @Inject lateinit var appPref: MultiprocessPref
 
     override fun layoutId() = R.layout.activity_style
@@ -48,18 +51,31 @@ class StyleActivity : BaseTransparentSwipeActivity() {
                 kataLayout.itemSpace = value
             }
         })
-
+        backgroundColorBtn.setOnClickListener {
+            val colorPicker = ColorPickerDialog.newBuilder().setColor(appPref.backgroundColor).create()
+            colorPicker.setColorPickerDialogListener(this)
+            colorPicker.show(fragmentManager, "COLOR_PICKER")
+        }
 
         textSizeSeekBar.progress = appPref.getItemTextSize()
         furiganaTextSizeSeekBar.progress = appPref.getFuriganaItemTextSize()
         lineSpaceSeekBar.progress = appPref.getLineSpace()
         itemSpace.progress = appPref.getItemSpace()
+        kataLayout.backgroundColor = appPref.backgroundColor
 
     }
 
     override fun onPause() {
         super.onPause()
         updatePref()
+    }
+
+    override fun onDialogDismissed(dialogId: Int) {
+    }
+
+    override fun onColorSelected(dialogId: Int, color: Int) {
+        kataLayout.backgroundColor = color
+        appPref.backgroundColor = color
     }
 
     private fun updatePref() {
