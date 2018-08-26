@@ -64,7 +64,7 @@ class NewsFragment: BaseFragment(), NewsMvp {
 
     override fun onResume() {
         super.onResume()
-        newsAdapter.downloadPicWifiOnly = multiprocessPref.newsCachingWifiOnly
+        newsAdapter.downloadPicWifiOnly = multiprocessPref.showPicWifiOnly
     }
 
     override fun showLoadingText(msg: String?) {

@@ -57,6 +57,19 @@
                     android:id="@+id/newsCachingWifiOnly"
                     style="@style/SettingsItemRight"/>
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/showPicWifiOnlyLayout"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/show_news_pic_wifi_only"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/showPicWifiOnly"
+                    style="@style/SettingsItemRight"/>
+            </RelativeLayout>
             <!--<RelativeLayout-->
             <!--android:id="@+id/clearCacheLayout"-->
             <!--style="@style/SettingsItem">-->

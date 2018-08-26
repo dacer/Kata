@@ -70,6 +70,10 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getBoolean(EASTER_EGG, false)
         set(value) { put(EASTER_EGG, value) }
 
+    var showPicWifiOnly : Boolean
+        get() = getBoolean(PREF_SHOW_PIC_WIFI_ONLY, false)
+        set(value) { put(PREF_SHOW_PIC_WIFI_ONLY, value) }
+
 
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
@@ -81,6 +85,7 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         private const val ENHANCED_MODE = "pref_enhanced_mode"
         private const val TUTORIAL_FINISHED = "pref_tutorial_finished"
         private const val PREF_NEWS_CACHING_WIFI_ONLY = "news_caching_wifi_only"
+        private const val PREF_SHOW_PIC_WIFI_ONLY = "show_pic_wifi_only"
 
         private const val EASTER_EGG = "EASTER_EGG"
 

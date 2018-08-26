@@ -34,6 +34,10 @@ class CacheSettingsActivity : BaseSettingActivity() {
         arrayOf(newsCachingWifiOnlyLayout, newsCachingWifiOnly).setSwitchListener {
             multiprocessPref.newsCachingWifiOnly = it
         }
+
+        arrayOf(showPicWifiOnlyLayout, showPicWifiOnly).setSwitchListener {
+            multiprocessPref.showPicWifiOnly = it
+        }
     }
 
     override fun updateUI() {

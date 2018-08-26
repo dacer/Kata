@@ -60,6 +60,7 @@
     <string name="cache">缓存</string>
     <string name="inbox_max">收件箱最多缓存数</string>
     <string name="news_caching_wifi_only">只在 WiFi 下同步新闻</string>
+    <string name="show_news_pic_wifi_only">只在 WiFi 下显示图片</string>
     <string name="clear_cache">清除缓存</string>
     <string name="no_internet">无网络环境</string>
     <string name="web_404_error">此网页无法访问</string>
