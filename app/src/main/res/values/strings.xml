@@ -60,7 +60,7 @@
     <string name="cache">Cache</string>
     <string name="inbox_max">Inbox Max</string>
     <string name="news_caching_wifi_only">News Caching WiFi Only</string>
-    <string name="show_news_pic_wifi_only">Show pictures WiFi Only</string>
+    <string name="show_news_pic_wifi_only">Show Pictures WiFi Only</string>
     <string name="clear_cache">Clear cache</string>
     <string name="no_internet">No Internet</string>
     <string name="web_404_error">Page not found</string>
