@@ -30,8 +30,8 @@ fun List<Token>.toKanjiResultList(): List<KanjiResult> {
         var surface = token.surface
 
         //split multi spaces to different KanjiResult
-        if (surface.matches(Regex("^\\s+$"))) {
-            repeat(surface.length) {result.add(KanjiResult(" "))}
+        if (surface.matches(Regex("^ +$"))) {
+            repeat(surface.length) { result.add(KanjiResult(" ")) }
             continue
         }
 
