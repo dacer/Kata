@@ -57,5 +57,8 @@ data class KanjiResult(val surface: String, val baseForm: String = "", val furig
 
     companion object {
         val NEW_LINE : KanjiResult = KanjiResult("\n")
+        fun NEW_LINE(lineNum: Int): KanjiResult {
+            return KanjiResult("\n".repeat(lineNum))
+        }
     }
 }

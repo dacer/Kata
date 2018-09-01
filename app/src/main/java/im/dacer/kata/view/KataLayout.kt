@@ -105,50 +105,30 @@ class KataLayout @JvmOverloads constructor(
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        var top: Int
+        var top = paddingTop
         var left: Int
-        val offsetTop = 0
-        var newLineCount = 0f
 
         for (i in mLines.indices) {
             val line = mLines[i]
             val items = line.itemList
             left = paddingLeft
 
-
             for (j in items.indices) {
                 val item = items[j]
-                top = (paddingTop + (i - newLineCount) * (item.height + lineSpace) + offsetTop).toInt()
                 val child = item.view
-//                val oldTop = child.top
-
-                // \n
-                if (child.isNewLine() == 1) {
-                    newLineCount += 1
-                }
-
-                // \n\n 's height is 0.7 * normal view height
-                if (child.isNewLine() > 1) {
-                    newLineCount += (1 - EMPTY_LINE_RATIO)
-                }
 
                 child.layout(left, top, left + child.measuredWidth, top + child.measuredHeight)
-
-//                if (oldTop != top) {
-//                    val translationY = oldTop - top
-//                    child.translationY = translationY.toFloat()
-//                    child.animate().translationYBy((-translationY).toFloat()).setDuration(200).start()
-//                }
                 left += child.measuredWidth + itemSpace
             }
+            if (items.isNotEmpty()) top += items.first().view.measuredHeight + lineSpace
         }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val widthSize = View.MeasureSpec.getSize(widthMeasureSpec) - paddingLeft - paddingRight
         val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        var newLineCount = 0f
         var childHeight = 0
+        var totalHeight = 0
 
         mLines.clear()
         var currentLine: Line? = null
@@ -163,16 +143,11 @@ class KataLayout @JvmOverloads constructor(
             }
             currentLineWidth += child.measuredWidth
             if (mLines.size == 0 || currentLineWidth > widthSize) {
-                if (child.isNewLine() > 1) {
-                    newLineCount += 1 - EMPTY_LINE_RATIO
-                } else if (child.isNewLine() == 1) {
-                    newLineCount += 1
-                } else {
-                    childHeight = child.measuredHeight
-                }
+                childHeight = child.measuredHeight
                 currentLineWidth = child.measuredWidth
                 currentLine = Line()
                 mLines.add(currentLine)
+                totalHeight += childHeight + lineSpace
             }
             val item = Item(child)
             item.index = i
@@ -182,8 +157,8 @@ class KataLayout @JvmOverloads constructor(
         }
 
         if (mLines.isNotEmpty() && preselectedIndex != -1) select(preselectedIndex)
-        val size = (mLines.size - newLineCount) * childHeight + paddingTop + paddingBottom + (mLines.size - 1 - newLineCount) * lineSpace
-        super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(size.toInt(), View.MeasureSpec.EXACTLY))
+        val size = totalHeight + paddingTop + paddingBottom
+        super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(size, View.MeasureSpec.EXACTLY))
     }
 
     private var lastSelectedItem : Item? = null
@@ -290,8 +265,4 @@ class KataLayout @JvmOverloads constructor(
         fun onItemClicked(index: Int)
     }
 
-    companion object {
-        // \n\n 's height is 0.7 * normal view height
-        const val EMPTY_LINE_RATIO = 0.7f
-    }
 }

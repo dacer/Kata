@@ -43,7 +43,7 @@ fun List<Token>.toKanjiResultList(): List<KanjiResult> {
         }
         result.add(KanjiResult(surface, token.baseForm,
                 KanaHelper.toHiragana(token.reading), token.isKnown, token.getSubtitle()))
-        repeat(newLineNumber) { result.add(KanjiResult.NEW_LINE) }
+        result.add(KanjiResult.NEW_LINE(newLineNumber))
     }
     result.add(KanjiResult.NEW_LINE)
     return result
