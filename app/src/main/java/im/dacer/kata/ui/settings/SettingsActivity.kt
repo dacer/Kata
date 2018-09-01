@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
 import android.view.MenuItem
+import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.BuildConfig
 import im.dacer.kata.R
@@ -117,17 +118,37 @@ class SettingsActivity : BaseSettingActivity() {
     }
 
     private fun showIgnoreBatteryOptimizationDialog() {
-        if (BuildConfig.FLAVOR != "coolapk") return
+        if (BuildConfig.FLAVOR != "coolapk") {
+            checkBatteryOptimization()
+            return
+        }
         val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-
                 val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
                 intent.data = Uri.parse("package:$packageName")
                 startActivity(intent)
             }
         }
+    }
+
+    private fun checkBatteryOptimization() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        if (!isBatteryOptimized()) return
+        val appName = resources.getString(R.string.app_name)
+        Toast.makeText(applicationContext, getString(R.string.optimization_steps, appName), Toast.LENGTH_LONG).show()
+
+        val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+        startActivity(intent)
+
+    }
+
+    private fun isBatteryOptimized(): Boolean {
+        val powerService = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return !powerService.isIgnoringBatteryOptimizations(applicationContext.packageName)
+        }
+        return false
     }
 
 }
