@@ -10,9 +10,6 @@ public class Music {
     public Artist[] artists;
     public Album album;
 
-
-
-
     public class Artist {
         public long id;
         public String name;
