@@ -186,22 +186,26 @@ class KataLayout @JvmOverloads constructor(
 
     private fun onItemSelected(item: Item) {
         if (item.view.isUrl && item.view.surface != null) {
-            MaterialDialog.Builder(context)
-                    .title(item.view.surface!!)
-                    .items(arrayOf(R.string.parse_content, R.string.open_in_browser).map { context.getString(it) })
-                    .itemsCallback{_, _, pos, _ ->
-                        when(pos) {
-                            0 -> SchemeHelper.startKataFloatDialog(context, item.view.surface!!)
-                            1 -> openInBrowser(item.view.surface)
-                        }
-                    }
-                    .show()
+            onClickLink(item)
             return
         }
         lastSelectedItem?.isSelected = false
         item.isSelected = true
         lastSelectedItem = item
         itemClickListener?.onItemClicked(item.index)
+    }
+
+    private fun onClickLink(item: Item) {
+        MaterialDialog.Builder(context)
+                .title(item.view.surface!!)
+                .items(arrayOf(R.string.parse_content, R.string.open_in_browser).map { context.getString(it) })
+                .itemsCallback{_, _, pos, _ ->
+                    when(pos) {
+                        0 -> SchemeHelper.startKataFloatDialog(context, item.view.surface!!)
+                        1 -> openInBrowser(item.view.surface)
+                    }
+                }
+                .show()
     }
 
     private fun openInBrowser(url: String?) {
