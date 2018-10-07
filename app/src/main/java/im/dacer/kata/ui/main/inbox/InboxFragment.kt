@@ -52,7 +52,7 @@ class InboxFragment : BaseFragment(), InboxMvp {
         itemTouchHelper.attachToRecyclerView(historyRecyclerView)
         historyAdapter.setOnItemClickListener { _, _, pos -> inboxPresenter.onHistoryClicked(pos)}
         historyAdapter.setOnItemLongClickListener { _, _, pos -> inboxPresenter.onHistoryLongClicked(activity!!, pos) }
-        historyAdapter.setEmptyView(R.layout.empty_history)
+        historyAdapter.setEmptyView(R.layout.empty_recycler_view)
         val bottomView = layoutInflater.inflate(R.layout.item_history_bottom, historyRecyclerView.parent as ViewGroup, false)
         historyAdapter.setFooterView(bottomView)
         historyAdapter.enableSwipeItem()
