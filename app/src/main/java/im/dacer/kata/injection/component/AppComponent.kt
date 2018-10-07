@@ -10,8 +10,9 @@ import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.room.dao.EasyNewsDao
 import im.dacer.kata.data.room.dao.HistoryDao
-import im.dacer.kata.data.room.database.NewsAppDatabase
 import im.dacer.kata.data.room.dao.NhkNewsDao
+import im.dacer.kata.data.room.dao.WordDao
+import im.dacer.kata.data.room.database.NewsAppDatabase
 import im.dacer.kata.injection.module.AppModule
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.LangUtils
@@ -45,4 +46,6 @@ interface AppComponent {
     fun nhkNewsDao(): NhkNewsDao
 
     fun historyDao(): HistoryDao
+
+    fun wordDao(): WordDao
 }

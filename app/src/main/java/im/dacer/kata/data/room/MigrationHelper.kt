@@ -21,3 +21,11 @@ object HistoryMigrationHelper {
     }
 
 }
+
+object WordMigrationHelper {
+    fun get(): Array<Migration> {
+        return arrayOf(
+        )
+    }
+
+}
