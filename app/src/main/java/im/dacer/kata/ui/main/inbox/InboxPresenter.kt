@@ -52,10 +52,10 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
             if (history != null) {
                 historyDao.delete(history)
                 Snackbar.make(mvpView!!.getDecorView(), context.getString(R.string.deleted_sth, history.text), Snackbar.LENGTH_SHORT)
-                        .setAction(R.string.redo, {
+                        .setAction(R.string.redo) {
                             historyDao.insert(history)
                             refreshHistoryList()
-                        })
+                        }
                         .show()
             }
         }
