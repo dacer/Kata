@@ -5,6 +5,7 @@ import im.dacer.kata.injection.PerFragment
 import im.dacer.kata.injection.module.FragmentModule
 import im.dacer.kata.ui.main.inbox.InboxFragment
 import im.dacer.kata.ui.main.news.NewsFragment
+import im.dacer.kata.ui.main.wordbook.WordBookFragment
 
 /**
  * This component inject dependencies to all Fragments across the application
@@ -14,4 +15,5 @@ import im.dacer.kata.ui.main.news.NewsFragment
 interface FragmentComponent {
     fun inject(fragment: InboxFragment)
     fun inject(fragment: NewsFragment)
+    fun inject(fragment: WordBookFragment)
 }

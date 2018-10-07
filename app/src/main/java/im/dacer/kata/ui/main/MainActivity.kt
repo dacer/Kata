@@ -19,6 +19,7 @@ import im.dacer.kata.ui.lyric.LyricActivity
 import im.dacer.kata.ui.main.inbox.InboxFragment
 import im.dacer.kata.ui.main.inbox.InboxFragment.Companion.REQUEST_CODE_OVERLAY_PERMISSION
 import im.dacer.kata.ui.main.news.NewsFragment
+import im.dacer.kata.ui.main.wordbook.WordBookFragment
 import im.dacer.kata.ui.settings.SettingsActivity
 import im.dacer.kata.util.extension.startActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,7 +34,7 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
     private val drawer by lazy { initDrawer() }
 
     enum class DrawerItem(val id: Long) {
-        INBOX(0), LYRIC(1), NHK_EASY(2), NHK(3), SETTINGS(4), ABOUT(5);
+        INBOX(0), LYRIC(1), NHK_EASY(2), NHK(3), SETTINGS(4), ABOUT(5), WORD_BOOK(6);
 
         companion object {
             fun get(id: Long) : DrawerItem {
@@ -57,6 +58,7 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
 
     private fun initDrawer() : Drawer {
         val itemInbox = SecondaryDrawerItem().withIdentifier(DrawerItem.INBOX.id).withName(R.string.inbox)
+        val itemWordBook = SecondaryDrawerItem().withIdentifier(DrawerItem.WORD_BOOK.id).withName(R.string.word_book)
         val itemLyric = SecondaryDrawerItem().withIdentifier(DrawerItem.LYRIC.id).withName(R.string.lyric).withSelectable(false)
         val itemNhkEasy = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK_EASY.id).withName(R.string.nhk_news_easy)
         val itemNhk = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK.id).withName(R.string.nhk_news)
@@ -72,9 +74,11 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
                 .withAccountHeader(headerResult)
                 .withTranslucentStatusBar(true)
                 .addDrawerItems(
-                        itemInbox,
                         itemNhkEasy,
                         itemNhk,
+                        DividerDrawerItem(),
+                        itemInbox,
+                        itemWordBook,
                         itemLyric,
                         itemSettings,
                         itemAbout,
@@ -88,6 +92,7 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
                         DrawerItem.NHK.id -> switchFragment(NewsFragment.newInstance(NewsFragment.NewsType.NHK), R.string.nhk_news)
                         DrawerItem.SETTINGS.id -> startActivity(SettingsActivity::class.java)
                         DrawerItem.ABOUT.id -> startActivity(AboutActivity::class.java)
+                        DrawerItem.WORD_BOOK.id -> switchFragment(WordBookFragment(), R.string.word_book)
                     }
                     return@withOnDrawerItemClickListener false
 
