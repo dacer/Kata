@@ -1,6 +1,6 @@
 package im.dacer.kata.data.local
 
-import im.dacer.kata.ui.main.MainActivity
+import im.dacer.kata.ui.main.MainPresenter
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,7 +27,7 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         set(value) { mHelper[PREF_HAS_SHOWN_GO_YOUTUBE] = value }
 
     var lastExitTab : Long
-        get() = mHelper[PREF_LAST_EXIT_TAB, MainActivity.DrawerItem.INBOX.id]
+        get() = mHelper[PREF_LAST_EXIT_TAB, MainPresenter.DrawerItem.INBOX.id]
         set(value) { mHelper[PREF_LAST_EXIT_TAB] = value }
 
     companion object {

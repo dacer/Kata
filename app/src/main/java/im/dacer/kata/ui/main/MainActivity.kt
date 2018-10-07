@@ -9,13 +9,12 @@ import android.support.v7.widget.Toolbar
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
-import com.mikepenz.materialdrawer.model.DividerDrawerItem
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.ui.about.AboutActivity
 import im.dacer.kata.ui.base.BaseTransparentActivity
 import im.dacer.kata.ui.lyric.LyricActivity
+import im.dacer.kata.ui.main.MainPresenter.DrawerItem
 import im.dacer.kata.ui.main.inbox.InboxFragment
 import im.dacer.kata.ui.main.inbox.InboxFragment.Companion.REQUEST_CODE_OVERLAY_PERMISSION
 import im.dacer.kata.ui.main.news.NewsFragment
@@ -33,18 +32,6 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
     @Inject lateinit var settingUtility: SettingUtility
     private val drawer by lazy { initDrawer() }
 
-    enum class DrawerItem(val id: Long) {
-        INBOX(0), LYRIC(1), NHK_EASY(2), NHK(3), SETTINGS(4), ABOUT(5), WORD_BOOK(6);
-
-        companion object {
-            fun get(id: Long) : DrawerItem {
-                for (item in DrawerItem.values()) {
-                    if (item.id == id) return item
-                }
-                return DrawerItem.INBOX
-            }
-        }
-    }
     override fun layoutId() = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,13 +44,6 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
     }
 
     private fun initDrawer() : Drawer {
-        val itemInbox = SecondaryDrawerItem().withIdentifier(DrawerItem.INBOX.id).withName(R.string.inbox)
-        val itemWordBook = SecondaryDrawerItem().withIdentifier(DrawerItem.WORD_BOOK.id).withName(R.string.word_book)
-        val itemLyric = SecondaryDrawerItem().withIdentifier(DrawerItem.LYRIC.id).withName(R.string.lyric).withSelectable(false)
-        val itemNhkEasy = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK_EASY.id).withName(R.string.nhk_news_easy)
-        val itemNhk = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK.id).withName(R.string.nhk_news)
-        val itemSettings = SecondaryDrawerItem().withIdentifier(DrawerItem.SETTINGS.id).withName(R.string.settings).withSelectable(false)
-        val itemAbout = SecondaryDrawerItem().withIdentifier(DrawerItem.ABOUT.id).withName(R.string.about).withSelectable(false)
         val headerResult = AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(ColorDrawable(ContextCompat.getColor(this, R.color.material_drawer_dark_background)))
@@ -73,17 +53,7 @@ class MainActivity : BaseTransparentActivity(), MainMvp {
                 .withToolbar(myToolbar as Toolbar)
                 .withAccountHeader(headerResult)
                 .withTranslucentStatusBar(true)
-                .addDrawerItems(
-                        itemNhkEasy,
-                        itemNhk,
-                        DividerDrawerItem(),
-                        itemInbox,
-                        itemWordBook,
-                        itemLyric,
-                        itemSettings,
-                        itemAbout,
-                        DividerDrawerItem()
-                )
+                .addDrawerItems(*mainPresenter.getDrawerItems())
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
                     when(drawerItem.identifier) {
                         DrawerItem.INBOX.id -> switchFragment(InboxFragment(), R.string.inbox)
