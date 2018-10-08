@@ -31,8 +31,10 @@ class FlashcardAdapter(context: Context) : ArrayAdapter<Word>(context, 0) {
 
         holder.baseFormTv.text = word.baseForm
         holder.contextTv.text = word.contextText
+        holder.queryTimesTv.text = word.queryTimes.toString()
         val color = Color.parseColor(MATERIAL_COLORS[position % MATERIAL_COLORS.size])
-        holder.contextTv.text = MATERIAL_COLORS[position % MATERIAL_COLORS.size]
+        //todo delete it
+        holder.baseFormTv.text = "${holder.baseFormTv.text} ${MATERIAL_COLORS[position % MATERIAL_COLORS.size]}"
         holder.backgroundLayout.setCardBackgroundColor(color)
 
         return contentView!!
@@ -41,6 +43,7 @@ class FlashcardAdapter(context: Context) : ArrayAdapter<Word>(context, 0) {
     private class ViewHolder(view: View) {
         var baseFormTv: TextView = view.findViewById(R.id.baseFormTv)
         var contextTv: TextView = view.findViewById(R.id.contextTv)
+        var queryTimesTv: TextView = view.findViewById(R.id.queryTimesTv)
         var backgroundLayout: CardView = view.findViewById(R.id.backgroundLayout)
     }
 

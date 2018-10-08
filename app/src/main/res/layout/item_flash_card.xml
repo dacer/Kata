@@ -9,33 +9,47 @@
     android:layout_height="match_parent"
     app:cardElevation="0dp"
     app:cardCornerRadius="@dimen/flashcard_radius">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:padding="24dp">
-
         <TextView
-            android:id="@+id/baseFormTv"
+            android:id="@+id/queryTimesTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            android:textColor="@color/md_white_1000"
-            apptool:text="彼女"/>
-
-        <View
+            android:textColor="#78ffffff"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            apptool:text="6"
+            />
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/md_white_1000"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/contextTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/md_white_1000"
-            apptool:text="これは彼女が酒精に浸った夜の旅路を威風堂々歩き抜いた記録であり、また、ついに..." />
+            <TextView
+                android:id="@+id/baseFormTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textColor="@color/md_white_1000"
+                apptool:text="彼女"/>
 
-    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_white_1000"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:id="@+id/contextTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/md_white_1000"
+                apptool:text="これは彼女が酒精に浸った夜の旅路を威風堂々歩き抜いた記録であり、また、ついに..." />
+
+        </LinearLayout>
+    </RelativeLayout>
 </android.support.v7.widget.CardView>
