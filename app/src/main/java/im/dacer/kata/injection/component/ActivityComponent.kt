@@ -7,6 +7,7 @@ import im.dacer.kata.ui.FloatActivity
 import im.dacer.kata.ui.about.AboutActivity
 import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.ui.bigbang.BigBangActivity
+import im.dacer.kata.ui.flashcard.FlashcardActivity
 import im.dacer.kata.ui.main.MainActivity
 import im.dacer.kata.ui.settings.CacheSettingsActivity
 import im.dacer.kata.ui.settings.SettingsActivity
@@ -25,5 +26,6 @@ interface ActivityComponent {
     fun inject(activity: BigBangActivity)
     fun inject(activity: FloatActivity)
     fun inject(activity: AboutActivity)
+    fun inject(activity: FlashcardActivity)
 
 }

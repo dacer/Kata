@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.yuyakaido.android.cardstackview.CardStackView
+        android:id="@+id/cardStackView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="64dp"
+        android:paddingBottom="32dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:clipToPadding="false"
+        app:visibleCount="3"
+        app:swipeThreshold="0.75"
+        app:translationDiff="12"
+        app:scaleDiff="0.02"
+        app:stackFrom="top"
+        app:elevationEnabled="true"
+        app:swipeEnabled="true"
+        app:swipeDirection="horizontal"
+        app:leftOverlay="@layout/flashcard_overlay_left"
+        app:rightOverlay="@layout/flashcard_overlay_right" />
+</LinearLayout>

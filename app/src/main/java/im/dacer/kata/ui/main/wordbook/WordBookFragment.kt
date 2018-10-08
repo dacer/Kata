@@ -1,5 +1,6 @@
 package im.dacer.kata.ui.main.wordbook
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -8,6 +9,7 @@ import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
 import im.dacer.kata.R
 import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.ui.base.BaseFragment
+import im.dacer.kata.ui.flashcard.FlashcardActivity
 import kotlinx.android.synthetic.main.fragment_word_book.*
 import javax.inject.Inject
 
@@ -37,7 +39,7 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         wordAdapter.setEmptyView(R.layout.empty_recycler_view)
         wordAdapter.enableSwipeItem()
         wordAdapter.setOnItemSwipeListener(wordPresenter.swipeListener)
-
+        flashcardTv.setOnClickListener { startActivity(Intent(activity, FlashcardActivity::class.java)) }
     }
 
     override fun onResume() {

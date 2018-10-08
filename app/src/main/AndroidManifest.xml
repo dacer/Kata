@@ -45,6 +45,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
 
+        <activity android:name=".ui.flashcard.FlashcardActivity"
+            android:label="@string/flashcards"
+            android:screenOrientation="portrait"/>
+
         <activity android:name="im.dacer.kata.ui.FloatActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
