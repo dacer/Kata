@@ -8,8 +8,6 @@ import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.data.model.bigbang.Word
-import im.dacer.kata.data.model.bigbang.generated.autovalue.DictEntry
-import im.dacer.kata.data.model.bigbang.generated.autovalue.DictReading
 import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.data.room.dao.HistoryDao
 import im.dacer.kata.data.room.dao.WordDao
@@ -20,11 +18,8 @@ import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.helper.TTSHelper
 import im.dacer.kata.util.segment.BigBang
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -115,18 +110,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
 
         onWordSelected(currentSelectedToken!!)
         dictDisposable?.dispose()
-        dictDisposable = Observable.fromCallable{ searchDictHelper.search(strForSearch) }
-                .flatMap {
-                    Observable.zip(
-                            dealWithDictEntryList(it.dictEntryList),
-                            dealWithDictReadingList(it.dictReadingList),
-                            BiFunction<String, String, CombinedResult> {
-                                meaningStr, readingStr -> CombinedResult(meaningStr, readingStr)
-                            }
-                    )
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        dictDisposable = searchDictHelper.searchForCombineResult(strForSearch, langUtils)
                 .subscribe({
                     val meaningStr = it.meaningStr
                     mvpView?.meaningText = if (meaningStr.isBlank()) {
@@ -175,20 +159,5 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
                     }
                 }
     }
-
-    private fun dealWithDictEntryList(dictEntryList: List<DictEntry>): Observable<String> {
-        return Observable.fromIterable(dictEntryList)
-                .flatMap { langUtils.fetchTranslation(it) }
-                .toList()
-                .map { it.joinToString("\n\n") { "· $it" } }
-                .toObservable()
-    }
-
-    private fun dealWithDictReadingList(dictReadingList: List<DictReading>?): Observable<String> {
-        return Observable.fromCallable { dictReadingList?.joinToString(",")
-        {it.reading() ?: ""} ?: "" }
-    }
-
-    private data class CombinedResult(val meaningStr: String, val readingStr: String)
 
 }

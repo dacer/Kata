@@ -5,7 +5,13 @@ import im.dacer.kata.data.model.bigbang.BigbangSearchResult
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictEntry
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictKanji
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictReading
+import im.dacer.kata.data.model.segment.CombinedResult
 import im.dacer.kata.injection.qualifier.ApplicationContext
+import im.dacer.kata.util.LangUtils
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,6 +26,21 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
 
     fun onDestroy() {
 //        db.close()
+    }
+
+    fun searchForCombineResult(strForSearch: String, langUtils: LangUtils): Observable<CombinedResult> {
+        return Observable.fromCallable{ search(strForSearch) }
+                .flatMap {
+                    Observable.zip(
+                            dealWithDictEntryList(it.dictEntryList, langUtils),
+                            dealWithDictReadingList(it.dictReadingList),
+                            BiFunction<String, String, CombinedResult> {
+                                meaningStr, readingStr -> CombinedResult(meaningStr, readingStr)
+                            }
+                    )
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun search(text: String): BigbangSearchResult {
@@ -83,6 +104,20 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
 
     private fun kanjiInside(text: String): Boolean {
         return text.matches(Regex(".*[\\u4e00-\\u9faf]+.*"))
+    }
+
+
+    private fun dealWithDictEntryList(dictEntryList: List<DictEntry>, langUtils: LangUtils): Observable<String> {
+        return Observable.fromIterable(dictEntryList)
+                .flatMap { langUtils.fetchTranslation(it) }
+                .toList()
+                .map { it.joinToString("\n\n") { "· $it" } }
+                .toObservable()
+    }
+
+    private fun dealWithDictReadingList(dictReadingList: List<DictReading>?): Observable<String> {
+        return Observable.fromCallable { dictReadingList?.joinToString(",")
+        {it.reading() ?: ""} ?: "" }
     }
 
 }

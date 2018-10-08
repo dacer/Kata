@@ -90,4 +90,6 @@
     <string name="mastered">已掌握</string>
     <string name="flashcards">Flashcards</string>
     <string name="learning">学习中</string>
+    <string name="see_definition">查看解释</string>
+    <string name="see_usage">查看用法</string>
 </resources>

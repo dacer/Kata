@@ -2,14 +2,18 @@ package im.dacer.kata.ui.flashcard
 
 import android.os.Bundle
 import im.dacer.kata.R
+import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
+import im.dacer.kata.util.LangUtils
 import kotlinx.android.synthetic.main.activity_flashcard.*
 import javax.inject.Inject
 
 class FlashcardActivity : BaseTransparentSwipeActivity(), FlashcardMvp {
     @Inject lateinit var flashcardPresenter: FlashcardPresenter
-    val adapter by lazy { FlashcardAdapter(this) }
+    @Inject lateinit var langUtils: LangUtils
+    @Inject lateinit var searchDictHelper: SearchDictHelper
+    private val adapter by lazy { FlashcardAdapter(this, searchDictHelper, langUtils) }
 
     override fun layoutId() = R.layout.activity_flashcard
 

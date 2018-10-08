@@ -90,4 +90,6 @@
     <string name="mastered">Mastered</string>
     <string name="flashcards">Flashcards</string>
     <string name="learning">Learning</string>
+    <string name="see_definition">See Definition</string>
+    <string name="see_usage">See Usage</string>
 </resources>

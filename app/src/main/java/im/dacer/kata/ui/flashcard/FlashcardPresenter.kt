@@ -48,5 +48,6 @@ class FlashcardPresenter @Inject constructor(@ApplicationContext val context: Co
     }
 
     override fun onCardClicked(index: Int) {
+
     }
 }

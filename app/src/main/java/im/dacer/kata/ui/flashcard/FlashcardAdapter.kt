@@ -8,11 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import im.dacer.kata.R
+import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.Word
+import im.dacer.kata.util.LangUtils
+import io.reactivex.disposables.Disposable
 
 
-class FlashcardAdapter(context: Context) : ArrayAdapter<Word>(context, 0) {
+class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper, val langUtils: LangUtils) :
+        ArrayAdapter<Word>(context, 0) {
+
+    private var dictDisposable: Disposable? = null
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val holder: ViewHolder
@@ -37,13 +44,42 @@ class FlashcardAdapter(context: Context) : ArrayAdapter<Word>(context, 0) {
         holder.baseFormTv.text = "${holder.baseFormTv.text} ${MATERIAL_COLORS[position % MATERIAL_COLORS.size]}"
         holder.backgroundLayout.setCardBackgroundColor(color)
 
+        holder.bottomTv.setOnClickListener {
+            if (holder.pronunciationText.visibility == View.VISIBLE) {
+                showContext(holder, word)
+            } else {
+                showMeaning(holder, word)
+            }
+        }
         return contentView!!
+    }
+
+    private fun showMeaning(holder: ViewHolder, word: Word) {
+        dictDisposable?.dispose()
+        dictDisposable = searchDictHelper.searchForCombineResult(word.baseForm, langUtils)
+                .subscribe({
+                    val meaningStr = it.meaningStr
+                    holder.contextTv.text = if (meaningStr.isBlank()) {
+                        context.getString(R.string.not_found_error, word.baseForm)
+                    } else { meaningStr }
+
+                    val readingStr = it.readingStr
+                    holder.pronunciationText.text = readingStr
+                    holder.pronunciationText.visibility = View.VISIBLE
+                }, { Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show() })
+    }
+
+    private fun showContext(holder: ViewHolder, word: Word) {
+        holder.contextTv.text = word.contextText
+        holder.pronunciationText.visibility = View.GONE
     }
 
     private class ViewHolder(view: View) {
         var baseFormTv: TextView = view.findViewById(R.id.baseFormTv)
         var contextTv: TextView = view.findViewById(R.id.contextTv)
         var queryTimesTv: TextView = view.findViewById(R.id.queryTimesTv)
+        var pronunciationText: TextView = view.findViewById(R.id.pronunciationText)
+        var bottomTv: TextView = view.findViewById(R.id.bottomTv)
         var backgroundLayout: CardView = view.findViewById(R.id.backgroundLayout)
     }
 

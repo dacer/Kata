@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#757575"
+        android:background="#212121"
         android:padding="10dp"
         android:gravity="center"
         android:text="@string/flashcards"
-        android:textSize="26sp"/>
+        android:textSize="22sp"/>
 </RelativeLayout>
