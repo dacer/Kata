@@ -116,7 +116,7 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
     }
 
     private fun dealWithDictReadingList(dictReadingList: List<DictReading>?): Observable<String> {
-        return Observable.fromCallable { dictReadingList?.joinToString(",")
+        return Observable.fromCallable { dictReadingList?.joinToString(", ")
         {it.reading() ?: ""} ?: "" }
     }
 
