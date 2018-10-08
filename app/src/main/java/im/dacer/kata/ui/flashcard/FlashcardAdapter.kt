@@ -2,7 +2,11 @@ package im.dacer.kata.ui.flashcard
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.support.v7.widget.CardView
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +18,8 @@ import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.util.LangUtils
 import io.reactivex.disposables.Disposable
+
+
 
 
 class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper, val langUtils: LangUtils) :
@@ -37,12 +43,12 @@ class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper,
         val word = getItem(position)
 
         holder.baseFormTv.text = word.baseForm
-        holder.contextTv.text = word.contextText
         holder.queryTimesTv.text = word.queryTimes.toString()
         val color = Color.parseColor(MATERIAL_COLORS[position % MATERIAL_COLORS.size])
         //todo delete it
         holder.baseFormTv.text = "${holder.baseFormTv.text} ${MATERIAL_COLORS[position % MATERIAL_COLORS.size]}"
         holder.backgroundLayout.setCardBackgroundColor(color)
+        showContext(holder, word)
 
         holder.bottomTv.setOnClickListener {
             if (holder.pronunciationText.visibility == View.VISIBLE) {
@@ -64,13 +70,18 @@ class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper,
                     } else { meaningStr }
 
                     val readingStr = it.readingStr
-                    holder.pronunciationText.text = readingStr
+                    holder.pronunciationText.text = if (readingStr.isBlank()) { word.baseForm } else { readingStr }
                     holder.pronunciationText.visibility = View.VISIBLE
                 }, { Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show() })
     }
 
     private fun showContext(holder: ViewHolder, word: Word) {
         holder.contextTv.text = word.contextText
+        //todo delete
+        val str = SpannableStringBuilder("これは彼女が酒精に浸った夜の旅路を威風堂々歩き抜いた記録であり、また、ついに...")
+        str.setSpan(StyleSpan(Typeface.BOLD), 3, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        holder.contextTv.text = str
+        //todo delete
         holder.pronunciationText.visibility = View.GONE
     }
 
