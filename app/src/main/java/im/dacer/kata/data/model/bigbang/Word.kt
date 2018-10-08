@@ -16,4 +16,9 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                 var createdAt: Long? = System.currentTimeMillis(),
                 var updatedAt: Long? = System.currentTimeMillis()) {
 
+    fun afterSearchAgain(): Word {
+        queryTimes++
+        updatedAt = System.currentTimeMillis()
+        return this
+    }
 }

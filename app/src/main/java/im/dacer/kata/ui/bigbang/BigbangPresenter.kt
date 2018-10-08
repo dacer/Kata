@@ -7,10 +7,12 @@ import im.dacer.kata.R
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.History
+import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictEntry
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictReading
 import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.data.room.dao.HistoryDao
+import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
@@ -36,6 +38,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
     @Inject lateinit var searchDictHelper: SearchDictHelper
     @Inject lateinit var ttsHelper: TTSHelper
     @Inject lateinit var historyDao: HistoryDao
+    @Inject lateinit var wordDao: WordDao
     private var searchAction = SearchEngine.getDefaultSearchAction(context)
 
     private var currentSelectedToken: KanjiResult? = null
@@ -105,14 +108,14 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
             mvpView?.descText = "[${currentSelectedToken?.baseForm}] ${currentSelectedToken?.subtitle}"
             mvpView?.meaningText = ""
             strForSearch = currentSelectedToken!!.baseForm
-
         } else {
             mvpView?.descText = currentSelectedToken?.surface
             strForSearch = currentSelectedToken?.surface ?: ""
         }
 
+        onWordSelected(currentSelectedToken!!)
         dictDisposable?.dispose()
-        dictDisposable = Observable.fromCallable{ searchDictHelper!!.search(strForSearch) }
+        dictDisposable = Observable.fromCallable{ searchDictHelper.search(strForSearch) }
                 .flatMap {
                     Observable.zip(
                             dealWithDictEntryList(it.dictEntryList),
@@ -159,6 +162,18 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
             mvpView?.toastError(e)
         }
         return true
+    }
+
+    private fun onWordSelected(kanjiResult: KanjiResult) {
+        wordDao.findByBaseForm(kanjiResult.baseForm)
+                .subscribe {
+                    if (it.isEmpty()) {
+                        wordDao.insert(Word(baseForm = kanjiResult.baseForm))
+                    } else {
+                        val word = it[0]
+                        wordDao.update(word.afterSearchAgain())
+                    }
+                }
     }
 
     private fun dealWithDictEntryList(dictEntryList: List<DictEntry>): Observable<String> {
