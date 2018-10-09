@@ -8,10 +8,7 @@ import dagger.Provides
 import im.dacer.kata.data.room.HistoryMigrationHelper
 import im.dacer.kata.data.room.NewsMigrationHelper
 import im.dacer.kata.data.room.WordMigrationHelper
-import im.dacer.kata.data.room.dao.EasyNewsDao
-import im.dacer.kata.data.room.dao.HistoryDao
-import im.dacer.kata.data.room.dao.NhkNewsDao
-import im.dacer.kata.data.room.dao.WordDao
+import im.dacer.kata.data.room.dao.*
 import im.dacer.kata.data.room.database.HistoryAppDatabase
 import im.dacer.kata.data.room.database.NewsAppDatabase
 import im.dacer.kata.data.room.database.WordAppDatabase
@@ -66,6 +63,8 @@ class AppModule(private val application: Application) {
     @Singleton
     fun providesWordDao(database: WordAppDatabase): WordDao = database.wordDao()
 
-    companion object {
-    }
+    @Provides
+    @Singleton
+    fun providesContextStrDao(database: WordAppDatabase): ContextStrDao = database.contextStrDao()
+
 }

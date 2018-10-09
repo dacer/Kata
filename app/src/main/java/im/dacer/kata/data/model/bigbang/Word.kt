@@ -10,7 +10,6 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "word")
 data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                 var baseForm: String,
-                var contextText: String? = null,
                 var mastered: Boolean? = false,
                 var queryTimes: Int = 1,
                 var createdAt: Long? = System.currentTimeMillis(),
