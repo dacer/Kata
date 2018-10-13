@@ -9,11 +9,13 @@ import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.model.segment.KanjiResult
+import im.dacer.kata.data.room.dao.ContextStrDao
 import im.dacer.kata.data.room.dao.HistoryDao
 import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
+import im.dacer.kata.util.ContextFinder
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.helper.TTSHelper
@@ -34,6 +36,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
     @Inject lateinit var ttsHelper: TTSHelper
     @Inject lateinit var historyDao: HistoryDao
     @Inject lateinit var wordDao: WordDao
+    @Inject lateinit var contextStrDao: ContextStrDao
     private var searchAction = SearchEngine.getDefaultSearchAction(context)
 
     private var currentSelectedToken: KanjiResult? = null
@@ -108,7 +111,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
             strForSearch = currentSelectedToken?.surface ?: ""
         }
 
-        onWordSelected(currentSelectedToken!!)
+        onWordSelected(index)
         dictDisposable?.dispose()
         dictDisposable = searchDictHelper.searchForCombineResult(strForSearch, langUtils)
                 .subscribe({
@@ -148,15 +151,19 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         return true
     }
 
-    private fun onWordSelected(kanjiResult: KanjiResult) {
+    private fun onWordSelected(index: Int) {
+        val kanjiResult = kanjiResultList?.get(index)!!
         wordDao.findByBaseForm(kanjiResult.baseForm)
                 .subscribe {
-                    if (it.isEmpty()) {
+                    val wordId = if (it.isEmpty()) {
                         wordDao.insert(Word(baseForm = kanjiResult.baseForm))
                     } else {
                         val word = it[0]
                         wordDao.update(word.afterSearchAgain())
+                        word.id
                     }
+
+                    contextStrDao.insert(ContextFinder.get(wordId, kanjiResultList!!, index))
                 }
     }
 

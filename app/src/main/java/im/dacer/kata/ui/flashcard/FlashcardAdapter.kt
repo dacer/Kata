@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.support.v7.widget.CardView
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.text.TextUtils
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +17,16 @@ import android.widget.Toast
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.Word
+import im.dacer.kata.data.room.dao.ContextStrDao
 import im.dacer.kata.util.LangUtils
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
 
 
 
-class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper, val langUtils: LangUtils) :
+class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper,
+                       val langUtils: LangUtils, val contextStrDao: ContextStrDao) :
         ArrayAdapter<Word>(context, 0) {
 
     private var dictDisposable: Disposable? = null
@@ -76,12 +80,20 @@ class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper,
     }
 
     private fun showContext(holder: ViewHolder, word: Word) {
-        holder.contextTv.text = word.contextText
-        //todo delete
-        val str = SpannableStringBuilder("これは彼女が酒精に浸った夜の旅路を威風堂々歩き抜いた記録であり、また、ついに...")
-        str.setSpan(StyleSpan(Typeface.BOLD), 3, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        holder.contextTv.text = str
-        //todo delete
+        contextStrDao.findByWordId(word.id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    val spannableStrBuilderList = arrayListOf<SpannableStringBuilder>()
+                    it.forEach {
+                        spannableStrBuilderList.add(SpannableStringBuilder("\u25CB "))
+                        val contextStrBuilder = SpannableStringBuilder(it.text)
+                        contextStrBuilder.setSpan(StyleSpan(Typeface.BOLD), it.fromIndex, it.toIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        spannableStrBuilderList.add(contextStrBuilder)
+                        spannableStrBuilderList.add(SpannableStringBuilder("\n\n"))
+                    }
+
+                    holder.contextTv.text = TextUtils.concat(*spannableStrBuilderList.toTypedArray())
+                }
         holder.pronunciationText.visibility = View.GONE
     }
 

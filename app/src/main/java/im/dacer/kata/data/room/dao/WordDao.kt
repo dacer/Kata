@@ -18,7 +18,7 @@ interface WordDao {
     fun findByBaseForm(baseForm: String): Maybe<List<Word>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(item: Word)
+    fun insert(item: Word): Long
 
     @Update
     fun update(item: Word)
