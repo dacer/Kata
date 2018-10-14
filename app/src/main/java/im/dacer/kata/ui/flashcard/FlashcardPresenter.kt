@@ -20,10 +20,11 @@ class FlashcardPresenter @Inject constructor(@ApplicationContext val context: Co
     @Inject lateinit var wordDao: WordDao
 
     private var initDis: Disposable? = null
+    private var allMastered = true
 
     override fun attachView(mvpView: FlashcardMvp) {
         super.attachView(mvpView)
-        initDis = wordDao.loadNotMastered()
+        initDis = wordDao.loadNotMasteredMaybe()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     mvpView.setWordList(it.toTypedArray())
@@ -39,9 +40,23 @@ class FlashcardPresenter @Inject constructor(@ApplicationContext val context: Co
     }
 
     override fun onCardSwiped(direction: SwipeDirection?) {
-        if (mvpView?.allCardsSwiped() == true) {
-            mvpView?.showCongratulations()
+        if (direction == SwipeDirection.Right){
+            val lastWord = mvpView?.getLastWord()
+            lastWord?.run {
+                wordDao.update(markMastered())
+            }
+        } else if (direction == SwipeDirection.Left) {
+            allMastered = false
         }
+
+        if (mvpView?.allCardsSwiped() == true) {
+            if (allMastered) {
+                mvpView?.showCongratulations()
+            } else {
+                mvpView?.showEmpty()
+            }
+        }
+
     }
 
     override fun onCardReversed() {

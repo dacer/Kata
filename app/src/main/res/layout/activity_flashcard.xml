@@ -6,11 +6,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/congratulationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/fireworksIv"
@@ -25,6 +27,22 @@
             android:textSize="22sp"
             android:gravity="center"
             android:text="@string/all_mastered_congratulations"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="invisible">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/empty"/>
+
     </LinearLayout>
 
     <nl.dionsegijn.konfetti.KonfettiView

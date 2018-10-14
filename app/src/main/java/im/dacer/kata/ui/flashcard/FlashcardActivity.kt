@@ -2,6 +2,7 @@ package im.dacer.kata.ui.flashcard
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.view.View
 import com.pixplicity.sharp.Sharp
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SearchDictHelper
@@ -53,7 +54,17 @@ class FlashcardActivity : BaseTransparentSwipeActivity(), FlashcardMvp {
         return cardStackView.topIndex == adapter.count
     }
 
+    override fun getLastWord(): Word? {
+        if (cardStackView.topIndex <= 0 ) return null
+        return adapter.getItem(cardStackView.topIndex - 1)
+    }
+
+    override fun showEmpty() {
+        showViewWithAnim(emptyView)
+    }
+
     override fun showCongratulations() {
+        showViewWithAnim(congratulationView)
         konfettiView.build()
                 .addColors(HAPPY_COLORS.map { ContextCompat.getColor(this, it) })
                 .setDirection(0.0, 359.0)
@@ -64,6 +75,14 @@ class FlashcardActivity : BaseTransparentSwipeActivity(), FlashcardMvp {
                 .addSizes(Size(12), Size(16, 6f))
                 .setPosition(-50f, konfettiView.width + 50f, -50f, -50f)
                 .streamFor(100, 5000L)
+    }
+
+    private fun showViewWithAnim(view: View) {
+        view.visibility = View.VISIBLE
+        view.alpha = 0.0f
+        view.animate()
+                .setDuration(300)
+                .alpha(1.0f)
     }
 
     companion object {

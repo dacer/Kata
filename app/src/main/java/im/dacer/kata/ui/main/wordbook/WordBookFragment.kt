@@ -62,9 +62,8 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
     
     override fun showWords(wordList: List<Word>?) {
         wordAdapter.setNewData(wordList)
+        flashcardTv.isEnabled = wordList?.isNotEmpty() == true
     }
 
-
     override fun getDecorView() = activity!!.window.decorView!!
-
 }

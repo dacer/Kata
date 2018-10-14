@@ -9,7 +9,10 @@ import io.reactivex.Maybe
 interface WordDao {
 
     @Query("SELECT * FROM word WHERE mastered is 0 OR mastered is NULL ORDER BY updatedAt DESC")
-    fun loadNotMastered(): Flowable<List<Word>>
+    fun loadNotMasteredFlowable(): Flowable<List<Word>>
+
+    @Query("SELECT * FROM word WHERE mastered is 0 OR mastered is NULL ORDER BY updatedAt DESC")
+    fun loadNotMasteredMaybe(): Maybe<List<Word>>
 
     @Query("SELECT * FROM word WHERE mastered is 1 ORDER BY updatedAt DESC")
     fun loadMastered(): Flowable<List<Word>>

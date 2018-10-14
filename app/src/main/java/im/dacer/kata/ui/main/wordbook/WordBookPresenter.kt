@@ -53,13 +53,18 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
         refreshWordList()
     }
 
+    override fun detachView() {
+        super.detachView()
+        refreshWordDis?.dispose()
+    }
+
     fun onWordClicked(pos: Int) {
 
     }
 
     fun refreshWordList() {
         refreshWordDis?.dispose()
-        refreshWordDis = wordDao.loadNotMastered()
+        refreshWordDis = wordDao.loadNotMasteredFlowable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe{ wordList -> mvpView?.showWords(wordList) }
     }
