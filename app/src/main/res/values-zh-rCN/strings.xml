@@ -92,6 +92,7 @@
     <string name="learning">学习中</string>
     <string name="see_definition">查看解释</string>
     <string name="see_usage">查看用法</string>
+    <string name="skip">跳过</string>
 
     <string name="all_mastered_congratulations">恭喜你！所有的卡片都已掌握！</string>
 </resources>

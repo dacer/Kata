@@ -92,6 +92,7 @@
     <string name="learning">Learning</string>
     <string name="see_definition">See Definition</string>
     <string name="see_usage">See Usage</string>
+    <string name="skip">Skip</string>
 
     <string name="all_mastered_congratulations">Congratulations!\nAll cards are mastered!</string>
 </resources>

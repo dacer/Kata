@@ -9,12 +9,18 @@
     app:cardCornerRadius="@dimen/flashcard_radius"
     app:cardElevation="0dp">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="30dp"
+        android:textColor="#fff"
+        android:text="@string/skip"
+        android:textAllCaps="true"
+        android:textSize="36sp"
+        android:padding="10dp"
+        android:letterSpacing="0.2"
+        android:textStyle="bold"
         android:alpha="0.5"
-        app:srcCompat="@drawable/ic_round_highlight_off_24px"/>
+        android:background="@drawable/flashcard_text_view_border"/>
 
 </android.support.v7.widget.CardView>
