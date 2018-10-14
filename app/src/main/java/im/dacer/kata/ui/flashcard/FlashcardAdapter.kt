@@ -22,9 +22,6 @@ import im.dacer.kata.util.LangUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
-
-
-
 class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper,
                        val langUtils: LangUtils, private val contextStrDao: ContextStrDao) :
         ArrayAdapter<Word>(context, 0) {

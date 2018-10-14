@@ -5,6 +5,7 @@
 
     <dimen name="toolbar_padding_top">0dp</dimen>
     <dimen name="flashcard_radius">8dp</dimen>
+    <dimen name="item_word_margin">18dp</dimen>
 
     <dimen name="big_bang_default_item_space">0dp</dimen>
     <dimen name="big_bang_default_line_space">8dp</dimen>

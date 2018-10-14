@@ -5,9 +5,9 @@
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="18dp"
-    android:layout_marginLeft="18dp"
-    android:layout_marginRight="18dp"
+    android:layout_marginTop="@dimen/item_word_margin"
+    android:layout_marginLeft="@dimen/item_word_margin"
+    android:layout_marginRight="@dimen/item_word_margin"
     card_view:cardCornerRadius="4dp"
     android:layout_below="@+id/tutorialLayout">
 

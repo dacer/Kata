@@ -8,7 +8,6 @@ import android.support.v4.util.LongSparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.App
 import im.dacer.kata.injection.component.ConfigPersistentComponent
 import im.dacer.kata.injection.component.DaggerConfigPersistentComponent

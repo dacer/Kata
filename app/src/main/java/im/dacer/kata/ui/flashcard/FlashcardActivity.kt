@@ -7,6 +7,7 @@ import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.room.dao.ContextStrDao
 import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.LangUtils
+import im.dacer.kata.util.extension.getNavBarHeight
 import kotlinx.android.synthetic.main.activity_flashcard.*
 import javax.inject.Inject
 
@@ -24,6 +25,12 @@ class FlashcardActivity : BaseTransparentSwipeActivity(), FlashcardMvp {
         activityComponent().inject(this)
         flashcardPresenter.attachView(this)
         cardStackView.setCardEventListener(flashcardPresenter)
+
+        val navBarHeight = getNavBarHeight()
+        if (navBarHeight > 0) {
+            cardStackView.setPadding(cardStackView.paddingLeft, cardStackView.paddingTop,
+                    cardStackView.paddingRight, navBarHeight)
+        }
     }
 
     override fun onDestroy() {

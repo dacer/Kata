@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.KeyCharacterMap
@@ -77,6 +78,9 @@ fun Activity.getNavBarHeight(): Int {
     return result
 }
 
+fun Fragment.getNavBarHeight(): Int {
+    return activity?.getNavBarHeight() ?: 0
+}
 
 fun Activity.isTablet(): Boolean {
     return resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE

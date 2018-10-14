@@ -7,6 +7,7 @@
     <color name="toolbarBackground">#4b4a47</color>
     <color name="toolbarBorder">#08ffffff</color>
     <color name="gray">#424242</color>
+    <color name="bottom_btn_color">#212121</color>
 
     <color name="newsTitle">#e5e5e4</color>
     <color name="newsSubTitle">#949494</color>

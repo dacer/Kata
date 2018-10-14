@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
+import android.view.ViewGroup
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
 import im.dacer.kata.R
 import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.ui.flashcard.FlashcardActivity
+import im.dacer.kata.util.extension.applyHeight
+import im.dacer.kata.util.extension.getNavBarHeight
 import kotlinx.android.synthetic.main.fragment_word_book.*
+import org.jetbrains.anko.support.v4.dimen
 import javax.inject.Inject
 
 class WordBookFragment : BaseFragment(), WordBookMvp {
@@ -30,11 +34,15 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
 
         wordRecyclerView.layoutManager = LinearLayoutManager(context)
 
+        bottomPadding.applyHeight(getNavBarHeight())
         val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(wordAdapter)
         itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START)
         val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
         wordAdapter.bindToRecyclerView(wordRecyclerView)
         itemTouchHelper.attachToRecyclerView(wordRecyclerView)
+        val footView = View(activity)
+        footView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dimen(R.dimen.item_word_margin))
+        wordAdapter.addFooterView(footView)
         wordAdapter.setOnItemClickListener { _, _, pos -> wordPresenter.onWordClicked(pos)}
         wordAdapter.setEmptyView(R.layout.empty_recycler_view)
         wordAdapter.enableSwipeItem()
