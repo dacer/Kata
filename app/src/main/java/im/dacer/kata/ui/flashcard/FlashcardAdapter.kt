@@ -26,7 +26,7 @@ import io.reactivex.disposables.Disposable
 
 
 class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper,
-                       val langUtils: LangUtils, val contextStrDao: ContextStrDao) :
+                       val langUtils: LangUtils, private val contextStrDao: ContextStrDao) :
         ArrayAdapter<Word>(context, 0) {
 
     private var dictDisposable: Disposable? = null
@@ -84,7 +84,7 @@ class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper,
                 .subscribe {
                     val spannableStrBuilderList = arrayListOf<SpannableStringBuilder>()
                     it.forEach {
-                        spannableStrBuilderList.add(SpannableStringBuilder("\u25CB "))
+                        spannableStrBuilderList.add(SpannableStringBuilder(CIRCLE_SYMBOL))
                         val contextStrBuilder = SpannableStringBuilder(it.text)
                         contextStrBuilder.setSpan(StyleSpan(Typeface.BOLD), it.fromIndex, it.toIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                         spannableStrBuilderList.add(contextStrBuilder)
@@ -106,6 +106,7 @@ class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper,
     }
 
     companion object {
+        private const val CIRCLE_SYMBOL = "\u25CB "
         private val MATERIAL_COLORS = listOf(
                 "#C62828",
                 "#AD1457",
