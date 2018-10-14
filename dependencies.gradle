@@ -82,7 +82,9 @@ ext {
             jsoup          : "org.jsoup:jsoup:1.10.1",
             exomedia       : 'com.devbrackets.android:exomedia:4.2.1',
             colorpicker    : 'com.jaredrummler:colorpicker:1.0.2',
-            cardStackView  : "com.yuyakaido.android:card-stack-view:1.0.0-beta9"
+            cardStackView  : "com.yuyakaido.android:card-stack-view:1.0.0-beta9",
+            konfetti       : 'nl.dionsegijn:konfetti:1.1.2',
+            sharp          : 'com.pixplicity.sharp:library:1.1.0'
     ]
 
     compilers = [

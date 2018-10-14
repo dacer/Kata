@@ -1,6 +1,8 @@
 package im.dacer.kata.ui.flashcard
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import com.pixplicity.sharp.Sharp
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.Word
@@ -9,6 +11,8 @@ import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.extension.getNavBarHeight
 import kotlinx.android.synthetic.main.activity_flashcard.*
+import nl.dionsegijn.konfetti.models.Shape
+import nl.dionsegijn.konfetti.models.Size
 import javax.inject.Inject
 
 class FlashcardActivity : BaseTransparentSwipeActivity(), FlashcardMvp {
@@ -31,6 +35,7 @@ class FlashcardActivity : BaseTransparentSwipeActivity(), FlashcardMvp {
             cardStackView.setPadding(cardStackView.paddingLeft, cardStackView.paddingTop,
                     cardStackView.paddingRight, navBarHeight)
         }
+        Sharp.loadResource(resources, R.raw.fireworks).into(fireworksIv)
     }
 
     override fun onDestroy() {
@@ -44,4 +49,24 @@ class FlashcardActivity : BaseTransparentSwipeActivity(), FlashcardMvp {
         cardStackView.setAdapter(adapter)
     }
 
+    override fun allCardsSwiped(): Boolean {
+        return cardStackView.topIndex == adapter.count
+    }
+
+    override fun showCongratulations() {
+        konfettiView.build()
+                .addColors(HAPPY_COLORS.map { ContextCompat.getColor(this, it) })
+                .setDirection(0.0, 359.0)
+                .setSpeed(4f, 7f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(3000L)
+                .addShapes(Shape.RECT, Shape.CIRCLE)
+                .addSizes(Size(12), Size(16, 6f))
+                .setPosition(-50f, konfettiView.width + 50f, -50f, -50f)
+                .streamFor(100, 5000L)
+    }
+
+    companion object {
+        val HAPPY_COLORS = intArrayOf(R.color.dk_cyan, R.color.dk_green, R.color.dk_red, R.color.dk_blue)
+    }
 }

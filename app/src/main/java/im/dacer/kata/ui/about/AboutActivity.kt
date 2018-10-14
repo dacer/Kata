@@ -73,6 +73,7 @@ class AboutActivity : BaseAboutActivity() {
         items.add(Category("Thanks"))
         items.add(License("URL2io", "", "", "http://www.url2io.com/"))
         items.add(License("Mercury", "", "", "https://mercury.postlight.com/web-parser/"))
+        items.add(License("Fireworks icon made by Freepik from www.flaticon.com", "", "", "http://www.freepik.com"))
 
         items.add(Category("Licenses"))
         items.add(License("JMdict", "JMdict", CC_LICENSE,

@@ -19,7 +19,7 @@ class FlashcardPresenter @Inject constructor(@ApplicationContext val context: Co
     @Inject lateinit var settingUtility: SettingUtility
     @Inject lateinit var wordDao: WordDao
 
-    var initDis: Disposable? = null
+    private var initDis: Disposable? = null
 
     override fun attachView(mvpView: FlashcardMvp) {
         super.attachView(mvpView)
@@ -39,6 +39,9 @@ class FlashcardPresenter @Inject constructor(@ApplicationContext val context: Co
     }
 
     override fun onCardSwiped(direction: SwipeDirection?) {
+        if (mvpView?.allCardsSwiped() == true) {
+            mvpView?.showCongratulations()
+        }
     }
 
     override fun onCardReversed() {

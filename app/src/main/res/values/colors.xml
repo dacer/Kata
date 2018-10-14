@@ -11,4 +11,10 @@
 
     <color name="newsTitle">#e5e5e4</color>
     <color name="newsSubTitle">#949494</color>
+
+
+    <color name="dk_cyan">#3aaab8</color>
+    <color name="dk_green">#38ba9e</color>
+    <color name="dk_red">#bb3d72</color>
+    <color name="dk_blue">#006ded</color>
 </resources>
