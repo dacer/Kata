@@ -21,6 +21,7 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
 
     fun afterSearchAgain(): Word {
         queryTimes++
+        mastered = false
         freshUpdatedAt()
         return this
     }
