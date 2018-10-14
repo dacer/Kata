@@ -46,7 +46,7 @@ class FlashcardAdapter(context: Context, val searchDictHelper: SearchDictHelper,
         holder.baseFormTv.text = word.baseForm
         holder.queryTimesTv.text = word.queryTimes.toString()
         val color = Color.parseColor(MATERIAL_COLORS[position % MATERIAL_COLORS.size])
-        holder.baseFormTv.text = "${holder.baseFormTv.text} ${MATERIAL_COLORS[position % MATERIAL_COLORS.size]}"
+        holder.baseFormTv.text = holder.baseFormTv.text
         holder.backgroundLayout.setCardBackgroundColor(color)
         showContext(holder, word)
 
