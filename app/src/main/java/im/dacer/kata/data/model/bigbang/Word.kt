@@ -15,10 +15,6 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                 var createdAt: Long? = System.currentTimeMillis(),
                 var updatedAt: Long? = System.currentTimeMillis()) {
 
-    fun freshUpdatedAt() {
-        updatedAt = System.currentTimeMillis()
-    }
-
     fun afterSearchAgain(): Word {
         queryTimes++
         mastered = false
@@ -30,5 +26,9 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
         mastered = true
         freshUpdatedAt()
         return this
+    }
+
+    private fun freshUpdatedAt() {
+        updatedAt = System.currentTimeMillis()
     }
 }

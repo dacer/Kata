@@ -66,7 +66,10 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
         refreshWordDis?.dispose()
         refreshWordDis = wordDao.loadNotMasteredFlowable()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ wordList -> mvpView?.showWords(wordList) }
+                .subscribe{ wordList ->
+                    this.wordList = wordList
+                    mvpView?.showWords(wordList)
+                }
     }
 
 }
