@@ -34,4 +34,4 @@ SOFTWARE.
 
 
 [app]: https://play.google.com/store/apps/details?id=im.dacer.kata
-[googleplay_store_badge]: http://www.android.com/images/brand/get_it_on_play_logo_large.png
+[googleplay_store_badge]: https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png
