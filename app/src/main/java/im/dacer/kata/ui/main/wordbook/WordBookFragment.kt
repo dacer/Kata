@@ -12,6 +12,7 @@ import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.ui.flashcard.FlashcardActivity
 import im.dacer.kata.util.extension.applyHeight
 import im.dacer.kata.util.extension.getNavBarHeight
+import im.dacer.kata.util.extension.onRendered
 import kotlinx.android.synthetic.main.fragment_word_book.*
 import org.jetbrains.anko.support.v4.dimen
 import javax.inject.Inject
@@ -34,7 +35,6 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
 
         wordRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        bottomPadding.applyHeight(getNavBarHeight())
         val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(wordAdapter)
         itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START)
         val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
@@ -49,6 +49,8 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         wordAdapter.setOnItemSwipeListener(wordPresenter.swipeListener)
         flashcardTv.setOnClickListener { startActivity(Intent(activity, FlashcardActivity::class.java)) }
         setHasOptionsMenu(true)
+
+        bottomPadding.onRendered { bottomPadding.applyHeight(getNavBarHeight()) }
     }
 
     override fun onResume() {

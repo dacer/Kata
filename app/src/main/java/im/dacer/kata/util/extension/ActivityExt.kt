@@ -7,13 +7,16 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Build
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.DisplayMetrics
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewConfiguration
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.Toast
 import im.dacer.kata.util.LogUtils
 
@@ -54,12 +57,26 @@ fun View.applyHeight(height: Int) {
     this.layoutParams = this.layoutParams
 }
 
+fun View.onRendered(listener: (Unit) -> Unit) {
+    viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            viewTreeObserver.removeOnGlobalLayoutListener(this)
+            listener(Unit)
+        }
+    })
+}
+
+fun View.setPaddingBottom(newPadding: Int) {
+    setPadding(paddingLeft, paddingTop, paddingRight, newPadding)
+}
+
+// Make sure the view has been rendered before call this method
 fun Activity.getNavBarHeight(): Int {
     val result = 0
     val hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey()
     val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
-
-    if (!hasMenuKey && !hasBackKey) {
+    val hasNavBar = hasNavBar(window.decorView)
+    if (!hasMenuKey && !hasBackKey && hasNavBar) {
         //The device has a navigation bar
         val resources = resources
 
@@ -78,8 +95,28 @@ fun Activity.getNavBarHeight(): Int {
     return result
 }
 
+// Make sure the view has been rendered before call this method
 fun Fragment.getNavBarHeight(): Int {
     return activity?.getNavBarHeight() ?: 0
+}
+
+fun Activity.hasNavBar(rootView: View?): Boolean {
+    if (rootView == null)
+        return true
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
+        return true
+
+    val d = windowManager.defaultDisplay
+    val realDisplayMetrics = DisplayMetrics()
+    d.getRealMetrics(realDisplayMetrics)
+
+    val viewHeight = rootView.height
+    if (viewHeight == 0)
+        return true
+
+    val realHeight = realDisplayMetrics.heightPixels
+    return realHeight != viewHeight
 }
 
 fun Activity.isTablet(): Boolean {

@@ -12,7 +12,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.ui.about.AboutActivity
-import im.dacer.kata.ui.base.BaseTransparentActivity
+import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.ui.lyric.LyricActivity
 import im.dacer.kata.ui.main.MainPresenter.DrawerItem
 import im.dacer.kata.ui.main.inbox.InboxFragment
@@ -26,7 +26,7 @@ import qiu.niorgai.StatusBarCompat
 import javax.inject.Inject
 
 
-class MainActivity : BaseTransparentActivity(), MainMvp {
+class MainActivity : BaseActivity(), MainMvp {
 
     @Inject lateinit var mainPresenter: MainPresenter
     @Inject lateinit var settingUtility: SettingUtility
