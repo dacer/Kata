@@ -11,6 +11,8 @@ import im.dacer.kata.data.room.dao.ContextStrDao
 import im.dacer.kata.ui.base.BaseTransparentSwipeActivity
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.extension.getNavBarHeight
+import im.dacer.kata.util.extension.onRendered
+import im.dacer.kata.util.extension.setPaddingBottom
 import kotlinx.android.synthetic.main.activity_flashcard.*
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
@@ -31,10 +33,11 @@ class FlashcardActivity : BaseTransparentSwipeActivity(), FlashcardMvp {
         flashcardPresenter.attachView(this)
         cardStackView.setCardEventListener(flashcardPresenter)
 
-        val navBarHeight = getNavBarHeight()
-        if (navBarHeight > 0) {
-            cardStackView.setPadding(cardStackView.paddingLeft, cardStackView.paddingTop,
-                    cardStackView.paddingRight, navBarHeight)
+        cardStackView.onRendered {
+            val navBarHeight = getNavBarHeight()
+            if (navBarHeight > 0) {
+                cardStackView.setPaddingBottom(navBarHeight)
+            }
         }
         Sharp.loadResource(resources, R.raw.fireworks).into(fireworksIv)
     }
