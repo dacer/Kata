@@ -85,5 +85,9 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         flashcardTv.isEnabled = wordList?.isNotEmpty() == true
     }
 
+    override fun showFlashcardBtn(show: Boolean) {
+        flashcardTv.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
     override fun getDecorView() = activity!!.window.decorView!!
 }

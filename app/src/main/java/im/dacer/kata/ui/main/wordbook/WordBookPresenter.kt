@@ -75,6 +75,7 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
 
     fun onClickChangeList(): Boolean {
         showLearning = !showLearning
+        mvpView?.showFlashcardBtn(showLearning)
         refreshWordList()
         return true
     }

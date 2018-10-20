@@ -8,4 +8,5 @@ interface WordBookMvp : MvpView {
     fun showWords(wordList: List<Word>?)
     fun getDecorView(): View
     fun setChangeListMenuName(name: String)
+    fun showFlashcardBtn(show: Boolean)
 }
