@@ -11,7 +11,7 @@ class SnackBarHelper {
     companion object {
         fun show(context: Context, decorView: View, string: String,
                  timeoutDismissListener: (Unit) -> (Unit), redoListener: (Unit) -> (Unit)) {
-            val snackBar = Snackbar.make(decorView, string, Snackbar.LENGTH_LONG)
+            val snackBar = Snackbar.make(decorView, string, Snackbar.LENGTH_SHORT)
                     .setAction(R.string.redo) { redoListener(Unit) }
             val navBarHeight = UIUtils.getNavigationBarHeight(context)
             if (navBarHeight > 0) {

@@ -28,6 +28,12 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
         return this
     }
 
+    fun markLearning(): Word {
+        mastered = false
+        freshUpdatedAt()
+        return this
+    }
+
     private fun freshUpdatedAt() {
         updatedAt = System.currentTimeMillis()
     }

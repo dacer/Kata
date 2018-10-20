@@ -37,16 +37,14 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
         override fun clearView(viewHolder: RecyclerView.ViewHolder?, pos: Int) {}
 
         override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
-            val word = wordList?.get(pos)
-            if (word != null) {
-                SnackBarHelper.show(context, mvpView!!.getDecorView(), getStr(R.string.deleted_sth, word.baseForm), { _ ->
-                    contextStrDao.findByWordId(word.id).subscribe { contextStrList ->
-                        contextStrList.forEach{ contextStrDao.delete(it) }
-                    }
-                    wordDao.delete(word)
-                }) {
-                    refreshWordList()
+            val word = wordList?.get(pos) ?: return
+            SnackBarHelper.show(context, mvpView!!.getDecorView(), getStr(R.string.deleted_sth, word.baseForm), { _ ->
+                contextStrDao.findByWordId(word.id).subscribe { contextStrList ->
+                    contextStrList.forEach{ contextStrDao.delete(it) }
                 }
+                wordDao.delete(word)
+            }) {
+                refreshWordList()
             }
         }
 
@@ -65,7 +63,14 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
     }
 
     fun onWordClicked(pos: Int) {
-
+        val word = wordList?.get(pos) ?: return
+        if (!showLearning) {
+            wordDao.update(word.markLearning())
+            SnackBarHelper.show(context, mvpView!!.getDecorView(),
+                    getStr(R.string.mark_sth_as_learning, word.baseForm), {}) {
+                wordDao.update(word.markMastered())
+            }
+        }
     }
 
     fun onClickChangeList(): Boolean {
