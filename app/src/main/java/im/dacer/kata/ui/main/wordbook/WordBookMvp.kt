@@ -7,4 +7,5 @@ import im.dacer.kata.ui.base.MvpView
 interface WordBookMvp : MvpView {
     fun showWords(wordList: List<Word>?)
     fun getDecorView(): View
+    fun setChangeListMenuName(name: String)
 }

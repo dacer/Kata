@@ -4,8 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
 import im.dacer.kata.R
 import im.dacer.kata.data.model.bigbang.Word
@@ -20,6 +19,7 @@ import javax.inject.Inject
 class WordBookFragment : BaseFragment(), WordBookMvp {
     @Inject lateinit var wordPresenter: WordBookPresenter
     private val wordAdapter = WordAdapter()
+    private var changeListMenuItem: MenuItem? = null
 
     override fun layoutId() = R.layout.fragment_word_book
 
@@ -48,6 +48,7 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         wordAdapter.enableSwipeItem()
         wordAdapter.setOnItemSwipeListener(wordPresenter.swipeListener)
         flashcardTv.setOnClickListener { startActivity(Intent(activity, FlashcardActivity::class.java)) }
+        setHasOptionsMenu(true)
     }
 
     override fun onResume() {
@@ -59,7 +60,24 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         super.onDestroy()
         wordPresenter.detachView()
     }
-    
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.work_book, menu)
+        changeListMenuItem = menu.findItem(R.id.change_list)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.change_list -> wordPresenter.onClickChangeList()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun setChangeListMenuName(name: String) {
+        changeListMenuItem?.title = name
+    }
+
     override fun showWords(wordList: List<Word>?) {
         wordAdapter.setNewData(wordList)
         flashcardTv.isEnabled = wordList?.isNotEmpty() == true

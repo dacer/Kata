@@ -14,6 +14,7 @@ import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.SnackBarHelper
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -29,6 +30,7 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
 
     private var refreshWordDis: Disposable? = null
     private var wordList: List<Word>? = null
+    private var showLearning = true
 
     val swipeListener = object : OnItemSwipeListener {
 
@@ -37,7 +39,7 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
         override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
             val word = wordList?.get(pos)
             if (word != null) {
-                SnackBarHelper.show(context, mvpView!!.getDecorView(), context.getString(R.string.deleted_sth, word.baseForm), { _ ->
+                SnackBarHelper.show(context, mvpView!!.getDecorView(), getStr(R.string.deleted_sth, word.baseForm), { _ ->
                     contextStrDao.findByWordId(word.id).subscribe { contextStrList ->
                         contextStrList.forEach{ contextStrDao.delete(it) }
                     }
@@ -66,9 +68,16 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
 
     }
 
+    fun onClickChangeList(): Boolean {
+        showLearning = !showLearning
+        refreshWordList()
+        return true
+    }
+
     private fun refreshWordList() {
+        mvpView?.setChangeListMenuName(if (showLearning) getStr(R.string.learning) else getStr(R.string.mastered))
         refreshWordDis?.dispose()
-        refreshWordDis = wordDao.loadNotMasteredFlowable()
+        refreshWordDis = getLoadWordFlowable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { wordList ->
                     this.wordList = wordList
@@ -76,4 +85,15 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
                 }
     }
 
+    private fun getLoadWordFlowable(): Flowable<List<Word>> {
+        return if (showLearning) {
+            wordDao.loadNotMasteredFlowable()
+        } else {
+            wordDao.loadMastered()
+        }
+    }
+
+    private fun getStr(resId: Int, vararg formatArgs: String = arrayOf()): String {
+        return context.getString(resId, *formatArgs)
+    }
 }
