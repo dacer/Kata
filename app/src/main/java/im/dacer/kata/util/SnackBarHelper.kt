@@ -9,7 +9,7 @@ import im.dacer.kata.R
 
 class SnackBarHelper {
     companion object {
-        fun show(context: Context, decorView: View, string: String,
+        fun showRedo(context: Context, decorView: View, string: String,
                  timeoutDismissListener: (Unit) -> (Unit), redoListener: (Unit) -> (Unit)) {
             val snackBar = Snackbar.make(decorView, string, Snackbar.LENGTH_SHORT)
                     .setAction(R.string.redo) { redoListener(Unit) }
@@ -27,7 +27,7 @@ class SnackBarHelper {
             snackBar.addCallback(object : Snackbar.Callback() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     super.onDismissed(transientBottomBar, event)
-                    if (event == DISMISS_EVENT_TIMEOUT) {
+                    if (event == DISMISS_EVENT_TIMEOUT || event == DISMISS_EVENT_CONSECUTIVE) {
                         timeoutDismissListener(Unit)
                     }
                 }
