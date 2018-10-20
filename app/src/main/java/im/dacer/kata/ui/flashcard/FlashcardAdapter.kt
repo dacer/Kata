@@ -61,6 +61,7 @@ class FlashcardAdapter(context: Context, private val searchDictHelper: SearchDic
     }
 
     private fun showMeaning(holder: ViewHolder, word: Word) {
+        holder.bottomTv.text = context.getText(R.string.see_usage)
         dictDisposable?.dispose()
         dictDisposable = searchDictHelper.searchForCombineResult(word.baseForm, langUtils)
                 .subscribe({
@@ -76,6 +77,7 @@ class FlashcardAdapter(context: Context, private val searchDictHelper: SearchDic
     }
 
     private fun showContext(holder: ViewHolder, word: Word) {
+        holder.bottomTv.text = context.getText(R.string.see_definition)
         contextStrDao.findByWordId(word.id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
