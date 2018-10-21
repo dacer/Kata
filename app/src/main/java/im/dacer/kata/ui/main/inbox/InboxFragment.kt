@@ -81,8 +81,6 @@ class InboxFragment : BaseFragment(), InboxMvp {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val canDraw = Settings.canDrawOverlays(activity)
             permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
-            permissionBottomMargin.layoutParams.height = activity!!.getNavBarHeight()
-            permissionBottomMargin.layoutParams = permissionBottomMargin.layoutParams
         }
 //        nothingHappenedView.visibility = View.GONE
         goToYoutubeView.visibility = View.GONE
