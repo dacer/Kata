@@ -57,6 +57,9 @@ class SettingsActivity : BaseSettingActivity() {
         arrayOf(showFloatDialogLayout, showFloatDialogSwit).setSwitchListener {
             appPref.showFloatDialog = it
         }
+        arrayOf(enableWordBookLayout, enableWordBookSwit).setSwitchListener {
+            appPref.enableWordBook = it
+        }
 
         translationTarget.setOnClickListener {
             MaterialDialog.Builder(this)
@@ -103,7 +106,7 @@ class SettingsActivity : BaseSettingActivity() {
         webPageParserTv.setText(appPref.webParser.stringRes)
         enhancedModeSwitch.isChecked = appPref.enhancedMode
         translationTargetTv.text = LangUtils.getLangByKey(appPref.targetLang)
-
+        enableWordBookSwit.isChecked = appPref.enableWordBook
         enhancedModeSwitch.isEnabled = listenClipboardSwitch.isChecked
     }
 

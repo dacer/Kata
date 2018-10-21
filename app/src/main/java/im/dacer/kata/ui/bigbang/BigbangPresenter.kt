@@ -160,6 +160,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
     }
 
     private fun onWordSelectedByUser(index: Int) {
+        if (!appPre.enableWordBook) return
         val kanjiResult = kanjiResultList?.get(index)!!
         wordDao.findByBaseForm(kanjiResult.baseForm)
                 .subscribe {

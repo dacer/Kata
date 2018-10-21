@@ -93,6 +93,21 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/enableWordBookLayout"
+                android:layout_width="match_parent"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/word_book"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/enableWordBookSwit"
+                    style="@style/SettingsItemRight"/>
+            </RelativeLayout>
+
+
+            <RelativeLayout
                 android:id="@+id/showFloatDialogLayout"
                 android:layout_width="match_parent"
                 style="@style/SettingsItem">

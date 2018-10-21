@@ -79,10 +79,13 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getInt(PREF_BACKGROUND_COLOR, Color.WHITE)
         set(value) { put(PREF_BACKGROUND_COLOR, value) }
 
-
     var hasShownWordBookTips : Boolean
         get() = getBoolean(HAS_SHOWN_WORD_BOOK_TIPS, false)
         set(value) { put(HAS_SHOWN_WORD_BOOK_TIPS, value) }
+
+    var enableWordBook : Boolean
+        get() = getBoolean(PREF_ENABLE_WORD_BOOK, true)
+        set(value) { put(PREF_ENABLE_WORD_BOOK, value) }
 
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
@@ -97,6 +100,7 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         private const val PREF_SHOW_PIC_WIFI_ONLY = "show_pic_wifi_only"
         private const val PREF_BACKGROUND_COLOR = "background_color"
         private const val HAS_SHOWN_WORD_BOOK_TIPS = "HAS_SHOWN_WORD_BOOK_TIPS"
+        private const val PREF_ENABLE_WORD_BOOK = "PREF_ENABLE_WORD_BOOK"
 
         private const val EASTER_EGG = "EASTER_EGG"
 
