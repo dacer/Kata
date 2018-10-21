@@ -12,20 +12,18 @@ import im.dacer.kata.data.model.news.NewsItem
 import im.dacer.kata.data.newprovider.BaseProvider
 import im.dacer.kata.data.newprovider.EasyNewsProvider
 import im.dacer.kata.data.newprovider.NhkNewsProvider
-import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.injection.ConfigPersistent
+import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.VideoPlayerActivity
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.LogUtils
 import im.dacer.kata.util.extension.isWifi
 import im.dacer.kata.util.helper.SchemeHelper
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.toast
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ConfigPersistent
@@ -54,8 +52,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     fun initData() {
         mvpView?.showLoading(true)
         initDataDisposable?.dispose()
-        initDataDisposable = Observable.timer(200, TimeUnit.MILLISECONDS)
-                .flatMap { newsProvider().loadLocalData() }
+        initDataDisposable = newsProvider().loadLocalData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
@@ -95,8 +92,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         initDataDisposable?.dispose()
         fetchDataDisposable?.dispose()
         cacheDisposable?.dispose()
-        fetchDataDisposable = Observable.timer(300, TimeUnit.MILLISECONDS)
-                .concatMap { newsProvider().saveOnlineListAndReturnLocal() }
+        fetchDataDisposable = newsProvider().saveOnlineListAndReturnLocal()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -113,8 +109,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
         cacheDisposable?.dispose()
         nowSyncingSize = 0
         mvpView?.showLoadingText(context.getString(R.string.caching_articles))
-        cacheDisposable = Observable.timer(300, TimeUnit.MILLISECONDS)
-                .concatMap { newsProvider().cacheAllNoContentArticles() }
+        cacheDisposable = newsProvider().cacheAllNoContentArticles()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
