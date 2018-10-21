@@ -71,7 +71,7 @@ class KataLayout @JvmOverloads constructor(
         loop@ for (line in mLines) {
             for (item in line.itemList) {
                 if (preselectedIndex == i) {
-                    onItemSelected(item)
+                    onItemSelected(item, false)
                     preselectedIndex = -1
                     break@loop
                 }
@@ -184,7 +184,7 @@ class KataLayout @JvmOverloads constructor(
         return true
     }
 
-    private fun onItemSelected(item: Item) {
+    private fun onItemSelected(item: Item, selectedByUser: Boolean = true) {
         if (item.view.isUrl && item.view.surface != null) {
             onClickLink(item)
             return
@@ -192,7 +192,7 @@ class KataLayout @JvmOverloads constructor(
         lastSelectedItem?.isSelected = false
         item.isSelected = true
         lastSelectedItem = item
-        itemClickListener?.onItemClicked(item.index)
+        itemClickListener?.onItemClicked(item.index, selectedByUser)
     }
 
     private fun onClickLink(item: Item) {
@@ -259,7 +259,7 @@ class KataLayout @JvmOverloads constructor(
     }
 
     interface ItemClickListener {
-        fun onItemClicked(index: Int)
+        fun onItemClicked(index: Int, selectedByUser: Boolean)
     }
 
 }

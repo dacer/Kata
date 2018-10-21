@@ -13,12 +13,10 @@ import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.ui.bigbang.BigBangActivity
 import im.dacer.kata.util.extension.isUrl
 import im.dacer.kata.util.extension.timberAndToast
-import im.dacer.kata.util.extension.toKanjiResultList
 import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.util.segment.BigBang
 import im.dacer.kata.view.FloatingView
 import im.dacer.kata.view.KataLayout
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_float.*
@@ -48,7 +46,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
         handleIntent(intent)
     }
 
-    override fun onItemClicked(index: Int) {
+    override fun onItemClicked(index: Int, selectedByUser: Boolean) {
         SchemeHelper.startKata(this, sharedText!!, index)
         finish()
     }

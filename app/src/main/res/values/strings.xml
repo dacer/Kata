@@ -95,5 +95,8 @@
     <string name="skip">Skip</string>
     <string name="mark_sth_as_learning">Mark %1$s as learning</string>
 
+    <string name="tips_vocabulary_builder_title">Vocabulary Builder</string>
+    <string name="tips_vocabulary_builder_summary">Every word you clicked is added to a list that you can access using Vocabulary Builder.\n\nTo turn it off, Go Settings→Vocabulary Builder.</string>
+
     <string name="all_mastered_congratulations">Congratulations!\nAll cards are mastered!</string>
 </resources>

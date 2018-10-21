@@ -2,10 +2,10 @@ package im.dacer.kata.ui.bigbang
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PointF
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +14,11 @@ import android.support.v7.widget.PopupMenu
 import android.util.Property
 import android.view.Gravity
 import android.view.View
+import android.view.animation.DecelerateInterpolator
+import com.mikepenz.materialize.util.UIUtils
+import com.takusemba.spotlight.Spotlight
+import com.takusemba.spotlight.shape.Circle
+import com.takusemba.spotlight.target.SimpleTarget
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.model.segment.KanjiResult
@@ -119,6 +124,32 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         runOnUiThread { audioBtn.text = if (playing) "{gmd-pause-circle-filled}" else "{gmd-play-circle-filled}" }
     }
 
+    override fun spotlight(index: Int) {
+        val targetView = kataLayout.getChildAt(index)
+        val targetPoint = getCenterPointOf(targetView)
+        val target = SimpleTarget.Builder(this)
+                .setPoint(targetPoint.x, targetPoint.y)
+                .setShape(Circle(UIUtils.convertDpToPixel(30f, this)))
+                .setTitle(getString(R.string.tips_vocabulary_builder_title))
+                .setDescription(getString(R.string.tips_vocabulary_builder_summary))
+                .build()
+        Spotlight.with(this)
+                .setOverlayColor(R.color.background)
+                .setDuration(300L)
+                .setAnimation(DecelerateInterpolator(2f))
+                .setTargets(target)
+                .setClosedOnTouchedOutside(true)
+                .start()
+    }
+
+    private fun getCenterPointOf(view: View): PointF {
+        val locationOnScreen = IntArray(2)
+        view.getLocationOnScreen(locationOnScreen)
+        val x = locationOnScreen[0] + view.width / 2f
+        val y = locationOnScreen[1] + view.height / 2f
+        return PointF(x, y)
+    }
+
     override fun hideSystemUI() {
         if (systemUiIsHidden) return
 
@@ -176,9 +207,8 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         super.onDestroy()
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onItemClicked(index: Int) {
-        bigbangPresenter.onItemClicked(index)
+    override fun onItemClicked(index: Int, selectedByUser: Boolean) {
+        bigbangPresenter.onItemClicked(index, selectedByUser)
     }
 
     private fun refreshIconStatus() {

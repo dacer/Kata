@@ -95,5 +95,8 @@
     <string name="skip">跳过</string>
     <string name="mark_sth_as_learning">标记 %1$s 为学习中</string>
 
+    <string name="tips_vocabulary_builder_title">单词本</string>
+    <string name="tips_vocabulary_builder_summary">每个你点击的单词都会放入单词本中。\n\n在设置中可以关闭此功能</string>
+
     <string name="all_mastered_congratulations">恭喜你！所有的卡片都已掌握！</string>
 </resources>

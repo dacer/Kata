@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
 import im.dacer.kata.R
+import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SearchDictHelper
-import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.model.segment.KanjiResult
@@ -30,13 +30,14 @@ import javax.inject.Inject
 
 @ConfigPersistent
 class BigbangPresenter @Inject constructor(@ApplicationContext val context: Context) : BasePresenter<BigbangMvp>() {
-    @Inject lateinit var settingUtility: SettingUtility
     @Inject lateinit var langUtils: LangUtils
     @Inject lateinit var searchDictHelper: SearchDictHelper
     @Inject lateinit var ttsHelper: TTSHelper
     @Inject lateinit var historyDao: HistoryDao
     @Inject lateinit var wordDao: WordDao
     @Inject lateinit var contextStrDao: ContextStrDao
+    @Inject lateinit var appPre: MultiprocessPref
+
     private var searchAction = SearchEngine.getDefaultSearchAction(context)
 
     private var currentSelectedToken: KanjiResult? = null
@@ -97,7 +98,8 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         if(saveInHistory) historyDao.insert(History(text = text, alias = alias))
     }
 
-    fun onItemClicked(index: Int) {
+    fun onItemClicked(index: Int, selectedByUser: Boolean) {
+        if (selectedByUser) spotlight(index)
         currentSelectedToken = kanjiResultList?.get(index)
         val strForSearch: String
 
@@ -111,7 +113,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
             strForSearch = currentSelectedToken?.surface ?: ""
         }
 
-        onWordSelected(index)
+        onWordSelectedByUser(index)
         dictDisposable?.dispose()
         dictDisposable = searchDictHelper.searchForCombineResult(strForSearch, langUtils)
                 .subscribe({
@@ -151,7 +153,13 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         return true
     }
 
-    private fun onWordSelected(index: Int) {
+    private fun spotlight(index: Int) {
+        if (appPre.hasShownWordBookTips) return
+        appPre.hasShownWordBookTips = true
+        mvpView?.spotlight(index)
+    }
+
+    private fun onWordSelectedByUser(index: Int) {
         val kanjiResult = kanjiResultList?.get(index)!!
         wordDao.findByBaseForm(kanjiResult.baseForm)
                 .subscribe {

@@ -15,6 +15,7 @@ interface BigbangMvp : MvpView {
     fun finish()
     fun showVoiceBtn(url: String)
     fun showAudioBtnPlaying(playing: Boolean)
+    fun spotlight(index: Int)
 
     var descText: String?
     var meaningText: String
