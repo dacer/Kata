@@ -29,7 +29,7 @@
             android:id="@+id/flashcardTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/export_anki"
+            android:layout_toRightOf="@+id/exportAnkiIv"
             android:background="@color/bottom_btn_color"
             android:padding="10dp"
             android:gravity="center"

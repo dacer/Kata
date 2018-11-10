@@ -83,15 +83,16 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
     override fun showWords(wordList: List<Word>?) {
         wordAdapter.setNewData(wordList)
         flashcardTv.isEnabled = wordList?.isNotEmpty() == true
+        exportAnkiIv.isEnabled = wordList?.isNotEmpty() == true
     }
 
     override fun showFlashcardBtn(show: Boolean) {
-        flashcardTv.visibility = if (show) View.VISIBLE else View.GONE
+        bottomView.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     override fun getDecorView() = activity!!.window.decorView!!
 
-    fun onClickExportAnki() {
+    private fun onClickExportAnki() {
 
     }
 }
