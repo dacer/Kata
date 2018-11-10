@@ -7,18 +7,35 @@
         android:id="@+id/wordRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/flashcardTv"/>
+        android:layout_above="@+id/bottomView"/>
 
-    <TextView
-        android:id="@+id/flashcardTv"
+    <RelativeLayout
+        android:id="@+id/bottomView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bottom_btn_color"
-        android:padding="10dp"
-        android:gravity="center"
-        android:text="@string/flashcards"
-        android:textSize="22sp"
-        android:layout_above="@+id/bottomPadding"/>
+        android:layout_above="@+id/bottomPadding">
+
+        <ImageView
+            android:id="@+id/exportAnkiIv"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/flashcardTv"
+            android:layout_alignBottom="@+id/flashcardTv"
+            android:background="#0D47A1"
+            android:src="@drawable/ic_anki"
+            />
+
+        <TextView
+            android:id="@+id/flashcardTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/export_anki"
+            android:background="@color/bottom_btn_color"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="@string/flashcards"
+            android:textSize="22sp"/>
+    </RelativeLayout>
     <View
         android:id="@+id/bottomPadding"
         android:layout_width="match_parent"

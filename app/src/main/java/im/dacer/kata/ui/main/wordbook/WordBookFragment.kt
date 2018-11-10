@@ -34,7 +34,6 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         super.onViewCreated(view, savedInstanceState)
 
         wordRecyclerView.layoutManager = LinearLayoutManager(context)
-
         val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(wordAdapter)
         itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START)
         val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
@@ -48,6 +47,7 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         wordAdapter.enableSwipeItem()
         wordAdapter.setOnItemSwipeListener(wordPresenter.swipeListener)
         flashcardTv.setOnClickListener { startActivity(Intent(activity, FlashcardActivity::class.java)) }
+        exportAnkiIv.setOnClickListener { onClickExportAnki() }
         setHasOptionsMenu(true)
 
         bottomPadding.onRendered { bottomPadding.applyHeight(getNavBarHeight()) }
@@ -90,4 +90,8 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
     }
 
     override fun getDecorView() = activity!!.window.decorView!!
+
+    fun onClickExportAnki() {
+
+    }
 }
