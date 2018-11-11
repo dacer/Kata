@@ -35,7 +35,7 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
                             dealWithDictEntryList(it.dictEntryList, langUtils),
                             dealWithDictReadingList(it.dictReadingList),
                             BiFunction<String, String, CombinedResult> {
-                                meaningStr, readingStr -> CombinedResult(meaningStr, readingStr)
+                                meaningStr, readingStr -> CombinedResult(strForSearch, meaningStr, readingStr)
                             }
                     )
                 }

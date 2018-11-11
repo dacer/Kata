@@ -12,13 +12,17 @@ import com.ichi2.anki.api.AddContentApi
 import com.ichi2.anki.api.AddContentApi.READ_WRITE_PERMISSION
 import im.dacer.kata.BuildConfig
 import im.dacer.kata.R
+import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
+import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.extension.isInstalled
 import im.dacer.kata.util.extension.openGooglePlay
 import im.dacer.kata.util.extension.toast
+import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -27,7 +31,9 @@ import javax.inject.Inject
 
 class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Context,
                                           val settingUtility: SettingUtility,
-                                          val wordDao: WordDao) {
+                                          val wordDao: WordDao,
+                                          val searchDictHelper: SearchDictHelper,
+                                          val langUtils: LangUtils) {
 
     private val api = AddContentApi(appContext)
 
@@ -45,7 +51,7 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
             val modelId = getModelId()
             val processDialog = MaterialDialog.Builder(activity).progress(true, 0).show()
             wordDao.loadNotMasteredMaybe()
-                    .map { wordsToAnkiCardHelper(modelId, it) }
+                    .flatMap { wordsToAnkiCardHelper(modelId, it) }
                     .map { helper ->
                         api.addNotes(modelId, deckId, helper.filteredNotes, null)
                         if (moveToMasteredAfterExport) {
@@ -68,12 +74,17 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
         }
     }
 
-    private fun wordsToAnkiCardHelper(modelId: Long, words: List<Word>): AnkiCardHelper {
+    private fun wordsToAnkiCardHelper(modelId: Long, words: List<Word>): Maybe<AnkiCardHelper> {
         val result = ArrayList(words)
         api.findDuplicateNotes(modelId, words.map { it.baseForm }).forEach { _, noteInfoList ->
             result.removeAll { it.baseForm == noteInfoList[0].key }
         }
-        return AnkiCardHelper(words, result.map { arrayOf(it.baseForm, "") })
+        return Observable.fromIterable(result)
+                .flatMap { searchDictHelper.searchForCombineResult(it.baseForm, langUtils) }
+                .map { arrayOf(it.strForSearch, "${it.readingStr}\n\n${it.meaningStr}") }
+                .toList()
+                .map { AnkiCardHelper(words, it) }
+                .toMaybe()
     }
 
     /**
