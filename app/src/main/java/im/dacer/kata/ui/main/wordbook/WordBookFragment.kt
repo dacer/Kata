@@ -39,7 +39,6 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
         try {
             wordAdapter.bindToRecyclerView(wordRecyclerView)
-
         } catch (e: Exception) {}
         itemTouchHelper.attachToRecyclerView(wordRecyclerView)
         val footView = View(activity)
