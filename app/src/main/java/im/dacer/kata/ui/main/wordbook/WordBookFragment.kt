@@ -37,7 +37,10 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(wordAdapter)
         itemDragAndSwipeCallback.setSwipeMoveFlags(ItemTouchHelper.START)
         val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
-        wordAdapter.bindToRecyclerView(wordRecyclerView)
+        try {
+            wordAdapter.bindToRecyclerView(wordRecyclerView)
+
+        } catch (e: Exception) {}
         itemTouchHelper.attachToRecyclerView(wordRecyclerView)
         val footView = View(activity)
         footView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dimen(R.dimen.item_word_margin))
@@ -47,7 +50,7 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         wordAdapter.enableSwipeItem()
         wordAdapter.setOnItemSwipeListener(wordPresenter.swipeListener)
         flashcardTv.setOnClickListener { startActivity(Intent(activity, FlashcardActivity::class.java)) }
-        exportAnkiIv.setOnClickListener { onClickExportAnki() }
+        exportAnkiIv.setOnClickListener { wordPresenter.onExportAnkiClicked(activity) }
         setHasOptionsMenu(true)
 
         bottomPadding.onRendered { bottomPadding.applyHeight(getNavBarHeight()) }
@@ -92,7 +95,7 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
 
     override fun getDecorView() = activity!!.window.decorView!!
 
-    private fun onClickExportAnki() {
-
+    fun exportAnki() {
+        wordPresenter.exportAnki()
     }
 }

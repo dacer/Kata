@@ -30,11 +30,21 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         get() = mHelper[PREF_LAST_EXIT_TAB, MainPresenter.DrawerItem.INBOX.id]
         set(value) { mHelper[PREF_LAST_EXIT_TAB] = value }
 
+    var ankiDeckId : Long
+        get() = mHelper[PREF_ANKI_DECK_ID, -1L]
+        set(value) { mHelper[PREF_ANKI_DECK_ID] = value }
+
+    var ankiModelId : Long
+        get() = mHelper[PREF_ANKI_MODEL_ID, -1L]
+        set(value) { mHelper[PREF_ANKI_MODEL_ID] = value }
+
     companion object {
         private const val PREF_LISTEN_CLIPBOARD = "listenclipboard"
         private const val PREF_DATABASE_IMPORTED = "databaseimported"
         private const val PREF_CACHE_MAX = "cachemax"
         private const val PREF_HAS_SHOWN_GO_YOUTUBE = "hasshowngoyoutube"
         private const val PREF_LAST_EXIT_TAB = "last_exit_tab"
+        private const val PREF_ANKI_DECK_ID = "PREF_ANKI_DECK_ID"
+        private const val PREF_ANKI_MODEL_ID = "PREF_ANKI_MODEL_ID"
     }
 }

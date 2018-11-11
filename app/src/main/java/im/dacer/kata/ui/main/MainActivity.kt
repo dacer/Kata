@@ -1,8 +1,10 @@
 package im.dacer.kata.ui.main
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.support.annotation.NonNull
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
@@ -21,6 +23,7 @@ import im.dacer.kata.ui.main.news.NewsFragment
 import im.dacer.kata.ui.main.wordbook.WordBookFragment
 import im.dacer.kata.ui.settings.SettingsActivity
 import im.dacer.kata.util.extension.startActivity
+import im.dacer.kata.util.helper.AnkiDroidHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import qiu.niorgai.StatusBarCompat
 import javax.inject.Inject
@@ -43,19 +46,19 @@ class MainActivity : BaseActivity(), MainMvp {
         drawer.setSelection(DrawerItem.get(settingUtility.lastExitTab).id, true)
     }
 
-    private fun initDrawer() : Drawer {
+    private fun initDrawer(): Drawer {
         val headerResult = AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(ColorDrawable(ContextCompat.getColor(this, R.color.material_drawer_dark_background)))
                 .build()
-        val drawer =  DrawerBuilder()
+        val drawer = DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(myToolbar as Toolbar)
                 .withAccountHeader(headerResult)
                 .withTranslucentStatusBar(true)
                 .addDrawerItems(*mainPresenter.getDrawerItems())
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
-                    when(drawerItem.identifier) {
+                    when (drawerItem.identifier) {
                         DrawerItem.INBOX.id -> switchFragment(InboxFragment(), R.string.inbox)
                         DrawerItem.LYRIC.id -> startActivity(LyricActivity::class.java)
                         DrawerItem.NHK_EASY.id -> switchFragment(NewsFragment.newInstance(NewsFragment.NewsType.NHK_EASY), R.string.nhk_news_easy)
@@ -88,6 +91,16 @@ class MainActivity : BaseActivity(), MainMvp {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_OVERLAY_PERMISSION) {
 //            mainPresenter.restartListenService()
+        }
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>,
+                                            @NonNull grantResults: IntArray) {
+        if (requestCode == AnkiDroidHelper.ANKI_PERMISSION_REQUEST &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            val wordFragment = supportFragmentManager.findFragmentById(R.id.frameLayout) as WordBookFragment
+            wordFragment.exportAnki()
         }
     }
 

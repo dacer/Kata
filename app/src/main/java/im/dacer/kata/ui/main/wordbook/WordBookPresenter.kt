@@ -1,5 +1,6 @@
 package im.dacer.kata.ui.main.wordbook
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Canvas
 import android.support.v7.widget.RecyclerView
@@ -14,6 +15,7 @@ import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.SnackBarHelper
+import im.dacer.kata.util.helper.AnkiDroidHelper
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -27,6 +29,7 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
     @Inject lateinit var appPref: MultiprocessPref
     @Inject lateinit var wordDao: WordDao
     @Inject lateinit var contextStrDao: ContextStrDao
+    @Inject lateinit var ankiDroidHelper: AnkiDroidHelper
 
     private var refreshWordDis: Disposable? = null
     private var wordList: List<Word>? = null
@@ -62,6 +65,13 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
         refreshWordDis?.dispose()
     }
 
+    fun onExportAnkiClicked(activity: Activity?) {
+        if (activity == null) return
+        if (ankiDroidHelper.checkPermission(activity, AnkiDroidHelper.ANKI_PERMISSION_REQUEST)) {
+            exportAnki()
+        }
+    }
+
     fun onWordClicked(pos: Int) {
         val word = wordList?.get(pos) ?: return
         if (!showLearning) {
@@ -78,6 +88,10 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
         mvpView?.showFlashcardBtn(showLearning)
         refreshWordList()
         return true
+    }
+
+    fun exportAnki() {
+        ankiDroidHelper.export()
     }
 
     private fun refreshWordList() {

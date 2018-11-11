@@ -85,7 +85,8 @@ ext {
             cardStackView  : "com.yuyakaido.android:card-stack-view:1.0.0-beta9",
             konfetti       : 'nl.dionsegijn:konfetti:1.1.2',
             sharp          : 'com.pixplicity.sharp:library:1.1.0',
-            spotlight      : 'com.github.takusemba:spotlight:1.6.1'
+            spotlight      : 'com.github.takusemba:spotlight:1.6.1',
+            ankiApi        : 'com.ichi2.anki:api:1.1.0alpha6'
     ]
 
     compilers = [
