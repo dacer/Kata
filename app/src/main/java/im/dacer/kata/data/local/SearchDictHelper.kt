@@ -111,7 +111,7 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
         return Observable.fromIterable(dictEntryList)
                 .flatMap { langUtils.fetchTranslation(it) }
                 .toList()
-                .map { it.joinToString("\n\n") { "· $it" } }
+                .map { meaningList -> meaningList.joinToString("\n\n") { "· $it" } }
                 .toObservable()
     }
 
