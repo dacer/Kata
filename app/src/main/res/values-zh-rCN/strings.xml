@@ -108,4 +108,6 @@
     <string name="ankidroid_export_export_btn">导出</string>
     <string name="ankidroid_export_move_to_mastered_after_export">在导出后将单词移至已掌握</string>
     <string name="ankidroid_export_finished">Anki 卡片导出完毕</string>
+
+    <string name="translated_by_google">由谷歌翻译，仅供参考</string>
 </resources>
