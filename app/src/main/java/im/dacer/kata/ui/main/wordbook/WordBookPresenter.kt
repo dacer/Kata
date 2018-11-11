@@ -68,7 +68,7 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
     fun onExportAnkiClicked(activity: Activity?) {
         if (activity == null) return
         if (ankiDroidHelper.checkPermission(activity, AnkiDroidHelper.ANKI_PERMISSION_REQUEST)) {
-            exportAnki()
+            exportAnki(activity)
         }
     }
 
@@ -90,8 +90,8 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
         return true
     }
 
-    fun exportAnki() {
-        ankiDroidHelper.export()
+    fun exportAnki(activity: Activity) {
+        ankiDroidHelper.export(activity)
     }
 
     private fun refreshWordList() {

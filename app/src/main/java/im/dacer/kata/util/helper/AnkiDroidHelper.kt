@@ -26,13 +26,16 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
 
     private val api = AddContentApi(appContext)
 
-    fun export() {
+    /**
+     * check checkPermission before call this!
+     */
+    fun export(activity: Activity) {
         if (AddContentApi.getAnkiDroidPackageName(appContext) != null) {
             val deckId = getDeckId()
             val modelId = getModelId()
             generateCards().subscribe { api.addNotes(modelId, deckId, it, null) }
         } else {
-            //todo show install anki alert
+            showInstallAnkiDroidDialog(activity)
         }
     }
 
@@ -98,16 +101,20 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
      */
     private fun checkAnkiDroidAvailable(activity: Activity): Boolean {
         if (!appContext.isInstalled(ANKIDROID_PACKAGE_NAME)) {
-            MaterialDialog.Builder(activity)
-                    .title(R.string.ankidroid_not_found_title)
-                    .content(R.string.ankidroid_not_found_summary)
-                    .positiveText(R.string.ankidroid_not_found_install_btn)
-                    .negativeText(android.R.string.cancel)
-                    .onPositive { _, _ -> activity.openGooglePlay(ANKIDROID_PACKAGE_NAME) }
-                    .show()
+            showInstallAnkiDroidDialog(activity)
             return false
         }
         return true
+    }
+
+    private fun showInstallAnkiDroidDialog(activity: Activity) {
+        MaterialDialog.Builder(activity)
+                .title(R.string.ankidroid_not_found_title)
+                .content(R.string.ankidroid_not_found_summary)
+                .positiveText(R.string.ankidroid_not_found_install_btn)
+                .negativeText(android.R.string.cancel)
+                .onPositive { _, _ -> activity.openGooglePlay(ANKIDROID_PACKAGE_NAME) }
+                .show()
     }
 
     companion object {

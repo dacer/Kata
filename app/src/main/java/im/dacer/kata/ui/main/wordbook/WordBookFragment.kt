@@ -96,6 +96,6 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
     override fun getDecorView() = activity!!.window.decorView!!
 
     fun exportAnki() {
-        wordPresenter.exportAnki()
+        wordPresenter.exportAnki(activity!!)
     }
 }
