@@ -12,11 +12,14 @@ import com.ichi2.anki.api.AddContentApi.READ_WRITE_PERMISSION
 import im.dacer.kata.BuildConfig
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SettingUtility
+import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.extension.isInstalled
 import im.dacer.kata.util.extension.openGooglePlay
-import io.reactivex.Maybe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -26,18 +29,38 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
 
     private val api = AddContentApi(appContext)
 
+    private data class AnkiCardHelper(val words: List<Word>, val notes: List<Array<String>>)
     /**
      * check checkPermission before call this!
      */
-    fun export(activity: Activity) {
+    fun export(activity: Activity, moveToMasteredAfterExport: Boolean) {
         if (AddContentApi.getAnkiDroidPackageName(appContext) != null) {
             val deckId = getDeckId()
             val modelId = getModelId()
-            generateCards().subscribe { api.addNotes(modelId, deckId, it, null) }
+            val processDialog = MaterialDialog.Builder(activity).progress(true, 0).show()
+            wordDao.loadNotMasteredMaybe()
+                    .map { words ->
+                            AnkiCardHelper(words, words.map { arrayOf(it.baseForm, "")
+                        }) }
+                    .map { helper ->
+                        api.addNotes(modelId, deckId, helper.notes, null)
+                        if (moveToMasteredAfterExport) {
+                            helper.words.forEach { it.mastered = true }
+                            wordDao.updateWords(*helper.words.toTypedArray())
+                        }
+                    }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ processDialog.dismiss() },
+                            {
+                                processDialog.dismiss()
+                                Timber.e(it)
+                            })
         } else {
             showInstallAnkiDroidDialog(activity)
         }
     }
+
 
     /**
      * return true if has permission
@@ -59,11 +82,6 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
 
     private fun requestPermission(callbackActivity: Activity, callbackCode: Int) {
         ActivityCompat.requestPermissions(callbackActivity, arrayOf(READ_WRITE_PERMISSION), callbackCode)
-    }
-
-    private fun generateCards(): Maybe<List<Array<String>>>{
-        return wordDao.loadNotMasteredMaybe()
-                .map { it.map { arrayOf(it.baseForm, "") } }
     }
 
     private fun getDeckId(): Long {

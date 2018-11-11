@@ -26,6 +26,9 @@ interface WordDao {
     @Update
     fun update(item: Word)
 
+    @Update
+    fun updateWords(vararg users: Word)
+
     @Delete
     fun delete(item: Word)
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Canvas
 import android.support.v7.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
@@ -90,8 +91,21 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
         return true
     }
 
+    /**
+     * check checkPermission before call this!
+     */
     fun exportAnki(activity: Activity) {
-        ankiDroidHelper.export(activity)
+        MaterialDialog.Builder(activity)
+                .title(R.string.ankidroid_export_title)
+                .content(R.string.ankidroid_export_summary)
+                .checkBoxPromptRes(R.string.ankidroid_export_move_to_mastered_after_export, settingUtility.moveToMasteredAfterExport, null)
+                .positiveText(R.string.ankidroid_export_export_btn)
+                .negativeText(android.R.string.cancel)
+                .onPositive { dialog, _ ->
+                    settingUtility.moveToMasteredAfterExport = dialog.isPromptCheckBoxChecked
+                    ankiDroidHelper.export(activity, dialog.isPromptCheckBoxChecked)
+                }
+                .show()
     }
 
     private fun refreshWordList() {
