@@ -58,7 +58,7 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
         return BigbangSearchResult(dictEntryList, dictReadingList)
     }
 
-    fun searchReading(entryId: Long): List<DictReading> {
+    private fun searchReading(entryId: Long): List<DictReading> {
         val result = arrayListOf<DictReading>()
         val query = DictReading.FACTORY.search_by_entry_id(entryId)
         db.rawQuery(query.statement, query.args).use { cursor ->
