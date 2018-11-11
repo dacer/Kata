@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import collections.forEach
 import com.afollestad.materialdialogs.MaterialDialog
 import com.ichi2.anki.api.AddContentApi
 import com.ichi2.anki.api.AddContentApi.READ_WRITE_PERMISSION
@@ -29,7 +30,11 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
 
     private val api = AddContentApi(appContext)
 
-    private data class AnkiCardHelper(val words: List<Word>, val notes: List<Array<String>>)
+    /**
+     * filteredNotes -> the notes do not in AnkiDroid
+     */
+    private data class AnkiCardHelper(val allWords: List<Word>, val filteredNotes: List<Array<String>>)
+
     /**
      * check checkPermission before call this!
      */
@@ -39,14 +44,12 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
             val modelId = getModelId()
             val processDialog = MaterialDialog.Builder(activity).progress(true, 0).show()
             wordDao.loadNotMasteredMaybe()
-                    .map { words ->
-                            AnkiCardHelper(words, words.map { arrayOf(it.baseForm, "")
-                        }) }
+                    .map { wordsToAnkiCardHelper(modelId, it) }
                     .map { helper ->
-                        api.addNotes(modelId, deckId, helper.notes, null)
+                        api.addNotes(modelId, deckId, helper.filteredNotes, null)
                         if (moveToMasteredAfterExport) {
-                            helper.words.forEach { it.mastered = true }
-                            wordDao.updateWords(*helper.words.toTypedArray())
+                            helper.allWords.forEach { it.mastered = true }
+                            wordDao.updateWords(*helper.allWords.toTypedArray())
                         }
                     }
                     .subscribeOn(Schedulers.io())
@@ -61,6 +64,13 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
         }
     }
 
+    private fun wordsToAnkiCardHelper(modelId: Long, words: List<Word>): AnkiCardHelper {
+        val result = ArrayList(words)
+        api.findDuplicateNotes(modelId, words.map { it.baseForm }).forEach { _, noteInfoList ->
+            result.removeAll { it.baseForm == noteInfoList[0].key }
+        }
+        return AnkiCardHelper(words, result.map { arrayOf(it.baseForm, "") })
+    }
 
     /**
      * return true if has permission
