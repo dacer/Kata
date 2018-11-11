@@ -107,4 +107,5 @@
     <string name="ankidroid_export_summary">Export all the Learning words to AnkiDroid</string>
     <string name="ankidroid_export_export_btn">Export</string>
     <string name="ankidroid_export_move_to_mastered_after_export">Move words to mastered after export</string>
+    <string name="ankidroid_export_finished">Anki cards export finished</string>
 </resources>

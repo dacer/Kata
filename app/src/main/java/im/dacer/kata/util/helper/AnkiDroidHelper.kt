@@ -18,6 +18,7 @@ import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.extension.isInstalled
 import im.dacer.kata.util.extension.openGooglePlay
+import im.dacer.kata.util.extension.toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -54,7 +55,10 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
                     }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ processDialog.dismiss() },
+                    .subscribe({
+                        processDialog.dismiss()
+                        activity.toast(R.string.ankidroid_export_finished)
+                    },
                             {
                                 processDialog.dismiss()
                                 Timber.e(it)

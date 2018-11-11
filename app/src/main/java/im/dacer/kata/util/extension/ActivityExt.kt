@@ -30,6 +30,9 @@ fun Activity.toast(string: String?) {
     if (string == null) return
     runOnUiThread { Toast.makeText(this, string, Toast.LENGTH_LONG).show() }
 }
+fun Activity.toast(resId: Int) {
+    toast(getString(resId))
+}
 fun Activity.startActivity(clazz: Class<out Activity>) {
     startActivity(Intent(this, clazz))
 }

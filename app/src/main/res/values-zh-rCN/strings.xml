@@ -107,4 +107,5 @@
     <string name="ankidroid_export_summary">将所有学习中的单词导出至 AnkiDroid</string>
     <string name="ankidroid_export_export_btn">导出</string>
     <string name="ankidroid_export_move_to_mastered_after_export">在导出后将单词移至已掌握</string>
+    <string name="ankidroid_export_finished">Anki 卡片导出完毕</string>
 </resources>
