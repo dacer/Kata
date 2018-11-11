@@ -2,11 +2,14 @@ package im.dacer.kata.util.extension
 
 import android.app.Activity
 import android.app.Service
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
 import android.os.Build
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -123,9 +126,27 @@ fun Activity.isTablet(): Boolean {
     return resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
 }
 
+fun Activity.openGooglePlay(packageName: String) {
+    try {
+        startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse("market://details?id=$packageName")))
+    } catch (e: ActivityNotFoundException) {
+        startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+    }
+}
 
 fun Context.isWifi(): Boolean {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
     return activeNetwork?.type == ConnectivityManager.TYPE_WIFI
+}
+
+fun Context.isInstalled(packageName: String): Boolean {
+    return try {
+        packageManager.getApplicationInfo(packageName, 0)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
 }

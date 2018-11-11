@@ -99,4 +99,12 @@
     <string name="tips_vocabulary_builder_summary">每个你点击的单词都会放入单词本中。\n\n在设置中可以关闭此功能</string>
 
     <string name="all_mastered_congratulations">恭喜你！所有的卡片都已掌握！</string>
+
+    <string name="ankidroid_not_found_title">无法导出到 AnkiDroid</string>
+    <string name="ankidroid_not_found_summary">在导出前你需要安装 AnkiDroid</string>
+    <string name="ankidroid_not_found_install_btn">安装</string>
+    <string name="ankidroid_export_title">导出到 AnkiDroid</string>
+    <string name="ankidroid_export_summary">将所有学习中的单词导出至 AnkiDroid</string>
+    <string name="ankidroid_export_export_btn">导出</string>
+    <string name="ankidroid_export_move_to_mastered_after_export">在导出后将单词移至已掌握</string>
 </resources>

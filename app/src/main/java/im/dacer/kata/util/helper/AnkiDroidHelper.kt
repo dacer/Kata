@@ -6,16 +6,23 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import com.afollestad.materialdialogs.MaterialDialog
 import com.ichi2.anki.api.AddContentApi
 import com.ichi2.anki.api.AddContentApi.READ_WRITE_PERMISSION
 import im.dacer.kata.BuildConfig
+import im.dacer.kata.R
 import im.dacer.kata.data.local.SettingUtility
+import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
+import im.dacer.kata.util.extension.isInstalled
+import im.dacer.kata.util.extension.openGooglePlay
+import io.reactivex.Maybe
 import javax.inject.Inject
 
 
-class AnkiDroidHelper @Inject
-constructor(@ApplicationContext val appContext: Context, val settingUtility: SettingUtility) {
+class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Context,
+                                          val settingUtility: SettingUtility,
+                                          val wordDao: WordDao) {
 
     private val api = AddContentApi(appContext)
 
@@ -23,7 +30,7 @@ constructor(@ApplicationContext val appContext: Context, val settingUtility: Set
         if (AddContentApi.getAnkiDroidPackageName(appContext) != null) {
             val deckId = getDeckId()
             val modelId = getModelId()
-            api.addNotes(modelId, deckId, generateCards(), null)
+            generateCards().subscribe { api.addNotes(modelId, deckId, it, null) }
         } else {
             //todo show install anki alert
         }
@@ -33,6 +40,7 @@ constructor(@ApplicationContext val appContext: Context, val settingUtility: Set
      * return true if has permission
      */
     fun checkPermission(callbackActivity: Activity, callbackCode: Int): Boolean {
+        if (!checkAnkiDroidAvailable(callbackActivity)) return false
         if (shouldRequestPermission()) {
             requestPermission(callbackActivity, callbackCode)
             return false
@@ -50,8 +58,9 @@ constructor(@ApplicationContext val appContext: Context, val settingUtility: Set
         ActivityCompat.requestPermissions(callbackActivity, arrayOf(READ_WRITE_PERMISSION), callbackCode)
     }
 
-    private fun generateCards(): List<Array<String>>{
-
+    private fun generateCards(): Maybe<List<Array<String>>>{
+        return wordDao.loadNotMasteredMaybe()
+                .map { it.map { arrayOf(it.baseForm, "") } }
     }
 
     private fun getDeckId(): Long {
@@ -84,8 +93,26 @@ constructor(@ApplicationContext val appContext: Context, val settingUtility: Set
         return modelId
     }
 
+    /**
+     * return true if AnkiDroid installed
+     */
+    private fun checkAnkiDroidAvailable(activity: Activity): Boolean {
+        if (!appContext.isInstalled(ANKIDROID_PACKAGE_NAME)) {
+            MaterialDialog.Builder(activity)
+                    .title(R.string.ankidroid_not_found_title)
+                    .content(R.string.ankidroid_not_found_summary)
+                    .positiveText(R.string.ankidroid_not_found_install_btn)
+                    .negativeText(android.R.string.cancel)
+                    .onPositive { _, _ -> activity.openGooglePlay(ANKIDROID_PACKAGE_NAME) }
+                    .show()
+            return false
+        }
+        return true
+    }
+
     companion object {
         private const val DECK_NAME = "Kata"
+        private const val ANKIDROID_PACKAGE_NAME = "com.ichi2.anki"
         const val ANKI_PERMISSION_REQUEST = 123
     }
 }

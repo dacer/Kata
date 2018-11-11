@@ -1,9 +1,6 @@
 package im.dacer.kata.ui.about
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -17,6 +14,7 @@ import android.widget.TextView
 import im.dacer.kata.BuildConfig
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.util.extension.openGooglePlay
 import me.drakeet.multitype.Items
 import me.drakeet.support.about.*
 import org.jetbrains.anko.toast
@@ -94,7 +92,7 @@ class AboutActivity : BaseAboutActivity() {
 
     override fun onActionClick(action: View) {
         super.onActionClick(action)
-        goGooglePlay()
+        openGooglePlay(BuildConfig.APPLICATION_ID)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -108,17 +106,6 @@ class AboutActivity : BaseAboutActivity() {
     }
 
     private fun s(resId: Int): String = getString(resId)
-
-
-    private fun goGooglePlay() {
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")))
-        } catch (e: ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")))
-        }
-    }
 
     companion object {
         private const val CC_LICENSE = "Creative Commons Attribution-ShareAlike Licence (V3.0)"

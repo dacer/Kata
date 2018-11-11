@@ -99,4 +99,12 @@
     <string name="tips_vocabulary_builder_summary">Every word you clicked is added to a list that you can access using Vocabulary Builder.\n\nTo turn it off, Go Settings→Vocabulary Builder.</string>
 
     <string name="all_mastered_congratulations">Congratulations!\nAll cards are mastered!</string>
+
+    <string name="ankidroid_not_found_title">Can not export to AnkiDroid</string>
+    <string name="ankidroid_not_found_summary">You need to install AnkiDroid before use this function</string>
+    <string name="ankidroid_not_found_install_btn">install</string>
+    <string name="ankidroid_export_title">Export to AnkiDroid</string>
+    <string name="ankidroid_export_summary">Export all the Learning words to AnkiDroid</string>
+    <string name="ankidroid_export_export_btn">Export</string>
+    <string name="ankidroid_export_move_to_mastered_after_export">Move words to mastered after export</string>
 </resources>
