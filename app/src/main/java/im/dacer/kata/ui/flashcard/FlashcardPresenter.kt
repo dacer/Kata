@@ -36,8 +36,7 @@ class FlashcardPresenter @Inject constructor(@ApplicationContext val context: Co
         initDis?.dispose()
     }
 
-    override fun onCardDragging(percentX: Float, percentY: Float) {
-    }
+    override fun onCardDragging(percentX: Float, percentY: Float) {}
 
     override fun onCardSwiped(direction: SwipeDirection?) {
         if (direction == SwipeDirection.Right){
@@ -56,16 +55,11 @@ class FlashcardPresenter @Inject constructor(@ApplicationContext val context: Co
                 mvpView?.showEmpty()
             }
         }
-
     }
 
-    override fun onCardReversed() {
-    }
+    override fun onCardReversed() {}
 
-    override fun onCardMovedToOrigin() {
-    }
+    override fun onCardMovedToOrigin() {}
 
-    override fun onCardClicked(index: Int) {
-
-    }
+    override fun onCardClicked(index: Int) {}
 }
