@@ -133,7 +133,8 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
             }
         }
         if (modelId == -1L) {
-            modelId = api.addNewBasicModel(BuildConfig.APPLICATION_ID)
+            modelId = api.addNewCustomModel(BuildConfig.APPLICATION_ID, FIELDS, CARD_NAMES, QFMT,
+                    AFMT, CSS, getDeckId(), null)
             settingUtility.ankiModelId = modelId
         }
         return modelId
@@ -164,5 +165,20 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
         private const val DECK_NAME = "Kata"
         private const val ANKIDROID_PACKAGE_NAME = "com.ichi2.anki"
         const val ANKI_PERMISSION_REQUEST = 123
+
+
+        private val FIELDS = arrayOf("Front", "Back")
+        private val CARD_NAMES = arrayOf("Card 1")
+        private val QFMT = arrayOf("{{Front}}")
+        private val AFMT = arrayOf("{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}")
+        private const val CSS = """
+            .card {
+                font-family: arial;
+                font-size: 35px;
+                text-align: center;
+                color: black;
+                background-color: white;
+            }
+        """
     }
 }
