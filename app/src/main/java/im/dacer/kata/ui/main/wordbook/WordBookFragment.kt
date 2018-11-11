@@ -87,6 +87,7 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         wordAdapter.setNewData(wordList)
         flashcardTv.isEnabled = wordList?.isNotEmpty() == true
         exportAnkiIv.isEnabled = wordList?.isNotEmpty() == true
+        exportAnkiIv.alpha = if (wordList?.isEmpty() == true) 0.5f else 1f
     }
 
     override fun showFlashcardBtn(show: Boolean) {

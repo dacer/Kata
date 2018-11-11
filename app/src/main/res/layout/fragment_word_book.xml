@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/flashcardTv"
             android:layout_alignBottom="@+id/flashcardTv"
-            android:background="#0D47A1"
+            android:background="#002171"
             android:src="@drawable/ic_anki"
             />
 
