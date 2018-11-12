@@ -18,7 +18,6 @@ import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.LangUtils
-import im.dacer.kata.util.extension.isInstalled
 import im.dacer.kata.util.extension.openGooglePlay
 import im.dacer.kata.util.extension.toast
 import io.reactivex.Maybe
@@ -46,32 +45,28 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
      * check checkPermission before call this!
      */
     fun export(activity: Activity, moveToMasteredAfterExport: Boolean) {
-        if (AddContentApi.getAnkiDroidPackageName(appContext) != null) {
-            val deckId = getDeckId()
-            val modelId = getModelId()
-            val processDialog = MaterialDialog.Builder(activity).progress(true, 0).show()
-            wordDao.loadNotMasteredMaybe()
-                    .flatMap { wordsToAnkiCardHelper(modelId, it) }
-                    .map { helper ->
-                        api.addNotes(modelId, deckId, helper.filteredNotes, null)
-                        if (moveToMasteredAfterExport) {
-                            helper.allWords.forEach { it.mastered = true }
-                            wordDao.updateWords(*helper.allWords.toTypedArray())
-                        }
+        val deckId = getDeckId()
+        val modelId = getModelId()
+        val processDialog = MaterialDialog.Builder(activity).progress(true, 0).show()
+        wordDao.loadNotMasteredMaybe()
+                .flatMap { wordsToAnkiCardHelper(modelId, it) }
+                .map { helper ->
+                    api.addNotes(modelId, deckId, helper.filteredNotes, null)
+                    if (moveToMasteredAfterExport) {
+                        helper.allWords.forEach { it.mastered = true }
+                        wordDao.updateWords(*helper.allWords.toTypedArray())
                     }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        processDialog.dismiss()
-                        activity.toast(R.string.ankidroid_export_finished)
-                    },
-                            {
-                                processDialog.dismiss()
-                                Timber.e(it)
-                            })
-        } else {
-            showInstallAnkiDroidDialog(activity)
-        }
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    processDialog.dismiss()
+                    activity.toast(R.string.ankidroid_export_finished)
+                },
+                        {
+                            processDialog.dismiss()
+                            Timber.e(it)
+                        })
     }
 
     private fun wordsToAnkiCardHelper(modelId: Long, words: List<Word>): Maybe<AnkiCardHelper> {
@@ -144,7 +139,7 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
      * return true if AnkiDroid installed
      */
     private fun checkAnkiDroidAvailable(activity: Activity): Boolean {
-        if (!appContext.isInstalled(ANKIDROID_PACKAGE_NAME)) {
+        if (AddContentApi.getAnkiDroidPackageName(appContext) == null) {
             showInstallAnkiDroidDialog(activity)
             return false
         }
