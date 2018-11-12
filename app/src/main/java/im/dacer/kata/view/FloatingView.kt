@@ -11,8 +11,8 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.WindowManager
 import im.dacer.kata.R
-import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.util.LogUtils
+import im.dacer.kata.util.helper.SchemeHelper
 
 class FloatingView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatImageView(context, attrs, defStyleAttr) {
@@ -32,7 +32,7 @@ class FloatingView @JvmOverloads constructor(
         mWindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         setOnClickListener {
-            mText?.run { SchemeHelper.startKata(getContext(), this, 0) }
+            mText?.run { SchemeHelper.startKata(getContext(), this) }
             dismiss()
         }
     }

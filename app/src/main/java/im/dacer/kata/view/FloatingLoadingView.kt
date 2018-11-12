@@ -30,7 +30,7 @@ class FloatingLoadingView @JvmOverloads constructor(
         mWindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         setOnClickListener {
-            mText?.run { SchemeHelper.startKata(getContext(), this, 0) }
+            mText?.run { SchemeHelper.startKata(getContext(), this) }
             dismiss()
         }
     }
