@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.BuildConfig
@@ -47,7 +48,12 @@ class SettingsActivity : BaseSettingActivity() {
 
         arrayOf(listenClipboardLayout, listenClipboardSwitch).setSwitchListener {
             settingUtility.isListenClipboard = it
+            updateUI()
             refreshService()
+        }
+        arrayOf(analyzeUrlInClipboardLayout, analyzeUrlInClipboardSwitch).setSwitchListener {
+            appPref.analyzeUrlInClipboard = it
+            updateUI()
         }
         arrayOf(enhancedModeLayout, enhancedModeSwitch).setSwitchListener {
             if (it) showIgnoreBatteryOptimizationDialog()
@@ -107,7 +113,15 @@ class SettingsActivity : BaseSettingActivity() {
         enhancedModeSwitch.isChecked = appPref.enhancedMode
         translationTargetTv.text = LangUtils.getLangByKey(appPref.targetLang)
         enableWordBookSwit.isChecked = appPref.enableWordBook
-        enhancedModeSwitch.isEnabled = listenClipboardSwitch.isChecked
+        analyzeUrlInClipboardSwitch.isChecked = appPref.analyzeUrlInClipboard
+
+        if (settingUtility.isListenClipboard) {
+            enhancedModeLayout.visibility = View.VISIBLE
+            analyzeUrlInClipboardLayout.visibility = View.VISIBLE
+        } else {
+            enhancedModeLayout.visibility = View.GONE
+            analyzeUrlInClipboardLayout.visibility = View.GONE
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

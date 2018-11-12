@@ -35,7 +35,6 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getString(SEARCH_ENGINE, SearchEngine.GOOGLE)!!
         set(value) { put(SEARCH_ENGINE, value) }
 
-
     var hideFurigana: Boolean
         get() = getBoolean(HIDE_FURIGANA, false)
         set(value) { put(HIDE_FURIGANA, value) }
@@ -87,6 +86,10 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getBoolean(PREF_ENABLE_WORD_BOOK, true)
         set(value) { put(PREF_ENABLE_WORD_BOOK, value) }
 
+    var analyzeUrlInClipboard : Boolean
+        get() = getBoolean(PREF_ANALYZE_URL_IN_CLIPBOARD, false)
+        set(value) { put(PREF_ANALYZE_URL_IN_CLIPBOARD, value) }
+
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
         private const val SEARCH_ENGINE = "pref_search_engine"
@@ -101,6 +104,7 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         private const val PREF_BACKGROUND_COLOR = "background_color"
         private const val HAS_SHOWN_WORD_BOOK_TIPS = "HAS_SHOWN_WORD_BOOK_TIPS"
         private const val PREF_ENABLE_WORD_BOOK = "PREF_ENABLE_WORD_BOOK"
+        private const val PREF_ANALYZE_URL_IN_CLIPBOARD = "PREF_ANALYZE_URL_IN_CLIPBOARD"
 
         private const val EASTER_EGG = "EASTER_EGG"
 

@@ -31,7 +31,9 @@ class ListenClipboardService : Service() {
             val text = primaryClip.getItemAt(0).coerceToText(this)
             if (text.isEmpty()) { return }
 
-            if (appPref.useWebParser && text.toString().findUrl() != null) {
+            if (appPref.useWebParser &&
+                    text.toString().findUrl() != null &&
+                    appPref.analyzeUrlInClipboard) {
                 SchemeHelper.startKataFloatDialog(this, text.toString())
                 return
             }
@@ -62,8 +64,6 @@ class ListenClipboardService : Service() {
         mClipboardManager.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
         Observable.fromCallable { SegmentEngine.setup() }.subscribeOn(Schedulers.io()).subscribe()
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()
