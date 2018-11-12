@@ -47,7 +47,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
     }
 
     override fun onItemClicked(index: Int, selectedByUser: Boolean) {
-        SchemeHelper.startKata(this, sharedText!!, index)
+        SchemeHelper.startKata(this, sharedText!!, index, saveInHistory = false)
         finish()
     }
 
