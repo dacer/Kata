@@ -21,6 +21,7 @@ import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.LangUtils.Companion.LANG_JAPANESE_KEY
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.helper.TTSHelper
+import im.dacer.kata.util.helper.hasKanjiOrKana
 import im.dacer.kata.util.segment.BigBang
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -178,6 +179,8 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
     private fun onWordSelectedByUser(index: Int) {
         if (!appPre.enableWordBook) return
         val kanjiResult = kanjiResultList?.get(index)!!
+        if (!kanjiResult.baseForm.hasKanjiOrKana()) return
+        
         wordDao.findByBaseForm(kanjiResult.baseForm)
                 .subscribe {
                     val wordId = if (it.isEmpty()) {
