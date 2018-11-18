@@ -15,11 +15,13 @@ import im.dacer.kata.R
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.Word
+import im.dacer.kata.data.room.dao.ContextStrDao
 import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.extension.openGooglePlay
 import im.dacer.kata.util.extension.toast
+import im.dacer.kata.util.extension.urlEncode
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -32,7 +34,8 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
                                           val settingUtility: SettingUtility,
                                           val wordDao: WordDao,
                                           val searchDictHelper: SearchDictHelper,
-                                          val langUtils: LangUtils) {
+                                          val langUtils: LangUtils,
+                                          val contextStrDao: ContextStrDao) {
 
     private val api = AddContentApi(appContext)
 
@@ -75,11 +78,25 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
             result.removeAll { it.baseForm == noteInfoList[0].key }
         }
         return Observable.fromIterable(result)
-                .flatMap { searchDictHelper.searchForCombineResult(it.baseForm, langUtils) }
-                .map { arrayOf(it.strForSearch, "${it.readingStr}\n\n${it.meaningStr}") }
+                .flatMap { searchDictHelper.searchForCombineResultFull(it, langUtils, contextStrDao) }
+                .map {
+                    arrayOf(it.strForSearch,
+                            it.meaningStr,
+                            it.readingStr,
+                            it.contextStr.toHtmlString(),
+                            "")
+                }
                 .toList()
                 .map { AnkiCardHelper(words, it) }
                 .toMaybe()
+    }
+
+    private fun CharSequence?.toHtmlString(): String {
+        return this?.replace(Regex("\n"), "<br>") ?: ""
+    }
+
+    private fun getJapanesePodAudioUrl(kanji: String, kana: String): String {
+        return "[sound:https://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji=${kanji.urlEncode()}&kana=${kana.urlEncode()}]"
     }
 
     /**
@@ -128,8 +145,8 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
             }
         }
         if (modelId == -1L) {
-            modelId = api.addNewCustomModel(BuildConfig.APPLICATION_ID, FIELDS, CARD_NAMES, QFMT,
-                    AFMT, CSS, getDeckId(), null)
+            modelId = api.addNewCustomModel(ANKI_MODEL_NAME, FIELDS, CARD_NAMES, FRONT_LAYOUT,
+                    BACK_LAYOUT, CSS, getDeckId(), null)
             settingUtility.ankiModelId = modelId
         }
         return modelId
@@ -161,18 +178,38 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
         private const val ANKIDROID_PACKAGE_NAME = "com.ichi2.anki"
         const val ANKI_PERMISSION_REQUEST = 123
 
+        const val ANKI_MODEL_NAME = "${BuildConfig.APPLICATION_ID}-v1"
 
-        private val FIELDS = arrayOf("Front", "Back")
+        private val FIELDS = arrayOf("Expression", "Meaning", "Reading", "ContextStr", "Audio")
         private val CARD_NAMES = arrayOf("Card 1")
-        private val QFMT = arrayOf("{{Front}}")
-        private val AFMT = arrayOf("{{FrontSide}}\n\n<hr id=answer>\n\n{{Back}}")
+        private val FRONT_LAYOUT = arrayOf("""
+            <div class=expression>{{Expression}}</div>
+            <hr id=answer>
+            <div class=context>{{ContextStr}}</div>
+        """.trimIndent())
+        private val BACK_LAYOUT = arrayOf("""
+            <div class=expression>{{Expression}}</div>
+            <hr id=answer>
+            <div class=reading>{{Reading}}</div><br>
+            {{Meaning}}
+            <!--{{Audio}}-->
+        """.trimIndent())
         private const val CSS = """
             .card {
-                font-family: arial;
-                font-size: 35px;
-                text-align: center;
-                color: black;
-                background-color: white;
+             font-family: arial;
+             font-size: 20px;
+             text-align: center;
+             color: black;
+             background-color: white;
+            }
+            .expression {
+             font-size: 56px;
+            }
+            .reading {
+             font-size: 42px;
+            }
+            .context {
+             font-size: 14px;
             }
         """
     }

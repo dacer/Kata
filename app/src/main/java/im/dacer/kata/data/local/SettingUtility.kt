@@ -1,6 +1,7 @@
 package im.dacer.kata.data.local
 
 import im.dacer.kata.ui.main.MainPresenter
+import im.dacer.kata.util.helper.AnkiDroidHelper.Companion.ANKI_MODEL_NAME
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,8 +36,8 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         set(value) { mHelper[PREF_ANKI_DECK_ID] = value }
 
     var ankiModelId : Long
-        get() = mHelper[PREF_ANKI_MODEL_ID, -1L]
-        set(value) { mHelper[PREF_ANKI_MODEL_ID] = value }
+        get() = mHelper[ANKI_MODEL_NAME, -1L]
+        set(value) { mHelper[ANKI_MODEL_NAME] = value }
 
     var moveToMasteredAfterExport : Boolean
         get() = mHelper[PREF_MOVE_TO_MASTERED_AFTER_EXPORT, true]
@@ -49,7 +50,6 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         private const val PREF_HAS_SHOWN_GO_YOUTUBE = "hasshowngoyoutube"
         private const val PREF_LAST_EXIT_TAB = "last_exit_tab"
         private const val PREF_ANKI_DECK_ID = "PREF_ANKI_DECK_ID"
-        private const val PREF_ANKI_MODEL_ID = "PREF_ANKI_MODEL_ID"
         private const val PREF_MOVE_TO_MASTERED_AFTER_EXPORT = "PREF_MOVE_TO_MASTERED_AFTER_EXPORT"
     }
 }

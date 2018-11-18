@@ -155,11 +155,11 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
 
     private fun setHistoryAlias(activity: Activity, index: Int, h: History) {
         MaterialDialog.Builder(activity)
-                .input(context.getString(R.string.set_alias), h.alias, true,
-                        { _, char ->
-                            h.alias = char.toString()
-                            historyDao.update(h)
-                        })
+                .input(context.getString(R.string.set_alias), h.alias, true
+                ) { _, char ->
+                    h.alias = char.toString()
+                    historyDao.update(h)
+                }
                 .show()
     }
 

@@ -1,16 +1,25 @@
 package im.dacer.kata.data.local
 
 import android.content.Context
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.TextUtils
+import android.text.style.StyleSpan
 import im.dacer.kata.data.model.bigbang.BigbangSearchResult
+import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictEntry
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictKanji
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictReading
 import im.dacer.kata.data.model.segment.CombinedResult
+import im.dacer.kata.data.room.dao.ContextStrDao
 import im.dacer.kata.injection.qualifier.ApplicationContext
+import im.dacer.kata.ui.flashcard.FlashcardAdapter
 import im.dacer.kata.util.LangUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,6 +37,9 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
 //        db.close()
     }
 
+    /**
+     * the CombineResult will not contain contextStr
+     */
     fun searchForCombineResult(strForSearch: String, langUtils: LangUtils): Observable<CombinedResult> {
         return Observable.fromCallable{ search(strForSearch) }
                 .flatMap {
@@ -35,7 +47,25 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
                             dealWithDictEntryList(it.dictEntryList, langUtils),
                             dealWithDictReadingList(it.dictReadingList),
                             BiFunction<String, String, CombinedResult> {
-                                meaningStr, readingStr -> CombinedResult(strForSearch, meaningStr, readingStr)
+                                meaningStr, readingStr -> CombinedResult(strForSearch, meaningStr, readingStr, null)
+                            }
+                    )
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun searchForCombineResultFull(word: Word, langUtils: LangUtils, contextStrDao: ContextStrDao): Observable<CombinedResult> {
+        val strForSearch = word.baseForm
+        return Observable.fromCallable{ search(strForSearch) }
+                .flatMap {
+                    Observable.zip(
+                            dealWithDictEntryList(it.dictEntryList, langUtils),
+                            dealWithDictReadingList(it.dictReadingList),
+                            getContextStr(word, contextStrDao),
+                            Function3<String, String, CharSequence, CombinedResult> {
+                                meaningStr, readingStr, contextStr ->
+                                CombinedResult(strForSearch, meaningStr, readingStr, contextStr)
                             }
                     )
                 }
@@ -120,4 +150,19 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
         {it.reading() ?: ""} ?: "" }
     }
 
+    fun getContextStr(word: Word, contextStrDao: ContextStrDao): Observable<CharSequence> {
+        return contextStrDao.findByWordId(word.id)
+                .map { contextList ->
+                    val spannableStrBuilderList = arrayListOf<SpannableStringBuilder>()
+                    contextList.forEach {
+                        spannableStrBuilderList.add(SpannableStringBuilder(FlashcardAdapter.CIRCLE_SYMBOL))
+                        val contextStrBuilder = SpannableStringBuilder(it.text)
+                        contextStrBuilder.setSpan(StyleSpan(Typeface.BOLD), it.fromIndex, it.toIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        spannableStrBuilderList.add(contextStrBuilder)
+                        spannableStrBuilderList.add(SpannableStringBuilder("\n\n"))
+                    }
+                    return@map TextUtils.concat(*spannableStrBuilderList.toTypedArray())
+                }
+                .toObservable()
+    }
 }

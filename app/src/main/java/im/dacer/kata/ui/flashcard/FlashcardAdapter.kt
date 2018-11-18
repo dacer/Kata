@@ -2,12 +2,7 @@ package im.dacer.kata.ui.flashcard
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Typeface
 import android.support.v7.widget.CardView
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.TextUtils
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +16,7 @@ import im.dacer.kata.data.room.dao.ContextStrDao
 import im.dacer.kata.util.LangUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 class FlashcardAdapter(context: Context, private val searchDictHelper: SearchDictHelper,
                        private val langUtils: LangUtils, private val contextStrDao: ContextStrDao) :
@@ -78,20 +74,10 @@ class FlashcardAdapter(context: Context, private val searchDictHelper: SearchDic
 
     private fun showContext(holder: ViewHolder, word: Word) {
         holder.bottomTv.text = context.getText(R.string.see_definition)
-        contextStrDao.findByWordId(word.id)
+        searchDictHelper.getContextStr(word, contextStrDao)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    val spannableStrBuilderList = arrayListOf<SpannableStringBuilder>()
-                    it.forEach {
-                        spannableStrBuilderList.add(SpannableStringBuilder(CIRCLE_SYMBOL))
-                        val contextStrBuilder = SpannableStringBuilder(it.text)
-                        contextStrBuilder.setSpan(StyleSpan(Typeface.BOLD), it.fromIndex, it.toIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                        spannableStrBuilderList.add(contextStrBuilder)
-                        spannableStrBuilderList.add(SpannableStringBuilder("\n\n"))
-                    }
-
-                    holder.contextTv.text = TextUtils.concat(*spannableStrBuilderList.toTypedArray())
-                }
+                .subscribe { holder.contextTv.text = it }
         holder.pronunciationText.visibility = View.GONE
     }
 
@@ -105,7 +91,7 @@ class FlashcardAdapter(context: Context, private val searchDictHelper: SearchDic
     }
 
     companion object {
-        private const val CIRCLE_SYMBOL = "\u25CB "
+        const val CIRCLE_SYMBOL = "\u25CB "
         private val MATERIAL_COLORS = listOf(
                 "#C62828",
                 "#AD1457",
