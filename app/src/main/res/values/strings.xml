@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kata (Beta)</string>
+    <string name="app_name">Kata</string>
     <string name="style">Style</string>
     <string name="bigbang_intro_tip">When the app is running in the background, you can copy any paragraph or even a web link containing Japanese at any place. This app will automatically analyze its structure and show it to you.</string>
     <string name="bigbang_hold_tip">Now, try to hold and copy ↓</string>

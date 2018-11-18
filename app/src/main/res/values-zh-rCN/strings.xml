@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kata (Beta)</string>
+    <string name="app_name">Kata</string>
     <string name="style">风格</string>
     <string name="bigbang_intro_tip">当程序运行在后台时，你可以在任何地方复制含有日语的段落甚至网页链接，本程序会自动分析其语法结构并展示给你。</string>
     <string name="bigbang_hold_tip">那么先尝试按住并复制下面一段话试试吧 ↓</string>
