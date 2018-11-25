@@ -8,7 +8,6 @@ import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.History
 import im.dacer.kata.data.model.bigbang.Word
-import im.dacer.kata.data.model.segment.CombinedResult
 import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.data.room.dao.ContextStrDao
 import im.dacer.kata.data.room.dao.HistoryDao
@@ -18,12 +17,10 @@ import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.ContextFinder
 import im.dacer.kata.util.LangUtils
-import im.dacer.kata.util.LangUtils.Companion.LANG_JAPANESE_KEY
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.helper.TTSHelper
 import im.dacer.kata.util.helper.hasKanjiOrKana
 import im.dacer.kata.util.segment.BigBang
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -118,16 +115,12 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         }
 
         onWordSelectedByUser(index)
+        mvpView?.meaningText = context.getString(R.string.searching_translation)
         dictDisposable?.dispose()
-        dictDisposable = searchDictHelper.searchForCombineResult(strForSearch, langUtils)
-                .flatMap { translateDirectlyIfNoMeaning(strForSearch, it) }
+        dictDisposable = searchDictHelper.searchForCombineResultAndTranslateIfNoMeaning(strForSearch, langUtils)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    val meaningStr = it.meaningStr
-                    mvpView?.meaningText = if (meaningStr.isBlank()) {
-                        context.getString(R.string.not_found_error, strForSearch)
-                    } else { meaningStr }
-
+                    mvpView?.meaningText = it.getMeaning(context)
                     val readingStr = it.readingStr
                     if (readingStr.isNotEmpty() && readingStr.contains(",")) {
                         mvpView?.pronunciationText = readingStr
@@ -136,16 +129,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         mvpView?.showSystemUI()
     }
 
-    private fun translateDirectlyIfNoMeaning(strForSearch: String, combinedResult: CombinedResult):
-            Observable<CombinedResult> {
-        if (combinedResult.meaningStr.isBlank()) {
-            return langUtils.translateOnline(fromLangLang = LANG_JAPANESE_KEY, sourceStr = strForSearch).map {
-                combinedResult.meaningStr = "$it\n(${context.getString(R.string.translated_by_google)})"
-                return@map combinedResult
-            }
-        }
-        return Observable.just(combinedResult)
-    }
+
 
     fun onClickSearch() : Boolean {
         currentSelectedToken?.run { searchAction!!.start(context, this.strForSearch()) }

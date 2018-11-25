@@ -111,4 +111,5 @@
     <string name="ankidroid_export_finished">Anki cards export finished</string>
 
     <string name="translated_by_google">Translated by Google</string>
+    <string name="searching_translation">Searching translation…</string>
 </resources>

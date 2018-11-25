@@ -111,4 +111,5 @@
     <string name="ankidroid_export_finished">Anki 卡片导出完毕</string>
 
     <string name="translated_by_google">由谷歌翻译，仅供参考</string>
+    <string name="searching_translation">寻找翻译中…</string>
 </resources>

@@ -59,7 +59,7 @@ class FlashcardAdapter(context: Context, private val searchDictHelper: SearchDic
     private fun showMeaning(holder: ViewHolder, word: Word) {
         holder.bottomTv.text = context.getText(R.string.see_usage)
         dictDisposable?.dispose()
-        dictDisposable = searchDictHelper.searchForCombineResult(word.baseForm, langUtils)
+        dictDisposable = searchDictHelper.searchForCombineResultAndTranslateIfNoMeaning(word.baseForm, langUtils)
                 .subscribe({
                     val meaningStr = it.meaningStr
                     holder.contextTv.text = if (meaningStr.isBlank()) {

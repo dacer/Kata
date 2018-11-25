@@ -6,6 +6,7 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.StyleSpan
+import im.dacer.kata.R
 import im.dacer.kata.data.model.bigbang.BigbangSearchResult
 import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.model.bigbang.generated.autovalue.DictEntry
@@ -30,7 +31,7 @@ import javax.inject.Singleton
  * remember to call onDestroy() !!
  */
 @Singleton
-class SearchDictHelper @Inject constructor(@ApplicationContext context: Context) {
+class SearchDictHelper @Inject constructor(@ApplicationContext val context: Context) {
     private val db = JMDictDbHelper(context).readableDatabase
 
     fun onDestroy() {
@@ -40,7 +41,7 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
     /**
      * the CombineResult will not contain contextStr
      */
-    fun searchForCombineResult(strForSearch: String, langUtils: LangUtils): Observable<CombinedResult> {
+    fun searchForCombineResultAndTranslateIfNoMeaning(strForSearch: String, langUtils: LangUtils): Observable<CombinedResult> {
         return Observable.fromCallable{ search(strForSearch) }
                 .flatMap {
                     Observable.zip(
@@ -51,6 +52,7 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
                             }
                     )
                 }
+                .flatMap { translateDirectlyIfNoMeaning(strForSearch, it, langUtils) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
@@ -86,6 +88,18 @@ class SearchDictHelper @Inject constructor(@ApplicationContext context: Context)
             dictReadingList = dictEntryList.flatMap { searchReading(it.id()) }
         }
         return BigbangSearchResult(dictEntryList, dictReadingList)
+    }
+
+    private fun translateDirectlyIfNoMeaning(strForSearch: String, combinedResult: CombinedResult,
+                                             langUtils: LangUtils):
+            Observable<CombinedResult> {
+        if (combinedResult.meaningStr.isBlank()) {
+            return langUtils.translateOnline(fromLangLang = LangUtils.LANG_JAPANESE_KEY, sourceStr = strForSearch).map {
+                combinedResult.meaningStr = "$it\n(${context.getString(R.string.translated_by_google)})"
+                return@map combinedResult
+            }
+        }
+        return Observable.just(combinedResult)
     }
 
     private fun searchReading(entryId: Long): List<DictReading> {

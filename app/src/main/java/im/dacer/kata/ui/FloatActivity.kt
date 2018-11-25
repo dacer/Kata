@@ -4,19 +4,24 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.View
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.History
+import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.data.room.dao.HistoryDao
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.ui.bigbang.BigBangActivity
+import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.extension.isUrl
 import im.dacer.kata.util.extension.timberAndToast
 import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.util.segment.BigBang
 import im.dacer.kata.view.FloatingView
 import im.dacer.kata.view.KataLayout
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_float.*
@@ -27,9 +32,12 @@ import javax.inject.Inject
  */
 class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
     private var disposable: Disposable? = null
+    private var dictDisposable: Disposable? = null
     private var sharedText: String? = null
     @Inject lateinit var appPre: MultiprocessPref
     @Inject lateinit var historyDao: HistoryDao
+    @Inject lateinit var searchDictHelper: SearchDictHelper
+    @Inject lateinit var langUtils: LangUtils
 
     override fun layoutId() = R.layout.activity_float
 
@@ -54,6 +62,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
     override fun onDestroy() {
         super.onDestroy()
         disposable?.dispose()
+        dictDisposable?.dispose()
     }
 
     @SuppressLint("InlinedApi")
@@ -113,11 +122,26 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
         disposable?.dispose()
         disposable = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(sharedText!!) }
+                .flatMap { Observable.fromIterable(it) }
+                .filter { it.baseForm.isNotBlank() }
+                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     kataLayout.reset()
                     kataLayout.setKanjiResultData(it)
+                    if (it.size == 1) loadDict(it[0])
                 }, { timberAndToast(it) })
+    }
+
+    private fun loadDict(kanjiResult: KanjiResult) {
+        dividerView.visibility = View.VISIBLE
+        meaningTv.text = getString(R.string.searching_translation)
+        dictDisposable?.dispose()
+        dictDisposable = searchDictHelper.searchForCombineResultAndTranslateIfNoMeaning(kanjiResult.strForSearch(), langUtils)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    meaningTv.text = it.getMeaning(this)
+                }, { })
     }
 
     private fun applyStyle() {
