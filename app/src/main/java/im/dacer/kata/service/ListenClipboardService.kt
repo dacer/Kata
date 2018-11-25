@@ -25,11 +25,20 @@ class ListenClipboardService : Service() {
     private val appPref: MultiprocessPref by lazy { MultiprocessPref(this) }
     private var disableDis: Disposable? = null
 
+    private var lastShowActionTime = 0L
+    private var lastShowActionText = ""
     private fun showAction() {
         val primaryClip = mClipboardManager.primaryClip
         if (primaryClip != null && primaryClip.itemCount > 0 && "BigBang" != primaryClip.description.label) {
             val text = primaryClip.getItemAt(0).coerceToText(this)
             if (text.isEmpty()) { return }
+
+            if (System.currentTimeMillis() - lastShowActionTime < TimeUnit.SECONDS.toMillis(2) &&
+                    lastShowActionText == text.toString()) {
+                return
+            }
+            lastShowActionText = text.toString()
+            lastShowActionTime = System.currentTimeMillis()
 
             if (appPref.useWebParser &&
                     text.toString().findUrl() != null &&
@@ -67,6 +76,7 @@ class ListenClipboardService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        disableDis?.dispose()
         mClipboardManager.removePrimaryClipChangedListener(mOnPrimaryClipChangedListener)
     }
 
