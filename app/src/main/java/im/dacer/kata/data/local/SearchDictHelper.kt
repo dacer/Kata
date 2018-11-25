@@ -94,7 +94,7 @@ class SearchDictHelper @Inject constructor(@ApplicationContext val context: Cont
                                              langUtils: LangUtils):
             Observable<CombinedResult> {
         if (combinedResult.meaningStr.isBlank()) {
-            return langUtils.translateOnline(fromLangLang = LangUtils.LANG_JAPANESE_KEY, sourceStr = strForSearch).map {
+            return langUtils.translateOnline(sourceStr = strForSearch, fromLang = LangUtils.LANG_JAPANESE_KEY).map {
                 combinedResult.meaningStr = "$it\n(${context.getString(R.string.translated_by_google)})"
                 return@map combinedResult
             }

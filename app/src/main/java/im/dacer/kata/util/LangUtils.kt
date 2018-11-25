@@ -31,16 +31,17 @@ class LangUtils @Inject constructor(private val appPre: MultiprocessPref) {
             return Observable.just(dictEntry.gloss())
         }
 
-        return translateOnline(dictEntry.gloss()!!, targetLang)
+        return translateOnline(dictEntry.gloss()!!, targetLang = targetLang)
                 .map { return@map it
                         .replace("，", ", ")
                         .split(", ")
+                        .asSequence()
                         .distinct()
                         .joinToString(", ") }
     }
 
-    fun translateOnline(sourceStr: String, fromLangLang: String = LANG_ENGLISH_KEY, targetLang: String = getTargetLang()): Observable<String> {
-        return Rx2AndroidNetworking.get(getTranslationUrl(fromLangLang, targetLang, sourceStr))
+    fun translateOnline(sourceStr: String, fromLang: String = LANG_ENGLISH_KEY, targetLang: String = getTargetLang()): Observable<String> {
+        return Rx2AndroidNetworking.get(getTranslationUrl(fromLang, targetLang, sourceStr))
                 .build()
                 .stringObservable
                 .map {
