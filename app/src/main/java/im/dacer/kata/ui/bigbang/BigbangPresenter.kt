@@ -23,6 +23,7 @@ import im.dacer.kata.util.helper.hasKanjiOrKana
 import im.dacer.kata.util.segment.BigBang
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
@@ -94,7 +95,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
                 .subscribe ({
                     mvpView?.onDataInitFinished(it, preselectedIndex)
                     kanjiResultList = it
-                }, { mvpView?.toastError(it) })
+                }, { doOnError(it) })
 
         if(saveInHistory) historyDao.insert(History(text = text, alias = alias))
     }
@@ -125,10 +126,9 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
                     if (readingStr.isNotEmpty() && readingStr.contains(",")) {
                         mvpView?.pronunciationText = readingStr
                     }
-                }, { mvpView?.toastError(it) })
+                }, { doOnError(it) })
         mvpView?.showSystemUI()
     }
-
 
 
     fun onClickSearch() : Boolean {
@@ -140,7 +140,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         try {
             ttsHelper.play(mvpView?.activity!!, currentSelectedToken?.baseForm)
         } catch (e: Exception) {
-            mvpView?.toastError(e)
+            doOnError(e)
         }
         return true
     }
@@ -149,7 +149,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         try {
             ttsHelper.play(mvpView?.activity!!, originText)
         } catch (e: Exception) {
-            mvpView?.toastError(e)
+            doOnError(e)
         }
         return true
     }
@@ -166,7 +166,8 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         if (!kanjiResult.baseForm.hasKanjiOrKana()) return
         
         wordDao.findByBaseForm(kanjiResult.baseForm)
-                .subscribe {
+                .subscribeOn(Schedulers.io())
+                .map {
                     val wordId = if (it.isEmpty()) {
                         wordDao.insert(Word(baseForm = kanjiResult.baseForm))
                     } else {
@@ -174,9 +175,15 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
                         wordDao.update(word.afterSearchAgain())
                         word.id
                     }
-
-                    contextStrDao.insert(ContextFinder.get(wordId, kanjiResultList!!, index))
+                    return@map ContextFinder.get(wordId, kanjiResultList!!, index)
                 }
+                .map {
+                    val contextList = contextStrDao.findByWord(it.text, it.fromIndex, it.toIndex)
+                    if (contextList.isEmpty()) {
+                        contextStrDao.insert(it)
+                    }
+                }
+                .subscribe({}, { doOnError(it) })
     }
 
 }

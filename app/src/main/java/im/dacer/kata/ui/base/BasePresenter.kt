@@ -1,5 +1,6 @@
 package im.dacer.kata.ui.base
 
+import com.crashlytics.android.Crashlytics
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -35,6 +36,10 @@ open class BasePresenter<T : MvpView> : Presenter<T> {
         if (!isViewAttached) throw MvpViewNotAttachedException()
     }
 
+    fun doOnError(e: Throwable) {
+        mvpView?.toastError(e)
+        Crashlytics.logException(e)
+    }
 
     private class MvpViewNotAttachedException internal constructor() : RuntimeException("Please call Presenter.attachView(MvpView) before" + " requesting data to the Presenter")
 
