@@ -9,8 +9,10 @@ import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.History
+import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.data.room.dao.HistoryDao
+import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseActivity
 import im.dacer.kata.ui.bigbang.BigBangActivity
@@ -24,7 +26,9 @@ import im.dacer.kata.view.KataLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_float.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -38,6 +42,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
     @Inject lateinit var historyDao: HistoryDao
     @Inject lateinit var searchDictHelper: SearchDictHelper
     @Inject lateinit var langUtils: LangUtils
+    @Inject lateinit var wordDao: WordDao
 
     override fun layoutId() = R.layout.activity_float
 
@@ -129,8 +134,26 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
                 .subscribe ({
                     kataLayout.reset()
                     kataLayout.setKanjiResultData(it)
-                    if (it.size == 1) loadDict(it[0])
+                    if (it.size == 1) {
+                        loadDict(it[0])
+                        saveWord(it[0])
+                    }
                 }, { timberAndToast(it) })
+    }
+
+    private fun saveWord(kanjiResult: KanjiResult) {
+        wordDao.findByBaseForm(kanjiResult.baseForm)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    return@map if (it.isEmpty()) {
+                        wordDao.insert(Word(baseForm = kanjiResult.baseForm))
+                    } else {
+                        val word = it[0]
+                        wordDao.update(word.afterSearchAgain())
+                        word.id
+                    }
+                }
+                .subscribe({}, { Timber.e(it) })
     }
 
     private fun loadDict(kanjiResult: KanjiResult) {
