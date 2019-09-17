@@ -33,7 +33,7 @@ class MainPresenter @Inject constructor(@ApplicationContext val context: Context
     fun getDrawerItems(): Array<IDrawerItem<*, *>> {
         val itemInbox = SecondaryDrawerItem().withIdentifier(DrawerItem.INBOX.id).withName(R.string.inbox)
         val itemWordBook = SecondaryDrawerItem().withIdentifier(DrawerItem.WORD_BOOK.id).withName(R.string.word_book)
-        val itemLyric = SecondaryDrawerItem().withIdentifier(DrawerItem.LYRIC.id).withName(R.string.lyric).withSelectable(false)
+//        val itemLyric = SecondaryDrawerItem().withIdentifier(DrawerItem.LYRIC.id).withName(R.string.lyric).withSelectable(false)
         val itemNhkEasy = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK_EASY.id).withName(R.string.nhk_news_easy)
         val itemNhk = SecondaryDrawerItem().withIdentifier(DrawerItem.NHK.id).withName(R.string.nhk_news)
         val itemSettings = SecondaryDrawerItem().withIdentifier(DrawerItem.SETTINGS.id).withName(R.string.settings).withSelectable(false)
@@ -43,7 +43,7 @@ class MainPresenter @Inject constructor(@ApplicationContext val context: Context
                 DividerDrawerItem(),
                 itemInbox,
                 itemWordBook,
-                itemLyric,
+//                itemLyric,
                 itemSettings,
                 itemAbout,
                 DividerDrawerItem())
