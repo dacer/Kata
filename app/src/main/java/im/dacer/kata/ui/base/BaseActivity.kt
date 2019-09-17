@@ -98,13 +98,7 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
 
     protected open fun hideSystemUI() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
-
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE)
     }
 
     protected open fun showSystemUI() {

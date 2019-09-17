@@ -159,7 +159,8 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         changeUiAnim = AnimatorSet()
         changeUiAnim?.playTogether(
                 ObjectAnimator.ofInt(topPaddingView, HeightProperty(), topPaddingView.height, 0),
-                ObjectAnimator.ofInt(meaningScrollView, HeightProperty(), meaningScrollView.height, getDimen(R.dimen.big_bang_meaning_mini_height)))
+                ObjectAnimator.ofInt(meaningScrollView, HeightProperty(), meaningScrollView.height, getDimen(R.dimen.big_bang_meaning_mini_height)),
+                ObjectAnimator.ofFloat(btnsLayout, AlphaProperty(), btnsLayout.alpha, 0f))
         changeUiAnim?.duration = UI_ANIM_DURATION
         changeUiAnim?.start()
         musicPlayerView.hide()
@@ -176,7 +177,8 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         changeUiAnim = AnimatorSet()
         changeUiAnim?.playTogether(
                 ObjectAnimator.ofInt(topPaddingView, HeightProperty(), topPaddingView.height, getDimen(R.dimen.tool_bar_top_padding)),
-                ObjectAnimator.ofInt(meaningScrollView, HeightProperty(), meaningScrollView.height, getDimen(R.dimen.big_bang_meaning_height)))
+                ObjectAnimator.ofInt(meaningScrollView, HeightProperty(), meaningScrollView.height, getDimen(R.dimen.big_bang_meaning_height)),
+                ObjectAnimator.ofFloat(btnsLayout, AlphaProperty(), btnsLayout.alpha, 1f))
         changeUiAnim?.duration = UI_ANIM_DURATION
         changeUiAnim?.start()
         musicPlayerView.show()
@@ -276,6 +278,17 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         override operator fun set(view: View, value: Int?) {
             view.layoutParams.height = value!!
             view.layoutParams = view.layoutParams
+        }
+    }
+
+    internal inner class AlphaProperty : Property<View, Float>(Float::class.java, "alpha") {
+
+        override operator fun get(view: View): Float {
+            return view.alpha
+        }
+
+        override operator fun set(view: View, value: Float) {
+            view.alpha = value
         }
     }
 }
