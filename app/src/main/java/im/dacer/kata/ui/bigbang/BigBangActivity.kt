@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.activity_big_bang.*
 import org.jetbrains.anko.backgroundColor
 import qiu.niorgai.StatusBarCompat
 import javax.inject.Inject
+import kotlin.math.abs
 
 
 class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.ItemClickListener, View.OnSystemUiVisibilityChangeListener {
@@ -88,9 +89,9 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         }
         bigBangScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             val isDown = scrollY - oldScrollY > 0
-            if (Math.abs(scrollY - oldScrollY) < 3) return@OnScrollChangeListener
+            if (abs(scrollY - oldScrollY) < 3) return@OnScrollChangeListener
             if (isDown) {
-                if (Math.abs(scrollY) < getDimen(R.dimen.big_bang_meaning_height) - getDimen(R.dimen.big_bang_meaning_mini_height)) return@OnScrollChangeListener
+                if (abs(scrollY) < getDimen(R.dimen.big_bang_meaning_height) - getDimen(R.dimen.big_bang_meaning_mini_height)) return@OnScrollChangeListener
                 hideSystemUI()
             } else {
                 showSystemUI()
