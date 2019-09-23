@@ -1,35 +1,27 @@
 package im.dacer.kata.util.segment;
 
-import im.dacer.kata.util.segment.parser.KuromojiParser;
+import java.util.List;
+
+import im.dacer.kata.data.model.segment.KanjiResult;
+import im.dacer.kata.util.segment.parser.ApiParser;
 import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 
 public class BigBang {
 
-    private static SimpleParser sParser;
+    private static Parser<List<? extends KanjiResult>> sParser;
 
     public static boolean initialized() {
         return sParser != null;
     }
 
-    public static Observable<SimpleParser> getSegmentParserAsync() {
-
-        return Observable.fromCallable(() -> {
-            if (sParser == null) {
-                sParser = new KuromojiParser();
-            }
-            return sParser;
-        }).subscribeOn(Schedulers.io());
-    }
-
-    public static SimpleParser getSegmentParser() {
+    public static Observable<List<? extends KanjiResult>> parse(String text) {
         if (sParser == null) {
-            sParser = new KuromojiParser();
+            sParser = new ApiParser();
         }
-        return sParser;
+        return sParser.parse(text);
     }
 
-    public static void setSegmentParser(SimpleParser parser) {
+    public static void setSegmentParser(Parser<List<? extends KanjiResult>> parser) {
         sParser = parser;
     }
 

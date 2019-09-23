@@ -5,7 +5,7 @@
 package im.dacer.kata.util.engine;
 
 import im.dacer.kata.util.segment.BigBang;
-import im.dacer.kata.util.segment.SimpleParser;
+import im.dacer.kata.util.segment.Parser;
 import im.dacer.kata.util.segment.parser.KuromojiParser;
 
 /**
@@ -13,13 +13,13 @@ import im.dacer.kata.util.segment.parser.KuromojiParser;
  */
 public class SegmentEngine {
 
-    private static SimpleParser getSegmentParser() {
+    private static Parser getSegmentParser() {
         return new KuromojiParser();
     }
 
     public static void setup() {
         if (BigBang.initialized()) return;
-        SimpleParser parser = SegmentEngine.getSegmentParser();
+        Parser parser = SegmentEngine.getSegmentParser();
         BigBang.setSegmentParser(parser);
     }
 }

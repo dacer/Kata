@@ -89,8 +89,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         mvpView?.resetBigBangScrollViewPos()
         mvpView?.resetMeaningViewPos()
         segmentDis?.dispose()
-        segmentDis = BigBang.getSegmentParserAsync()
-                .flatMap { it.parse(text) }
+        segmentDis = BigBang.parse(text)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     mvpView?.onDataInitFinished(it, preselectedIndex)
