@@ -9,7 +9,7 @@
         android:shortcutDisabledMessage="@string/compose_disabled_message">
         <intent
             android:action="android.intent.action.PROCESS_TEXT"
-            android:targetPackage="im.dacer.kata.debug"
+            android:targetPackage="im.dacer.kata"
             android:targetClass="im.dacer.kata.ui.ReadClipboardActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
