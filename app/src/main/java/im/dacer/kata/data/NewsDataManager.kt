@@ -63,7 +63,7 @@ class NewsDataManager @Inject constructor() {
     }
 
     companion object {
-        private const val NHK_EASY_NEWS_URL = "http://www3.nhk.or.jp/news/easy/news-list.json"
+        private const val NHK_EASY_NEWS_URL = "https://www3.nhk.or.jp/news/easy/news-list.json"
         private fun getNhkNewsUrl(page: Int) = "https://www3.nhk.or.jp/news/json16/new_${String.format("%03d", page)}.json"
     }
 
