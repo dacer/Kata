@@ -36,6 +36,7 @@ class MainActivity : BaseActivity(), MainMvp {
     private val drawer by lazy { initDrawer() }
 
     override fun layoutId() = R.layout.activity_main
+    override fun getActivity() = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

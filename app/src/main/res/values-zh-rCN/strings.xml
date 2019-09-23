@@ -118,4 +118,9 @@
     <string name="loading_clipboard_content">正在读取剪切板内容</string>
     <string name="clipboard_content_not_found">无法找到剪切板内容</string>
 
+    <string name="android_q_clipboard_alert_title">Android 10 用户</string>
+    <string name="android_q_clipboard_alert_content">因为 Google 的限制，从 Android 10 开始本程序将无法从后台获取剪切板数据，您可以使用其它方式来分析日语文本：</string>
+    <string name="android_q_method_text_selection_action">Text Selection Action</string>
+    <string name="android_q_method_share">Share</string>
+    <string name="android_q_method_shortcut">Shortcut</string>
 </resources>

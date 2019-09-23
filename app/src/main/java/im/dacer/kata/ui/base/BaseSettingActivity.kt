@@ -3,7 +3,7 @@ package im.dacer.kata.ui.base
 import android.support.v7.widget.SwitchCompat
 import android.view.View
 
-abstract class BaseSettingActivity : BaseTransparentSwipeActivity() {
+abstract class BaseSettingActivity : BaseSwipeActivity() {
 
     protected fun Array<View>.setSwitchListener(listener: (checked: Boolean) -> Unit = {}) {
         var switchCompat: SwitchCompat? = null
@@ -21,7 +21,7 @@ abstract class BaseSettingActivity : BaseTransparentSwipeActivity() {
                     updateUI()
                 }
             } else {
-                it.setOnClickListener { _ -> switchCompat!!.toggle() }
+                it.setOnClickListener { switchCompat!!.toggle() }
             }
         }
     }

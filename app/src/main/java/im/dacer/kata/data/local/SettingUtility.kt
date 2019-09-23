@@ -43,6 +43,10 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         get() = mHelper[PREF_MOVE_TO_MASTERED_AFTER_EXPORT, true]
         set(value) { mHelper[PREF_MOVE_TO_MASTERED_AFTER_EXPORT] = value }
 
+    var androidQAlertShowed : Boolean
+        get() = mHelper[PREF_ANDROID_Q_ALERT_SHOWED, false]
+        set(value) { mHelper[PREF_ANDROID_Q_ALERT_SHOWED] = value }
+
     companion object {
         private const val PREF_LISTEN_CLIPBOARD = "listenclipboard"
         private const val PREF_DATABASE_IMPORTED = "databaseimported"
@@ -51,5 +55,6 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         private const val PREF_LAST_EXIT_TAB = "last_exit_tab"
         private const val PREF_ANKI_DECK_ID = "PREF_ANKI_DECK_ID"
         private const val PREF_MOVE_TO_MASTERED_AFTER_EXPORT = "PREF_MOVE_TO_MASTERED_AFTER_EXPORT"
+        private const val PREF_ANDROID_Q_ALERT_SHOWED = "PREF_ANDROID_Q_ALERT_SHOWED"
     }
 }

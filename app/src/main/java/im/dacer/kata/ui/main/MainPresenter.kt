@@ -1,6 +1,7 @@
 package im.dacer.kata.ui.main
 
 import android.content.Context
+import android.os.Build
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
@@ -10,6 +11,7 @@ import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.base.BasePresenter
+import im.dacer.kata.util.helper.DialogHelper
 import javax.inject.Inject
 
 /**
@@ -19,6 +21,14 @@ import javax.inject.Inject
 @ConfigPersistent
 class MainPresenter @Inject constructor(@ApplicationContext val context: Context) : BasePresenter<MainMvp>() {
     @Inject lateinit var settingUtility: SettingUtility
+
+    override fun attachView(mvpView: MainMvp) {
+        super.attachView(mvpView)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !settingUtility.androidQAlertShowed) {
+            DialogHelper.showAndroidQAlert(mvpView.getActivity())
+            settingUtility.androidQAlertShowed = true
+        }
+    }
 
     fun onResume() {
         restartListenService()

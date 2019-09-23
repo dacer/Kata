@@ -117,4 +117,10 @@
     <string name="compose_disabled_message">Shortcut Disabled</string>
     <string name="loading_clipboard_content">Loading clipboard content</string>
     <string name="clipboard_content_not_found">Clipboard content not found</string>
+
+    <string name="android_q_clipboard_alert_title">For Android 10 User</string>
+    <string name="android_q_clipboard_alert_content">Due to Google’s limitations, starting with Android 10, we will not be able to get clipboard data from the background. You can use other methods to analyze Japanese text:</string>
+    <string name="android_q_method_text_selection_action">Text Selection Action</string>
+    <string name="android_q_method_share">Share</string>
+    <string name="android_q_method_shortcut">Shortcut</string>
 </resources>

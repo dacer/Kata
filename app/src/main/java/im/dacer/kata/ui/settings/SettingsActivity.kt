@@ -21,6 +21,7 @@ import im.dacer.kata.ui.base.BaseSettingActivity
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.extension.setMyActionBar
+import im.dacer.kata.util.helper.DialogHelper
 import im.dacer.kata.util.webparse.WebParser
 import kotlinx.android.synthetic.main.activity_settings.*
 import javax.inject.Inject
@@ -36,6 +37,11 @@ class SettingsActivity : BaseSettingActivity() {
         activityComponent().inject(this)
         setMyActionBar(myToolbar)
 
+        androidQAlertLayout.visibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { View.VISIBLE } else { View.GONE }
+
+        androidQAlertLayout.setOnClickListener {
+            DialogHelper.showAndroidQAlert(this)
+        }
         searchEngine.setOnClickListener {
             MaterialDialog.Builder(this)
                     .items(SearchEngine.getSupportSearchEngineList().toList())
