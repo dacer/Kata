@@ -11,6 +11,7 @@ import im.dacer.kata.util.NotificationUtil
 import im.dacer.kata.util.engine.SegmentEngine
 import im.dacer.kata.util.extension.findUrl
 import im.dacer.kata.util.helper.SchemeHelper
+import im.dacer.kata.util.helper.getLastString
 import im.dacer.kata.util.helper.hasKanjiOrKana
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -29,10 +30,8 @@ class ListenClipboardService : Service() {
     private var lastShowActionText = ""
     private fun showAction() {
         val primaryClip = mClipboardManager.primaryClip
-        if (primaryClip != null && primaryClip.itemCount > 0 && "BigBang" != primaryClip.description.label) {
-            val text = primaryClip.getItemAt(0).coerceToText(this)
-            if (text.isEmpty()) { return }
-
+        val text = primaryClip?.getLastString(this)
+        if (text?.isNotEmpty() == true) {
             if (System.currentTimeMillis() - lastShowActionTime < TimeUnit.SECONDS.toMillis(2) &&
                     lastShowActionText == text.toString()) {
                 return

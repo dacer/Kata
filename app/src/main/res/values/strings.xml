@@ -112,4 +112,9 @@
 
     <string name="translated_by_google">Translated by Google</string>
     <string name="searching_translation">Searching translation…</string>
+
+    <string name="compose_shortcut_analyse_clipboard_content">Analyse Clipboard Content</string>
+    <string name="compose_disabled_message">Shortcut Disabled</string>
+    <string name="loading_clipboard_content">Loading clipboard content</string>
+    <string name="clipboard_content_not_found">Clipboard content not found</string>
 </resources>

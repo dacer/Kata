@@ -112,4 +112,10 @@
 
     <string name="translated_by_google">由谷歌翻译，仅供参考</string>
     <string name="searching_translation">寻找翻译中…</string>
+
+    <string name="compose_shortcut_analyse_clipboard_content">分析剪切板内容</string>
+    <string name="compose_disabled_message">Shortcut 已被禁用</string>
+    <string name="loading_clipboard_content">正在读取剪切板内容</string>
+    <string name="clipboard_content_not_found">无法找到剪切板内容</string>
+
 </resources>

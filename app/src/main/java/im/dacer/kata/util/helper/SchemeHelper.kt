@@ -1,6 +1,7 @@
 package im.dacer.kata.util.helper
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +12,13 @@ import java.net.URLEncoder
 /**
  * Created by Dacer on 09/01/2018.
  */
+fun ClipData.getLastString(context: Context): String? {
+    if (itemCount > 0 && "BigBang" != description.label) {
+        return getItemAt(0).coerceToText(context).toString()
+    }
+    return null
+}
+
 class SchemeHelper {
     companion object {
         const val SHOW_FLOAT_MAX_TEXT_COUNT = 99

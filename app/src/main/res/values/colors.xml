@@ -17,4 +17,6 @@
     <color name="dk_green">#38ba9e</color>
     <color name="dk_red">#bb3d72</color>
     <color name="dk_blue">#006ded</color>
+
+    <color name="icon_color">#2d48a8</color>
 </resources>

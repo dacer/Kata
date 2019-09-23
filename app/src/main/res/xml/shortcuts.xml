@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="analyse_clipboard_content"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_content_paste"
+        android:shortcutShortLabel="@string/compose_shortcut_analyse_clipboard_content"
+        android:shortcutLongLabel="@string/compose_shortcut_analyse_clipboard_content"
+        android:shortcutDisabledMessage="@string/compose_disabled_message">
+        <intent
+            android:action="android.intent.action.PROCESS_TEXT"
+            android:targetPackage="im.dacer.kata.debug"
+            android:targetClass="im.dacer.kata.ui.ReadClipboardActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>
