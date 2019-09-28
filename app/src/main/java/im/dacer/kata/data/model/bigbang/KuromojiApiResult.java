@@ -17,10 +17,10 @@ public class KuromojiApiResult {
             return features[7];
         }
         public String getReading() {
-            return features[8];
+            return features[6];
         }
         public String getPartOfSpeechLevel1() {
-            return features[1];
+            return features[0];
         }
         public String getPartOfSpeechLevel2() {
             return features[2];
