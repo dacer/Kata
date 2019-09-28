@@ -12,6 +12,7 @@ import im.dacer.kata.ui.main.MainActivity
 import im.dacer.kata.ui.settings.CacheSettingsActivity
 import im.dacer.kata.ui.settings.SettingsActivity
 import im.dacer.kata.ui.settings.StyleActivity
+import im.dacer.kata.ui.settings.TextAnalysisSettingsActivity
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity
 
 @PerActivity
@@ -22,6 +23,7 @@ interface ActivityComponent {
     fun inject(activity: MainActivity)
     fun inject(activity: SettingsActivity)
     fun inject(activity: CacheSettingsActivity)
+    fun inject(activity: TextAnalysisSettingsActivity)
     fun inject(activity: StyleActivity)
     fun inject(activity: BigBangActivity)
     fun inject(activity: FloatActivity)

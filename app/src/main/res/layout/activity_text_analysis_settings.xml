@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include android:id="@+id/myToolbar"
+        layout="@layout/include_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myToolbar">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/analyzeUrlInClipboardLayout"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/analyze_url_in_clipboard"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/analyzeUrlInClipboardSwitch"
+                    style="@style/SettingsItemRight"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/enhancedModeLayout"
+                style="@style/SettingsItem">
+
+                <LinearLayout
+                    style="@style/SettingsItemLeft"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/enhancedModeTv"
+                        android:text="@string/enhanced_mode"
+                        style="@style/SettingsItemLeft.Title"/>
+
+                    <TextView
+                        style="@style/SettingsItemSummary"
+                        android:text="@string/enhanced_mode_summary"/>
+                </LinearLayout>
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/enhancedModeSwitch"
+                    style="@style/SettingsItemRight"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/analysisEngine"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/text_analysis_engine"/>
+
+                <TextView
+                    android:id="@+id/analysisEngineTv"
+                    style="@style/SettingsItemRight"
+                    tools:text="Google"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/searchEngine"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/default_search_engine"/>
+
+                <TextView
+                    android:id="@+id/searchEngineTv"
+                    style="@style/SettingsItemRight"
+                    tools:text="Google"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/translationTarget"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/translate_to"/>
+
+                <TextView
+                    android:id="@+id/translationTargetTv"
+                    style="@style/SettingsItemRight"
+                    tools:text="English"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/webPageParser"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/web_page_parser"/>
+
+                <TextView
+                    android:id="@+id/webPageParserTv"
+                    style="@style/SettingsItemRight"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/enableWordBookLayout"
+                android:layout_width="match_parent"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/word_book"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/enableWordBookSwit"
+                    style="@style/SettingsItemRight"/>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/showFloatDialogLayout"
+                android:layout_width="match_parent"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/show_float_dialog_when_copy_few_words"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/showFloatDialogSwit"
+                    style="@style/SettingsItemRight"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

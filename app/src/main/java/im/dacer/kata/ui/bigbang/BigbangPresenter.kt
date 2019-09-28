@@ -72,32 +72,31 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
     }
 
     fun handIntent(intent: Intent) {
-        val text = intent.data.getQueryParameter(BigBangActivity.EXTRA_TEXT)
-        val alias = intent.data.getQueryParameter(BigBangActivity.EXTRA_ALIAS)
-        val preselectedIndex = intent.data.getQueryParameter(BigBangActivity.EXTRA_PRESELECTED_INDEX)?.toInt()
-        val saveInHistory = intent.data.getBooleanQueryParameter(BigBangActivity.EXTRA_SAVE_IN_HISTORY, true)
-        val voiceUrl = intent.data.getQueryParameter(BigBangActivity.EXTRA_VOICE_URL)
+        val text = intent.data?.getQueryParameter(BigBangActivity.EXTRA_TEXT)
+        val alias = intent.data?.getQueryParameter(BigBangActivity.EXTRA_ALIAS)
+        val preselectedIndex = intent.data?.getQueryParameter(BigBangActivity.EXTRA_PRESELECTED_INDEX)?.toInt()
+        val saveInHistory = intent.data?.getBooleanQueryParameter(BigBangActivity.EXTRA_SAVE_IN_HISTORY, true)
+        val voiceUrl = intent.data?.getQueryParameter(BigBangActivity.EXTRA_VOICE_URL)
 
 
-        if (text.isEmpty()) {
+        if (text?.isEmpty() == true) {
             mvpView?.finish()
             return
         }
         if (voiceUrl != null && voiceUrl.isNotEmpty()) { mvpView?.showVoiceBtn(voiceUrl) }
 
-        originText = text
+        originText = text!!
         mvpView?.resetBigBangScrollViewPos()
         mvpView?.resetMeaningViewPos()
         segmentDis?.dispose()
-        segmentDis = BigBang.getSegmentParserAsync()
-                .flatMap { it.parse(text) }
+        segmentDis = BigBang.parse(text)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     mvpView?.onDataInitFinished(it, preselectedIndex)
                     kanjiResultList = it
                 }, { doOnError(it) })
 
-        if(saveInHistory) historyDao.insert(History(text = text, alias = alias))
+        if(saveInHistory == true) historyDao.insert(History(text = text, alias = alias))
     }
 
     fun onItemClicked(index: Int, selectedByUser: Boolean) {

@@ -1,6 +1,7 @@
 package im.dacer.kata.ui.base
 
 import android.support.v7.widget.SwitchCompat
+import android.view.MenuItem
 import android.view.View
 
 abstract class BaseSettingActivity : BaseSwipeActivity() {
@@ -27,4 +28,14 @@ abstract class BaseSettingActivity : BaseSwipeActivity() {
     }
 
     abstract fun updateUI()
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

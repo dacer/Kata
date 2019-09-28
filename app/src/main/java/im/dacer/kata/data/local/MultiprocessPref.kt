@@ -2,10 +2,15 @@ package im.dacer.kata.data.local
 
 import android.content.Context
 import android.graphics.Color
+import im.dacer.kata.R
 import im.dacer.kata.data.model.bigbang.BigBangStyle
+import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
+import im.dacer.kata.util.segment.Parser
+import im.dacer.kata.util.segment.parser.ApiParser
+import im.dacer.kata.util.segment.parser.KuromojiParser
 import im.dacer.kata.util.webparse.WebParser
 import net.grandcentrix.tray.TrayPreferences
 import javax.inject.Inject
@@ -90,6 +95,35 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getBoolean(PREF_ANALYZE_URL_IN_CLIPBOARD, false)
         set(value) { put(PREF_ANALYZE_URL_IN_CLIPBOARD, value) }
 
+    var segmentParserValue : Int
+        get() = getInt(PREF_SEGMENT_PARSER, SegmentParser.KUROMOJI_LOCAL.value)
+        set(value) { put(PREF_SEGMENT_PARSER, value) }
+
+    var segmentParserEnum : SegmentParser
+        get() {
+            return when (segmentParserValue) {
+                SegmentParser.KUROMOJI_LOCAL.value -> SegmentParser.KUROMOJI_LOCAL
+                SegmentParser.KUROMOJI_ONLINE.value -> SegmentParser.KUROMOJI_ONLINE
+                else -> SegmentParser.KUROMOJI_ONLINE
+            }
+        }
+        set(parser){
+            put(PREF_SEGMENT_PARSER, parser.value)
+        }
+
+    val segmentParser : Parser<List<KanjiResult>>
+        get() {
+            return when (segmentParserValue) {
+                SegmentParser.KUROMOJI_LOCAL.value -> KuromojiParser()
+                SegmentParser.KUROMOJI_ONLINE.value -> ApiParser()
+                else -> KuromojiParser()
+            }
+        }
+
+    fun getSegmentParserNameList(c: Context): List<String> {
+        return SegmentParser.values().map { c.getString(it.nameResId) }
+    }
+
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
         private const val SEARCH_ENGINE = "pref_search_engine"
@@ -105,8 +139,14 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         private const val HAS_SHOWN_WORD_BOOK_TIPS = "HAS_SHOWN_WORD_BOOK_TIPS"
         private const val PREF_ENABLE_WORD_BOOK = "PREF_ENABLE_WORD_BOOK"
         private const val PREF_ANALYZE_URL_IN_CLIPBOARD = "PREF_ANALYZE_URL_IN_CLIPBOARD"
+        private const val PREF_SEGMENT_PARSER = "PREF_SEGMENT_PARSER"
 
         private const val EASTER_EGG = "EASTER_EGG"
+
+        enum class SegmentParser(val value: Int, val nameResId: Int) {
+            KUROMOJI_LOCAL(0, R.string.text_analysis_engine_basic),
+            KUROMOJI_ONLINE(1, R.string.text_analysis_engine_Online)
+        }
 
     }
 

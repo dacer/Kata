@@ -125,8 +125,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
 
     private fun applyData() {
         disposable?.dispose()
-        disposable = BigBang.getSegmentParserAsync()
-                .flatMap { it.parse(sharedText!!) }
+        disposable = BigBang.parse(sharedText!!)
                 .flatMap { Observable.fromIterable(it) }
                 .filter { it.baseForm.isNotBlank() }
                 .toList()
