@@ -68,6 +68,7 @@
     <string name="background_color">Background color</string>
     <string name="optimization_steps">Battery optimization -> All apps -> %1$s -> Don\'t optimize</string>
     <string name="analyze_url_in_clipboard">Analyze url in clipboard</string>
+    <string name="text_analysis">Text Analysis</string>
 
     <string name="tts_error_title">Text-to-speech not work</string>
     <string name="tts_error_content">Try to:\n\nSettings - Accessibility - Text-to-speech output - Select Google TTS Engine and install Japanese voice data</string>

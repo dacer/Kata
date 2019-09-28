@@ -87,16 +87,6 @@ class StyleActivity : BaseTransparentSwipeActivity(), ColorPickerDialogListener{
         )
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     internal abstract class SimpleListener : DiscreteSeekBar.OnProgressChangeListener {
 
         override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {}

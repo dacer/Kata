@@ -35,6 +35,9 @@
         <activity android:name=".ui.settings.CacheSettingsActivity"
             android:label="@string/cache"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.settings.TextAnalysisSettingsActivity"
+            android:label="@string/text_analysis"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.settings.StyleActivity"
             android:label="@string/style"
