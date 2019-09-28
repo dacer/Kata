@@ -69,6 +69,11 @@
     <string name="optimization_steps">电池优化 -> 所有应用 -> %1$s -> 不要优化</string>
     <string name="analyze_url_in_clipboard">分析剪切板中的网址</string>
     <string name="text_analysis">文本分析</string>
+    <string name="text_analysis_engine">文字分析引擎</string>
+    <string name="text_analysis_engine_basic">本地</string>
+    <string name="text_analysis_engine_Online">网络 (实验性)</string>
+    <string name="text_analysis_engine_Online_alert">开启本功能后，所有的文本将会自动上传到服务器进行分析，如果你对于隐私有顾虑的话请勿开启本功能</string>
+    <string name="text_analysis_engine_Online_alert_confirm">确认</string>
 
     <string name="tts_error_title">你设备的 TTS 发音功能无法正常工作</string>
     <string name="tts_error_content">"请尝试：\n\n手机设置 - ︎无障碍 - ︎TTS - ︎勾选GoogleTTS引擎 -︎ 下载日文语音包"</string>

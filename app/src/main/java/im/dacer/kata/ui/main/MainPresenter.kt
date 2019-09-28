@@ -23,13 +23,7 @@ class MainPresenter @Inject constructor(@ApplicationContext val context: Context
     @Inject lateinit var appPref: MultiprocessPref
 
     fun onResume() {
-        restartListenService()
-    }
-
-    private fun restartListenService() {
-        if (settingUtility.isListenClipboard) {
-            ListenClipboardService.restart(context)
-        }
+        ListenClipboardService.restartIfNeed(context, settingUtility.isListenClipboard)
     }
 
     fun getDrawerItems(): Array<IDrawerItem<*, *>> {

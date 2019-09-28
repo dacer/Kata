@@ -1,7 +1,7 @@
 package im.dacer.kata.util.segment
 
 import im.dacer.kata.data.model.segment.KanjiResult
-import im.dacer.kata.util.segment.parser.ApiParser
+import im.dacer.kata.util.segment.parser.KuromojiParser
 import io.reactivex.Observable
 
 object BigBang {
@@ -14,7 +14,7 @@ object BigBang {
 
     fun parse(text: String): Observable<List<KanjiResult>> {
         if (sParser == null) {
-            sParser = ApiParser()
+            sParser = KuromojiParser()
         }
         return sParser!!.parse(text)
     }

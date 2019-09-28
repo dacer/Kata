@@ -71,7 +71,7 @@ class ListenClipboardService : Service() {
 
     override fun onCreate() {
         mClipboardManager.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
-        Observable.fromCallable { SegmentEngine.setup(this) }.subscribeOn(Schedulers.io()).subscribe()
+        Observable.fromCallable { SegmentEngine.setup(this, true) }.subscribeOn(Schedulers.io()).subscribe()
     }
 
     override fun onDestroy() {
@@ -110,11 +110,18 @@ class ListenClipboardService : Service() {
             context.stopService(serviceIntent)
         }
 
-        fun restart(context: Context) {
+        private fun restart(context: Context) {
             stop(context)
             start(context)
         }
 
+        fun restartIfNeed(context: Context, isListenClipboard: Boolean) {
+            if (isListenClipboard) {
+                restart(context)
+            } else {
+                stop(context)
+            }
+        }
 
     }
 

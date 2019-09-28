@@ -41,11 +41,7 @@ class SettingsActivity : BaseSettingActivity() {
     }
 
     private fun refreshService() {
-        if (settingUtility.isListenClipboard) {
-            ListenClipboardService.restart(applicationContext)
-        } else {
-            ListenClipboardService.stop(applicationContext)
-        }
+        ListenClipboardService.restartIfNeed(applicationContext, settingUtility.isListenClipboard)
     }
 
     override fun updateUI() {

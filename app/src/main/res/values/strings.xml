@@ -69,6 +69,11 @@
     <string name="optimization_steps">Battery optimization -> All apps -> %1$s -> Don\'t optimize</string>
     <string name="analyze_url_in_clipboard">Analyze url in clipboard</string>
     <string name="text_analysis">Text Analysis</string>
+    <string name="text_analysis_engine">Text Analysis Engine</string>
+    <string name="text_analysis_engine_basic">Basic</string>
+    <string name="text_analysis_engine_Online">Online (Experimental)</string>
+    <string name="text_analysis_engine_Online_alert">When this function is enabled, all text will be automatically uploaded to the server for analysis. If you have concerns about privacy, please do not enable this.</string>
+    <string name="text_analysis_engine_Online_alert_confirm">CONFIRM</string>
 
     <string name="tts_error_title">Text-to-speech not work</string>
     <string name="tts_error_content">Try to:\n\nSettings - Accessibility - Text-to-speech output - Select Google TTS Engine and install Japanese voice data</string>

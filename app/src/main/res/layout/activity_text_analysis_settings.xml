@@ -53,6 +53,20 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/analysisEngine"
+                style="@style/SettingsItem">
+
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/text_analysis_engine"/>
+
+                <TextView
+                    android:id="@+id/analysisEngineTv"
+                    style="@style/SettingsItemRight"
+                    tools:text="Google"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/searchEngine"
                 style="@style/SettingsItem">
 

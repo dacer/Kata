@@ -45,6 +45,20 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
                     .show()
         }
 
+        analysisEngine.setOnClickListener {
+            MaterialDialog.Builder(this)
+                    .items(appPref.getSegmentParserNameList(this))
+                    .itemsCallback { _, _, pos, _ ->
+                        appPref.segmentParserValue = pos
+                        if (pos == MultiprocessPref.Companion.SegmentParser.KUROMOJI_ONLINE.value) {
+                            showKuromojiOnlineAlert()
+                        }
+                        updateUI()
+                        refreshService()
+                    }
+                    .show()
+        }
+
         arrayOf(analyzeUrlInClipboardLayout, analyzeUrlInClipboardSwitch).setSwitchListener {
             appPref.analyzeUrlInClipboard = it
             updateUI()
@@ -85,14 +99,25 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
     }
 
     private fun refreshService() {
-        if (settingUtility.isListenClipboard) {
-            ListenClipboardService.restart(applicationContext)
-        } else {
-            ListenClipboardService.stop(applicationContext)
-        }
+        ListenClipboardService.restartIfNeed(applicationContext, settingUtility.isListenClipboard)
+    }
+
+    private fun showKuromojiOnlineAlert() {
+        MaterialDialog.Builder(this)
+                .content(R.string.text_analysis_engine_Online_alert)
+                .positiveText(R.string.text_analysis_engine_Online_alert_confirm)
+                .negativeText(android.R.string.cancel)
+                .onPositive { _, _ ->  }
+                .onNegative { _, _ ->
+                    appPref.segmentParserEnum = MultiprocessPref.Companion.SegmentParser.KUROMOJI_LOCAL
+                    refreshService()
+                    updateUI()
+                }
+                .show()
     }
 
     override fun updateUI() {
+        analysisEngineTv.setText(appPref.segmentParserEnum.nameResId)
         searchEngineTv.text = appPref.searchEngine
         showFloatDialogSwit.isChecked = appPref.showFloatDialog
         webPageParserTv.setText(appPref.webParser.stringRes)

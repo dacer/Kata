@@ -13,8 +13,8 @@ object SegmentEngine {
         return pref.segmentParser
     }
 
-    fun setup(context: Context) {
-        if (BigBang.initialized()) return
+    fun setup(context: Context, force: Boolean = false) {
+        if (BigBang.initialized() && !force) return
         val parser = getSegmentParser(context)
         BigBang.setSegmentParser(parser)
     }
