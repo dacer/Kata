@@ -3,9 +3,13 @@ package im.dacer.kata.data.local
 import android.content.Context
 import android.graphics.Color
 import im.dacer.kata.data.model.bigbang.BigBangStyle
+import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
+import im.dacer.kata.util.segment.Parser
+import im.dacer.kata.util.segment.parser.ApiParser
+import im.dacer.kata.util.segment.parser.KuromojiParser
 import im.dacer.kata.util.webparse.WebParser
 import net.grandcentrix.tray.TrayPreferences
 import javax.inject.Inject
@@ -90,6 +94,25 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getBoolean(PREF_ANALYZE_URL_IN_CLIPBOARD, false)
         set(value) { put(PREF_ANALYZE_URL_IN_CLIPBOARD, value) }
 
+    private fun getSegmentParserValue() : Int {
+        return getInt(PREF_SEGMENT_PARSER, SegmentParser.KUROMOJI_LOCAL.value)
+    }
+
+    fun setSegmentParser(parser: SegmentParser) {
+        put(PREF_SEGMENT_PARSER, parser.value)
+    }
+
+    val segmentParser: Parser<List<out KanjiResult>>
+        get() {
+            when (getSegmentParserValue()) {
+                SegmentParser.KUROMOJI_LOCAL.value ->
+                    return KuromojiParser()
+                SegmentParser.KUROMOJI_ONLINE.value ->
+                    return ApiParser()
+            }
+            return KuromojiParser()
+        }
+
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
         private const val SEARCH_ENGINE = "pref_search_engine"
@@ -105,8 +128,13 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         private const val HAS_SHOWN_WORD_BOOK_TIPS = "HAS_SHOWN_WORD_BOOK_TIPS"
         private const val PREF_ENABLE_WORD_BOOK = "PREF_ENABLE_WORD_BOOK"
         private const val PREF_ANALYZE_URL_IN_CLIPBOARD = "PREF_ANALYZE_URL_IN_CLIPBOARD"
+        private const val PREF_SEGMENT_PARSER = "PREF_SEGMENT_PARSER"
 
         private const val EASTER_EGG = "EASTER_EGG"
+
+        enum class SegmentParser(val value: Int) {
+            KUROMOJI_LOCAL(0), KUROMOJI_ONLINE(1)
+        }
 
     }
 

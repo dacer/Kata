@@ -34,7 +34,7 @@ constructor(@ApplicationContext context: Context) {
     }
 
     operator fun get(key: String, defaultString2: String): String {
-        return mPref.getString(key, defaultString2)
+        return mPref.getString(key, defaultString2)!!
     }
 
     operator fun set(key: String, value: Int) {

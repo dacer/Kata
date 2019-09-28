@@ -71,7 +71,7 @@ class ListenClipboardService : Service() {
 
     override fun onCreate() {
         mClipboardManager.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
-        Observable.fromCallable { SegmentEngine.setup() }.subscribeOn(Schedulers.io()).subscribe()
+        Observable.fromCallable { SegmentEngine.setup(this) }.subscribeOn(Schedulers.io()).subscribe()
     }
 
     override fun onDestroy() {
