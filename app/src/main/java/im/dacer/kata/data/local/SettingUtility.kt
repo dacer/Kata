@@ -20,7 +20,7 @@ class SettingUtility @Inject constructor(private val mHelper: PreferencesHelper)
         set(value) { mHelper[PREF_DATABASE_IMPORTED] = value }
 
     var cacheMax : Int
-        get() = mHelper[PREF_CACHE_MAX, 10]
+        get() = mHelper[PREF_CACHE_MAX, 999]
         set(value) { mHelper[PREF_CACHE_MAX] = value }
 
     var hasShownGoYoutube : Boolean

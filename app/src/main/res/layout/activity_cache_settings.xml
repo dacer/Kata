@@ -40,7 +40,7 @@
                     android:id="@+id/cacheSeekBar"
                     style="@style/DiscreteSeekBar.TopMargin"
                     android:layout_below="@+id/cacheMaxTitle"
-                    app:dsb_max="99"
+                    app:dsb_max="9999"
                     app:dsb_min="0"/>
 
             </RelativeLayout>
