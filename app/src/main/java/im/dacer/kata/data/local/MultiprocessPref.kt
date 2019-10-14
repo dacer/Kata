@@ -8,6 +8,7 @@ import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
+import im.dacer.kata.util.helper.ConfigHelper
 import im.dacer.kata.util.segment.Parser
 import im.dacer.kata.util.segment.parser.ApiParser
 import im.dacer.kata.util.segment.parser.KuromojiParser
@@ -72,7 +73,7 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         set(value) { put(PREF_NEWS_CACHING_WIFI_ONLY, value) }
 
     var easterEgg : Boolean
-        get() = getBoolean(EASTER_EGG, false)
+        get() = getBoolean(EASTER_EGG, ConfigHelper.isCoolApk())
         set(value) { put(EASTER_EGG, value) }
 
     var showPicWifiOnly : Boolean

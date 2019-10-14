@@ -10,7 +10,6 @@ import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
-import im.dacer.kata.BuildConfig
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.local.SettingUtility
@@ -19,6 +18,7 @@ import im.dacer.kata.ui.base.BaseSettingActivity
 import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.extension.setMyActionBar
+import im.dacer.kata.util.helper.ConfigHelper
 import im.dacer.kata.util.webparse.WebParser
 import kotlinx.android.synthetic.main.activity_cache_settings.myToolbar
 import kotlinx.android.synthetic.main.activity_text_analysis_settings.*
@@ -136,7 +136,7 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
     }
 
     private fun showIgnoreBatteryOptimizationDialog() {
-        if (BuildConfig.FLAVOR != "coolapk") {
+        if (!ConfigHelper.isCoolApk()) {
             checkBatteryOptimization()
             return
         }
@@ -158,7 +158,6 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
 
         val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
         startActivity(intent)
-
     }
 
     private fun isBatteryOptimized(): Boolean {
