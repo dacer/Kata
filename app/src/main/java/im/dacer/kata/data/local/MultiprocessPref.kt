@@ -96,6 +96,10 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getBoolean(PREF_ANALYZE_URL_IN_CLIPBOARD, false)
         set(value) { put(PREF_ANALYZE_URL_IN_CLIPBOARD, value) }
 
+    var useNhkMirror : Boolean
+        get() = getBoolean(PREF_USE_NHK_MIRROR, false)
+        set(value) { put(PREF_USE_NHK_MIRROR, value) }
+
     var segmentParserValue : Int
         get() = getInt(PREF_SEGMENT_PARSER, SegmentParser.KUROMOJI_LOCAL.value)
         set(value) { put(PREF_SEGMENT_PARSER, value) }
@@ -141,6 +145,7 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         private const val PREF_ENABLE_WORD_BOOK = "PREF_ENABLE_WORD_BOOK"
         private const val PREF_ANALYZE_URL_IN_CLIPBOARD = "PREF_ANALYZE_URL_IN_CLIPBOARD"
         private const val PREF_SEGMENT_PARSER = "PREF_SEGMENT_PARSER"
+        private const val PREF_USE_NHK_MIRROR = "PREF_USE_NHK_MIRROR"
 
         private const val EASTER_EGG = "EASTER_EGG"
 

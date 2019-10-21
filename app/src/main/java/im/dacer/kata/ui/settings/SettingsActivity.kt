@@ -39,7 +39,7 @@ class SettingsActivity : BaseSettingActivity() {
             refreshService()
         }
         arrayOf(useNhkMirrorLayout, useNhkMirrorSwitch).setSwitchListener {
-            settingUtility.useNhkMirror = it
+            appPref.useNhkMirror = it
             updateUI()
         }
         tutorialVideoLayout.setOnClickListener {
@@ -58,9 +58,9 @@ class SettingsActivity : BaseSettingActivity() {
     }
 
     override fun updateUI() {
-        useNhkMirrorLayout.visibility = if (appPref.easterEgg || settingUtility.useNhkMirror) View.VISIBLE else View.GONE
+        useNhkMirrorLayout.visibility = if (appPref.easterEgg || appPref.useNhkMirror) View.VISIBLE else View.GONE
 
         listenClipboardSwitch.isChecked = settingUtility.isListenClipboard
-        useNhkMirrorSwitch.isChecked = settingUtility.useNhkMirror
+        useNhkMirrorSwitch.isChecked = appPref.useNhkMirror
     }
 }
