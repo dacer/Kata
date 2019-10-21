@@ -10,7 +10,7 @@ import org.json.JSONObject
  * Created by Dacer on 26/02/2018.
  */
 object LyricsHelper {
-    private val BASE_URL = "http://music.dacer.im"
+    private val BASE_URL = "https://music.dacer.im"
     private val SEARCH_URL = "$BASE_URL/search"
     private val LYRIC_URL = "$BASE_URL/lyric"
     private val MUSIC_URL = "$BASE_URL/music/url"

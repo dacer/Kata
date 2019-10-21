@@ -10,7 +10,7 @@ import org.json.JSONObject
  * Created by Dacer on 21/09/2019.
  */
 object KuromojiApiHelper {
-    private const val BASE_URL = "http://kuromoji.dacer.im:9696"
+    private const val BASE_URL = "https://kuromoji.dacer.im"
 
     fun search(text: String): Observable<KuromojiApiResult> {
         val jsonObject = JSONObject()
