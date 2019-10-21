@@ -23,11 +23,11 @@ class WebParser<T: NewsItem> {
         URL2IO(R.string.web_page_parser_url2io)
     }
 
-    fun fetchNewsContent(easyNews: T, pref: MultiprocessPref): Observable<T>{
-        return fetchContent(easyNews.link(), pref)
+    fun fetchNewsContent(newsItem: T, pref: MultiprocessPref): Observable<T>{
+        return fetchContent(newsItem.link(pref.useNhkMirror), pref)
                 .map {
-                    easyNews.updateContent(it)
-                    return@map easyNews
+                    newsItem.updateContent(it)
+                    return@map newsItem
                 }
     }
 

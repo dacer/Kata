@@ -3,6 +3,7 @@ package im.dacer.kata.data.model.news
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import im.dacer.kata.data.NewsDataManager
 import java.util.*
 
 
@@ -42,8 +43,12 @@ data class EasyNews(@PrimaryKey var news_id: String,
         return news_id
     }
 
-    override fun link(): String? {
-        return "https://www3.nhk.or.jp/news/easy/$news_id/$news_id.html"
+    override fun link(useMirrorSite: Boolean): String? {
+        return if (useMirrorSite) {
+            "https://www3.nhk.or.jp/news/easy/$news_id/$news_id.html"
+        } else {
+            "https://${NewsDataManager.NHK_MIRROR_BASE_URL}/news/easy/$news_id/$news_id.html"
+        }
     }
 
     @Ignore

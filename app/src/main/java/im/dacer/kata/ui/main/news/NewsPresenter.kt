@@ -1,5 +1,6 @@
 package im.dacer.kata.ui.main.news
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -120,6 +121,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
     }
 
 
+    @SuppressLint("CheckResult")
     fun onNewsItemClicked(index: Int, item: NewsItem?) {
         val id = item?.id() ?: return
         newsProvider().markRead(id)
@@ -128,7 +130,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
                 .subscribe {
                     if (it.content().isNullOrEmpty()) {
                         mvpView?.getMyActivity()?.run {
-                            startService(UrlAnalysisService.getIntent(this, it.link()!!, false, it.voiceUrl()))
+                            startService(UrlAnalysisService.getIntent(this, it.link(multiprocessPref.useNhkMirror)!!, false, it.voiceUrl()))
                         }
                     } else {
                         SchemeHelper.startKata(context, it.content()!!, saveInHistory = false, voiceUrl = it.voiceUrl())
@@ -140,9 +142,7 @@ class NewsPresenter @Inject constructor(@ApplicationContext val context: Context
 
 
     fun onPlayVideoClicked(item: NewsItem?) {
-        if (item?.videoUrl().isNullOrEmpty()) {
-
-        } else {
+        if (!item?.videoUrl().isNullOrEmpty()) {
             mvpView?.getMyActivity()?.run { startActivity(VideoPlayerActivity.getIntent(this, item!!.videoUrl()!!)) }
         }
     }

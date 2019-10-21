@@ -13,7 +13,7 @@ abstract class NewsItem {
     abstract fun coverUrl(): String?
     abstract fun videoUrl(): String?
     abstract fun voiceUrl(): String?
-    abstract fun link(): String?
+    abstract fun link(useMirrorSite: Boolean): String?
     abstract fun content(): String?
     abstract fun hasRead(): Boolean
 

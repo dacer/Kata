@@ -2,6 +2,7 @@ package im.dacer.kata.data
 
 import com.google.gson.Gson
 import com.rx2androidnetworking.Rx2AndroidNetworking
+import im.dacer.kata.data.local.MultiprocessPref
 import im.dacer.kata.data.model.news.EasyNews
 import im.dacer.kata.data.model.news.NhkNews
 import io.reactivex.Observable
@@ -14,10 +15,11 @@ import javax.inject.Singleton
 
 @Singleton
 class NewsDataManager @Inject constructor() {
+    @Inject lateinit var pref: MultiprocessPref
 
     fun getEasyNews(): Observable<ArrayList<EasyNews>> {
         val gson = Gson()
-        return Rx2AndroidNetworking.get(NHK_EASY_NEWS_URL)
+        return Rx2AndroidNetworking.get(getNhkEasyNewUrl())
                 .build()
                 .jsonArrayObservable
                 .map { array -> array[0] as JSONObject }
@@ -62,9 +64,22 @@ class NewsDataManager @Inject constructor() {
         return gson.fromJson(jsonObject.toString(), NhkNews::class.java)
     }
 
-    companion object {
-        private const val NHK_EASY_NEWS_URL = "https://www3.nhk.or.jp/news/easy/news-list.json"
-        private fun getNhkNewsUrl(page: Int) = "https://www3.nhk.or.jp/news/json16/new_${String.format("%03d", page)}.json"
+    private fun getNhkEasyNewUrl(): String {
+        return if (pref.useNhkMirror) {
+            "https://$NHK_MIRROR_BASE_URL/news/easy/news-list.json"
+        } else {
+            "https://www3.nhk.or.jp/news/easy/news-list.json"
+        }
+    }
+    private fun getNhkNewsUrl(page: Int): String {
+        return if (pref.useNhkMirror) {
+            "https://$NHK_MIRROR_BASE_URL/news/json16/new_${String.format("%03d", page)}.json"
+        } else {
+            "https://www3.nhk.or.jp/news/json16/new_${String.format("%03d", page)}.json"
+        }
     }
 
+    companion object {
+        const val NHK_MIRROR_BASE_URL = "nhk.dacer.im"
+    }
 }

@@ -3,6 +3,7 @@ package im.dacer.kata.data.model.news
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import im.dacer.kata.data.NewsDataManager
 import java.util.*
 
 
@@ -39,8 +40,13 @@ data class NhkNews(
     override fun id(): String = id
 
     @Ignore
-    override fun link(): String? {
-        return link.pathToUrl()
+    override fun link(useMirrorSite: Boolean): String? {
+        val url = link.pathToUrl()
+        return if (useMirrorSite) {
+            url?.replace("www3.nhk.or.jp", NewsDataManager.NHK_MIRROR_BASE_URL)
+        } else {
+            url
+        }
     }
 
     @Ignore

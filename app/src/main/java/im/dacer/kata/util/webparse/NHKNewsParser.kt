@@ -10,9 +10,10 @@ import java.net.URL
 
 object NHKNewsParser: BaseParser() {
     private const val URL_PATTERN = "^http(|s):\\/\\/www3\\.nhk\\.or\\.jp\\/news\\/html\\/.+\\/.+\\.html.*"
+    private const val MIRROR_URL_PATTERN = "^http(|s):\\/\\/nhk\\.dacer\\.im\\/news\\/html\\/.+\\/.+\\.html.*"
 
     override fun checkUrlAvailable(url: String) : Boolean {
-        return url.matches(Regex(URL_PATTERN))
+        return url.matches(Regex(URL_PATTERN)) || url.matches(Regex(MIRROR_URL_PATTERN))
     }
 
     fun fetchContent(targetUrl: String): Observable<String> {
