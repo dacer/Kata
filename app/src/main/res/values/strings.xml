@@ -129,4 +129,6 @@
     <string name="android_q_method_text_selection_action">Text Selection Action</string>
     <string name="android_q_method_share">Share</string>
     <string name="android_q_method_shortcut">Shortcut</string>
+    <string name="use_nhk_mirror_site">Use NHK mirror site</string>
+    <string name="use_nhk_mirror_site_summary">Select it if you can\'t access NHK website</string>
 </resources>

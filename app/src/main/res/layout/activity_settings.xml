@@ -56,6 +56,26 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/useNhkMirrorLayout"
+                style="@style/SettingsItem">
+
+                <LinearLayout
+                    style="@style/SettingsItemLeft"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/SettingsItemLeft.Title"
+                        android:text="@string/use_nhk_mirror_site"/>
+
+                    <TextView
+                        style="@style/SettingsItemSummary"
+                        android:text="@string/use_nhk_mirror_site_summary"/>
+                </LinearLayout>
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/useNhkMirrorSwitch"
+                    style="@style/SettingsItemRight"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/tutorialVideoLayout"
                 style="@style/SettingsItem.MoreTopDivider">
 
