@@ -41,6 +41,7 @@ class LangUtils @Inject constructor(private val appPre: MultiprocessPref) {
     }
 
     fun translateOnline(sourceStr: String, fromLang: String = LANG_ENGLISH_KEY, targetLang: String = getTargetLang()): Observable<String> {
+        if (sourceStr.isEmpty()) return Observable.just("")
         return Rx2AndroidNetworking.get(getTranslationUrl(fromLang, targetLang, sourceStr))
                 .build()
                 .stringObservable

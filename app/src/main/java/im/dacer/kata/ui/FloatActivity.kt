@@ -23,7 +23,6 @@ import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.util.segment.BigBang
 import im.dacer.kata.view.FloatingView
 import im.dacer.kata.view.KataLayout
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -125,10 +124,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
 
     private fun applyData() {
         disposable?.dispose()
-        disposable = BigBang.parse(sharedText!!)
-                .flatMap { Observable.fromIterable(it) }
-                .filter { it.baseForm.isNotBlank() }
-                .toList()
+        disposable = BigBang.parseWithoutBlank(sharedText!!)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     kataLayout.reset()
@@ -140,6 +136,7 @@ class FloatActivity : BaseActivity(), KataLayout.ItemClickListener {
                 }, { timberAndToast(it) })
     }
 
+    @SuppressLint("CheckResult")
     private fun saveWord(kanjiResult: KanjiResult) {
         wordDao.findByBaseForm(kanjiResult.baseForm)
                 .subscribeOn(Schedulers.io())

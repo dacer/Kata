@@ -8,7 +8,6 @@ import android.net.Uri
 import android.support.v4.content.ContextCompat.startActivity
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
@@ -60,22 +59,20 @@ class KataLayout @JvmOverloads constructor(
         showFurigana = show
         mLines
                 .map { it.itemList }
-                .flatMap { it }
+                .flatten()
                 .forEach { it.view.showFurigana = show }
     }
 
     fun select(index: Int) {
         preselectedIndex = index
         if (index < 0) return
-        var i = 0
         loop@ for (line in mLines) {
             for (item in line.itemList) {
-                if (preselectedIndex == i) {
+                if (preselectedIndex == item.index) {
                     onItemSelected(item, false)
                     preselectedIndex = -1
                     break@loop
                 }
-                i++
             }
         }
     }
@@ -116,8 +113,8 @@ class KataLayout @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val widthSize = View.MeasureSpec.getSize(widthMeasureSpec) - paddingLeft - paddingRight
-        val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        val widthSize = MeasureSpec.getSize(widthMeasureSpec) - paddingLeft - paddingRight
+        val measureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         var childHeight = 0
         var totalHeight = 0
 
@@ -149,7 +146,7 @@ class KataLayout @JvmOverloads constructor(
 
         if (mLines.isNotEmpty() && preselectedIndex != -1) select(preselectedIndex)
         val size = totalHeight + paddingTop + paddingBottom
-        super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(size, View.MeasureSpec.EXACTLY))
+        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY))
     }
 
     private var lastSelectedItem : Item? = null
@@ -219,7 +216,7 @@ class KataLayout @JvmOverloads constructor(
     private fun findItemByPoint(x: Int, y: Int): Item? {
         return mLines
                 .map { it.itemList }
-                .flatMap { it }
+                .flatten()
                 .firstOrNull { it.rect.contains(x, y) }
     }
 

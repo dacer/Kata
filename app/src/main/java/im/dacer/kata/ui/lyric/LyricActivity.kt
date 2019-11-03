@@ -1,10 +1,12 @@
 package im.dacer.kata.ui.lyric
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
@@ -18,6 +20,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_lyric.*
+
 
 class LyricActivity : BaseTransparentSwipeActivity() {
 
@@ -94,6 +97,8 @@ class LyricActivity : BaseTransparentSwipeActivity() {
             lyricEditText.text.clear()
             lyricEditText.clearFocus()
             searchEtClearBtn.visibility = View.GONE
+            lyricEditText.requestFocus()
+            showKeyboard()
         }
 
     }
@@ -108,6 +113,11 @@ class LyricActivity : BaseTransparentSwipeActivity() {
     }
 
     private data class KataInfo(val text: String, val voiceUrl: String?)
+
+    override fun onResume() {
+        super.onResume()
+        lyricEditText.requestFocus()
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -131,5 +141,10 @@ class LyricActivity : BaseTransparentSwipeActivity() {
                         adapter.loadMoreFail()
                     })
         }
+    }
+
+    private fun showKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 }
