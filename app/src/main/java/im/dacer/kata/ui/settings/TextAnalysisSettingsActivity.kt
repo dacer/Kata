@@ -19,7 +19,6 @@ import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.engine.SearchEngine
 import im.dacer.kata.util.extension.setMyActionBar
 import im.dacer.kata.util.helper.ConfigHelper
-import im.dacer.kata.util.webparse.WebParser
 import kotlinx.android.synthetic.main.activity_cache_settings.myToolbar
 import kotlinx.android.synthetic.main.activity_text_analysis_settings.*
 import javax.inject.Inject
@@ -59,10 +58,10 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
                     .show()
         }
 
-        arrayOf(analyzeUrlInClipboardLayout, analyzeUrlInClipboardSwitch).setSwitchListener {
-            appPref.analyzeUrlInClipboard = it
-            updateUI()
-        }
+//        arrayOf(analyzeUrlInClipboardLayout, analyzeUrlInClipboardSwitch).setSwitchListener {
+//            appPref.analyzeUrlInClipboard = it
+//            updateUI()
+//        }
         arrayOf(enhancedModeLayout, enhancedModeSwitch).setSwitchListener {
             if (it) showIgnoreBatteryOptimizationDialog()
             appPref.enhancedMode = it
@@ -85,15 +84,15 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
                     .show()
         }
 
-        webPageParser.setOnClickListener {
-            MaterialDialog.Builder(this)
-                    .items(WebParser.getParserNameArray(this).toList())
-                    .itemsCallback { _, _, pos, _ ->
-                        appPref.webParser = WebParser.Parser.values()[pos]
-                        updateUI()
-                    }
-                    .show()
-        }
+//        webPageParser.setOnClickListener {
+//            MaterialDialog.Builder(this)
+//                    .items(WebParser.getParserNameArray(this).toList())
+//                    .itemsCallback { _, _, pos, _ ->
+//                        appPref.webParser = WebParser.Parser.values()[pos]
+//                        updateUI()
+//                    }
+//                    .show()
+//        }
 
         updateUI()
     }
@@ -120,18 +119,18 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
         analysisEngineTv.setText(appPref.segmentParserEnum.nameResId)
         searchEngineTv.text = appPref.searchEngine
         showFloatDialogSwit.isChecked = appPref.showFloatDialog
-        webPageParserTv.setText(appPref.webParser.stringRes)
+//        webPageParserTv.setText(appPref.webParser.stringRes)
         enhancedModeSwitch.isChecked = appPref.enhancedMode
         translationTargetTv.text = LangUtils.getLangByKey(appPref.targetLang)
         enableWordBookSwit.isChecked = appPref.enableWordBook
-        analyzeUrlInClipboardSwitch.isChecked = appPref.analyzeUrlInClipboard
+//        analyzeUrlInClipboardSwitch.isChecked = appPref.analyzeUrlInClipboard
 
         if (settingUtility.isListenClipboard) {
             enhancedModeLayout.visibility = View.VISIBLE
-            analyzeUrlInClipboardLayout.visibility = View.VISIBLE
+//            analyzeUrlInClipboardLayout.visibility = View.VISIBLE
         } else {
             enhancedModeLayout.visibility = View.GONE
-            analyzeUrlInClipboardLayout.visibility = View.GONE
+//            analyzeUrlInClipboardLayout.visibility = View.GONE
         }
     }
 
