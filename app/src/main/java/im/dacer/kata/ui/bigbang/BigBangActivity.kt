@@ -73,10 +73,10 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         searchBtn.setOnClickListener { bigbangPresenter.onClickSearch() }
         audioBtn.setOnClickListener { bigbangPresenter.onClickAudio() }
         audioBtn.setOnLongClickListener { bigbangPresenter.onLongClickAudio() }
-        searchBtn.setOnLongClickListener {
-            val popup = PopupMenu(this, it, Gravity.RIGHT)
-            it.setOnTouchListener(popup.dragToOpenListener)
-            SearchEngine.supportSearchEngineList.forEach { popup.menu.add(it) }
+        searchBtn.setOnLongClickListener { view ->
+            val popup = PopupMenu(this, view, Gravity.RIGHT)
+            view.setOnTouchListener(popup.dragToOpenListener)
+            SearchEngine.getSupportSearchEngineList(appPre).forEach { popup.menu.add(it) }
             popup.setOnMenuItemClickListener { bigbangPresenter.changeAndFireSearchAction(it) }
             popup.show()
             true

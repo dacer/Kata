@@ -53,6 +53,9 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         get() = getString(TARGET_LANG, LangUtils.DEFAULT_TARGET_LANG_KEY)!!
         set(value) { put(TARGET_LANG, value) }
 
+    val targetLangIsZH_CN: Boolean
+        get() = targetLang == LangUtils.LANG_CHINESE_KEY
+
     var webParser: WebParser.Parser
         get() = WebParser.getParseBy(getString(WEB_PARSER, WebParser.DEFAULT_PARSER.name)!!)
         set(value) { put(WEB_PARSER, value.name) }

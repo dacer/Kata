@@ -36,9 +36,9 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
 
         searchEngine.setOnClickListener {
             MaterialDialog.Builder(this)
-                    .items(SearchEngine.supportSearchEngineList.toList())
+                    .items(SearchEngine.getSupportSearchEngineList(appPref).toList())
                     .itemsCallback { _, _, pos, _ ->
-                        appPref.searchEngine = SearchEngine.supportSearchEngineList[pos]
+                        appPref.searchEngine = SearchEngine.getSupportSearchEngineList(appPref)[pos]
                         updateUI()
                     }
                     .show()

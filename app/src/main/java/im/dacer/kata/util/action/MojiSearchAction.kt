@@ -3,6 +3,9 @@ package im.dacer.kata.util.action
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
+import im.dacer.kata.R
+import org.jetbrains.anko.toast
+
 
 class MojiSearchAction : Action {
 
@@ -14,7 +17,11 @@ class MojiSearchAction : Action {
             sendIntent.type = "text/plain"
             sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             sendIntent.setClassName("com.mojitec.mojidict", "com.mojitec.mojidict.ui.SplashActivity")
-            context.startActivity(sendIntent)
+            if (sendIntent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(sendIntent)
+            } else {
+                context.toast(R.string.moji_not_found)
+            }
         }
     }
 

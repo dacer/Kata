@@ -12,8 +12,11 @@ object SearchEngine {
     const val JISHO = "Jisho"
     const val MOJI = "Moji"
 
-    val supportSearchEngineList: Array<String>
-        get() = arrayOf(GOOGLE, BING, DUCKDUCKGO, JISHO, MOJI)
+    fun getSupportSearchEngineList(pref: MultiprocessPref): Array<String> {
+        val result = arrayListOf(GOOGLE, BING, DUCKDUCKGO, JISHO)
+        if (pref.targetLangIsZH_CN) result.add(MOJI)
+        return result.toTypedArray()
+    }
 
     fun getDefaultSearchAction(context: Context): Action? {
         val multiprocessPref = MultiprocessPref(context)

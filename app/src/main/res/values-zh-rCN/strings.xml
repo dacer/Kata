@@ -131,4 +131,6 @@
     <string name="android_q_method_shortcut">Shortcut</string>
     <string name="use_nhk_mirror_site">使用 NHK 镜像站点</string>
     <string name="use_nhk_mirror_site_summary">请仅当你无法无法访问NHK网站时使用这个选项</string>
+
+    <string name="moji_not_found">无法启动 MOJI辞書，请确认你是否已经安装</string>
 </resources>
