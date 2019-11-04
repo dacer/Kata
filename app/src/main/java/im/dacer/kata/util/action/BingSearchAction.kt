@@ -5,7 +5,7 @@ import android.net.Uri
 class BingSearchAction : WebSearchAction() {
 
     override fun createSearchUriWithEncodedText(encodedText: String?): Uri {
-        return Uri.parse("https://www.bing.com/start?q=" + encodedText!!)
+        return Uri.parse("https://www.bing.com/search?q=" + encodedText!!)
     }
 
     companion object {
