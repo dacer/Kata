@@ -76,7 +76,7 @@ class BigBangActivity : BaseTransparentSwipeActivity(), BigbangMvp, KataLayout.I
         searchBtn.setOnLongClickListener {
             val popup = PopupMenu(this, it, Gravity.RIGHT)
             it.setOnTouchListener(popup.dragToOpenListener)
-            SearchEngine.getSupportSearchEngineList().forEach { popup.menu.add(it) }
+            SearchEngine.supportSearchEngineList.forEach { popup.menu.add(it) }
             popup.setOnMenuItemClickListener { bigbangPresenter.changeAndFireSearchAction(it) }
             popup.show()
             true
