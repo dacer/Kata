@@ -15,7 +15,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
-
 // Since we cannot access clipboard data on Android 10 or higher without focus
 // https://developer.android.com/about/versions/10/privacy/changes#clipboard-data
 class ReadClipboardActivity : BaseActivity() {
@@ -36,12 +35,12 @@ class ReadClipboardActivity : BaseActivity() {
                 .autoDismiss(false)
                 .canceledOnTouchOutside(false)
                 .build()
-        if (isFinishing) materialDialog?.show()
+        if (!isFinishing) materialDialog?.show()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             checkClipboard(false)
         } else {
             retryCount = 0
-            clipboardDisposable = Observable.interval(500, TimeUnit.MILLISECONDS)
+            clipboardDisposable = Observable.interval(300, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { checkClipboard() }
         }
@@ -66,6 +65,6 @@ class ReadClipboardActivity : BaseActivity() {
     }
 
     companion object {
-        const val MAX_RETRY_TIMES = 6
+        const val MAX_RETRY_TIMES = 20
     }
 }
