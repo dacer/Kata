@@ -40,7 +40,7 @@ class ReadClipboardActivity : BaseActivity() {
             checkClipboard(false)
         } else {
             retryCount = 0
-            clipboardDisposable = Observable.interval(300, TimeUnit.MILLISECONDS)
+            clipboardDisposable = Observable.interval(500, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { checkClipboard() }
         }
@@ -55,9 +55,11 @@ class ReadClipboardActivity : BaseActivity() {
     private fun checkClipboard(retry: Boolean = true) {
         val text = mClipboardManager.primaryClip?.getLastString(this)
         if (text?.isNotEmpty() == true) {
+            clipboardDisposable?.dispose()
             SchemeHelper.startKata(this, text)
             finish()
         } else if (retry && retryCount >= MAX_RETRY_TIMES){
+            clipboardDisposable?.dispose()
             toast(R.string.clipboard_content_not_found)
             finish()
         }
