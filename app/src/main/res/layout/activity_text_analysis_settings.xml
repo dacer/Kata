@@ -18,18 +18,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/analyzeUrlInClipboardLayout"-->
-<!--                style="@style/SettingsItem">-->
+            <RelativeLayout
+                android:id="@+id/analyzeUrlInClipboardLayout"
+                style="@style/SettingsItem">
 
-<!--                <TextView-->
-<!--                    style="@style/SettingsItemLeft.Title"-->
-<!--                    android:text="@string/analyze_url_in_clipboard"/>-->
+                <TextView
+                    style="@style/SettingsItemLeft.Title"
+                    android:text="@string/analyze_url_in_clipboard"/>
 
-<!--                <android.support.v7.widget.SwitchCompat-->
-<!--                    android:id="@+id/analyzeUrlInClipboardSwitch"-->
-<!--                    style="@style/SettingsItemRight"/>-->
-<!--            </RelativeLayout>-->
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/analyzeUrlInClipboardSwitch"
+                    style="@style/SettingsItemRight"/>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/enhancedModeLayout"

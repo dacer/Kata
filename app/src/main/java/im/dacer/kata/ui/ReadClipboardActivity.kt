@@ -6,7 +6,9 @@ import android.os.Build
 import android.os.Bundle
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
+import im.dacer.kata.service.UrlAnalysisService
 import im.dacer.kata.ui.base.BaseActivity
+import im.dacer.kata.util.extension.isUrl
 import im.dacer.kata.util.extension.toast
 import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.util.helper.getLastString
@@ -53,10 +55,16 @@ class ReadClipboardActivity : BaseActivity() {
     }
 
     private fun checkClipboard(retry: Boolean = true) {
-        val text = mClipboardManager.primaryClip?.getLastString(this)
+        var text = mClipboardManager.primaryClip?.getLastString(this)
         if (text?.isNotEmpty() == true) {
             clipboardDisposable?.dispose()
-            SchemeHelper.startKata(this, text)
+            text = text.trim() //remove whitespaces from the beginning and end
+
+            if (text.isUrl()) {
+                startService(UrlAnalysisService.getIntent(this, text))
+            } else {
+                SchemeHelper.startKata(this, text)
+            }
             finish()
         } else if (retry && retryCount >= MAX_RETRY_TIMES){
             clipboardDisposable?.dispose()

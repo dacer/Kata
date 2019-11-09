@@ -37,7 +37,7 @@ class WebParser<T: NewsItem> {
 
         fun getParseBy(name: String): Parser = Parser.valueOf(name)
 
-        val DEFAULT_PARSER = Parser.URL2IO
+        val DEFAULT_PARSER = Parser.MERCURY
 
         fun fetchContent(targetUrl: String?, pref: MultiprocessPref): Observable<String>{
             if (targetUrl == null) throw NullPointerException("targetUrl cannot be null")
@@ -84,7 +84,7 @@ class WebParser<T: NewsItem> {
         }
 
         private fun getMercuryUrl(targetUrl: String) =
-                "https://mercury.postlight.com/parser?url=${targetUrl.urlEncode()}"
+                "https://mercury.dacer.im/parser?url=${targetUrl.urlEncode()}"
 
         private fun getURL2IOUrl(targetUrl: String) =
                 "http://api.url2io.com/article?url=${targetUrl.urlEncode()}&token=$URL2IO_TOKEN"

@@ -96,7 +96,7 @@ class MultiprocessPref @Inject constructor(@ApplicationContext context: Context)
         set(value) { put(PREF_ENABLE_WORD_BOOK, value) }
 
     var analyzeUrlInClipboard : Boolean
-        get() = false
+        get() = getBoolean(PREF_ANALYZE_URL_IN_CLIPBOARD, false)
         set(value) { put(PREF_ANALYZE_URL_IN_CLIPBOARD, value) }
 
     var useNhkMirror : Boolean

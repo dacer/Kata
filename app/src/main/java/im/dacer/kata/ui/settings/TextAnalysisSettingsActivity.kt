@@ -58,10 +58,10 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
                     .show()
         }
 
-//        arrayOf(analyzeUrlInClipboardLayout, analyzeUrlInClipboardSwitch).setSwitchListener {
-//            appPref.analyzeUrlInClipboard = it
-//            updateUI()
-//        }
+        arrayOf(analyzeUrlInClipboardLayout, analyzeUrlInClipboardSwitch).setSwitchListener {
+            appPref.analyzeUrlInClipboard = it
+            updateUI()
+        }
         arrayOf(enhancedModeLayout, enhancedModeSwitch).setSwitchListener {
             if (it) showIgnoreBatteryOptimizationDialog()
             appPref.enhancedMode = it
@@ -123,7 +123,7 @@ class TextAnalysisSettingsActivity : BaseSettingActivity() {
         enhancedModeSwitch.isChecked = appPref.enhancedMode
         translationTargetTv.text = LangUtils.getLangByKey(appPref.targetLang)
         enableWordBookSwit.isChecked = appPref.enableWordBook
-//        analyzeUrlInClipboardSwitch.isChecked = appPref.analyzeUrlInClipboard
+        analyzeUrlInClipboardSwitch.isChecked = appPref.analyzeUrlInClipboard
 
         if (settingUtility.isListenClipboard) {
             enhancedModeLayout.visibility = View.VISIBLE
