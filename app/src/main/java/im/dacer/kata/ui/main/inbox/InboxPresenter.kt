@@ -6,11 +6,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Canvas
-import android.support.design.widget.Snackbar
-import android.support.v7.widget.RecyclerView
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
+import com.google.android.material.snackbar.Snackbar
 import im.dacer.kata.R
 import im.dacer.kata.data.DictImporter
 import im.dacer.kata.data.local.MultiprocessPref
@@ -165,7 +165,7 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
 
     override fun onPopupClicked() {
         val service = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        service.primaryClip = ClipData.newPlainText("", mvpView?.getClipTvText())
+        service.setPrimaryClip(ClipData.newPlainText("", mvpView?.getClipTvText()))
         Toast.makeText(context, context.getString(R.string.copied), Toast.LENGTH_SHORT).show()
 
 //        nothingHappenedCountdown = Observable.timer(8, TimeUnit.SECONDS)

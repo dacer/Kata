@@ -1,6 +1,6 @@
 package im.dacer.kata.util.extension
 
-import android.support.v4.util.PatternsCompat.WEB_URL
+import androidx.core.util.PatternsCompat.WEB_URL
 import java.net.URLDecoder
 import java.net.URLEncoder
 

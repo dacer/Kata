@@ -1,7 +1,7 @@
 package im.dacer.kata.ui.flashcard
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import com.pixplicity.sharp.Sharp
 import im.dacer.kata.R

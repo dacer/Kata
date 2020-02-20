@@ -1,7 +1,7 @@
 package im.dacer.kata.data.model.bigbang;
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * Created by Dacer on 06/10/2018.

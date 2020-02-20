@@ -1,6 +1,6 @@
 package im.dacer.kata.data.model.bigbang.generated.autovalue;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 abstract class $AutoValue_DictReading extends DictReading {
 

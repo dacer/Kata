@@ -2,13 +2,13 @@ package im.dacer.kata.ui.flashcard
 
 import android.content.Context
 import android.graphics.Color
-import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import im.dacer.kata.R
 import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.model.bigbang.Word
@@ -24,7 +24,7 @@ class FlashcardAdapter(context: Context, private val searchDictHelper: SearchDic
 
     private var dictDisposable: Disposable? = null
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val holder: ViewHolder
         var contentView = convertView
 
@@ -39,7 +39,7 @@ class FlashcardAdapter(context: Context, private val searchDictHelper: SearchDic
 
         val word = getItem(position)
 
-        holder.baseFormTv.text = word.baseForm
+        holder.baseFormTv.text = word!!.baseForm
         holder.queryTimesTv.text = word.queryTimes.toString()
         val color = Color.parseColor(MATERIAL_COLORS[position % MATERIAL_COLORS.size])
         holder.baseFormTv.text = holder.baseFormTv.text

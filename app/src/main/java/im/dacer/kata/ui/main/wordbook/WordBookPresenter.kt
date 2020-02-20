@@ -3,7 +3,7 @@ package im.dacer.kata.ui.main.wordbook
 import android.app.Activity
 import android.content.Context
 import android.graphics.Canvas
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import im.dacer.kata.R

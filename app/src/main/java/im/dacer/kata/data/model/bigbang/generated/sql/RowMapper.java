@@ -1,8 +1,8 @@
 package im.dacer.kata.data.model.bigbang.generated.sql;
 
 import android.database.Cursor;
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 
 /** Creates instances of {@code T} from rows in a {@link Cursor}. */
 public interface RowMapper<T> {

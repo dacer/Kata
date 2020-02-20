@@ -1,6 +1,6 @@
 package im.dacer.kata.util.segment.parser
 
-import android.support.v4.util.PatternsCompat
+import androidx.core.util.PatternsCompat
 import im.dacer.kata.data.model.bigbang.KuromojiApiResult
 import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.util.extension.getSubtitle

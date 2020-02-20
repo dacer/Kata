@@ -1,7 +1,7 @@
 package im.dacer.kata.data.room.database
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import im.dacer.kata.data.model.bigbang.ContextStr
 import im.dacer.kata.data.model.bigbang.Word
 import im.dacer.kata.data.room.dao.ContextStrDao

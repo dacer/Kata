@@ -9,8 +9,8 @@ import android.graphics.PointF
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.widget.NestedScrollView
-import android.support.v7.widget.PopupMenu
+import androidx.core.widget.NestedScrollView
+import androidx.appcompat.widget.PopupMenu
 import android.util.Property
 import android.view.Gravity
 import android.view.View

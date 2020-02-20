@@ -1,6 +1,6 @@
 package im.dacer.kata.ui.base
 
-import android.support.v7.widget.SwitchCompat
+import androidx.appcompat.widget.SwitchCompat
 import android.view.MenuItem
 import android.view.View
 

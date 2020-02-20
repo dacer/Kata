@@ -2,7 +2,7 @@ package im.dacer.kata.view
 
 import android.content.Context
 import android.graphics.*
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View

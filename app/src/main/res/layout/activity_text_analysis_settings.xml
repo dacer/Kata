@@ -26,7 +26,7 @@
                     style="@style/SettingsItemLeft.Title"
                     android:text="@string/analyze_url_in_clipboard"/>
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/analyzeUrlInClipboardSwitch"
                     style="@style/SettingsItemRight"/>
             </RelativeLayout>
@@ -47,7 +47,7 @@
                         style="@style/SettingsItemSummary"
                         android:text="@string/enhanced_mode_summary"/>
                 </LinearLayout>
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/enhancedModeSwitch"
                     style="@style/SettingsItemRight"/>
             </RelativeLayout>
@@ -116,7 +116,7 @@
                     style="@style/SettingsItemLeft.Title"
                     android:text="@string/word_book"/>
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/enableWordBookSwit"
                     style="@style/SettingsItemRight"/>
             </RelativeLayout>
@@ -131,7 +131,7 @@
                     style="@style/SettingsItemLeft.Title"
                     android:text="@string/show_float_dialog_when_copy_few_words"/>
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/showFloatDialogSwit"
                     style="@style/SettingsItemRight"/>
             </RelativeLayout>

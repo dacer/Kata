@@ -3,12 +3,12 @@ package im.dacer.kata.ui.base
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.LayoutRes
-import android.support.v4.util.LongSparseArray
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.collection.LongSparseArray
 import im.dacer.kata.App
 import im.dacer.kata.R
 import im.dacer.kata.injection.component.ActivityComponent
@@ -49,7 +49,7 @@ abstract class BaseActivity : AppCompatActivity(), MvpView {
             componentsArray.put(activityId, configPersistentComponent)
         } else {
             Timber.i("Reusing ConfigPersistentComponent id=%d", activityId)
-            configPersistentComponent = componentsArray.get(activityId)
+            configPersistentComponent = componentsArray.get(activityId)!!
         }
         activityComponent = configPersistentComponent.activityComponent(ActivityModule(this))
         activityComponent?.inject(this)

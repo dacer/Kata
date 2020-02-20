@@ -2,12 +2,12 @@ package im.dacer.kata.ui.base
 
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
-import android.support.v4.util.LongSparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.collection.LongSparseArray
+import androidx.fragment.app.Fragment
 import im.dacer.kata.App
 import im.dacer.kata.injection.component.ConfigPersistentComponent
 import im.dacer.kata.injection.component.DaggerConfigPersistentComponent
@@ -37,7 +37,7 @@ abstract class BaseFragment: Fragment(), MvpView {
             componentsArray.put(fragmentId, configPersistentComponent)
         } else {
             Timber.i("Reusing ConfigPersistentComponent id=%d", fragmentId)
-            configPersistentComponent = componentsArray.get(fragmentId)
+            configPersistentComponent = componentsArray.get(fragmentId)!!
         }
         fragmentComponent = configPersistentComponent.fragmentComponent(FragmentModule(this))
     }

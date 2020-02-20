@@ -1,6 +1,6 @@
 package im.dacer.kata.data.room.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import im.dacer.kata.data.model.bigbang.ContextStr
 import io.reactivex.Maybe
 

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/myToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 android:padding="10dp"
                 android:visibility="gone"/>
         </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/topProgressbar"
@@ -53,7 +53,7 @@
         app:mpb_useIntrinsicPadding="false"
         style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

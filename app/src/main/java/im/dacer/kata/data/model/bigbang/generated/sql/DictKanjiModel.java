@@ -2,8 +2,8 @@ package im.dacer.kata.data.model.bigbang.generated.sql;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import java.lang.Deprecated;
 import java.lang.Long;
 import java.lang.Override;

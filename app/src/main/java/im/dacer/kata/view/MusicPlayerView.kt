@@ -191,8 +191,8 @@ class MusicPlayerView @JvmOverloads constructor(
         } else {
             canvas.drawRectText(textInBtnCenter!!, getBtnBounds(), btnTextPaint)
             if (keepOnTouch) {
-                canvas.drawRect(leftMainTextRect, textBackgroundPaint)
-                canvas.drawRect(leftSubTextRect, textBackgroundPaint)
+                canvas.drawRect(leftMainTextRect!!, textBackgroundPaint)
+                canvas.drawRect(leftSubTextRect!!, textBackgroundPaint)
 
                 canvas.drawRectText((audioPlayer.duration * posProcess).toLong().toMmSs(),
                         leftMainTextRect!!, leftMainTextPaint)
@@ -418,7 +418,7 @@ class MusicPlayerView @JvmOverloads constructor(
         return path
     }
 
-    override fun invalidateDrawable(drawable: Drawable?) {
+    override fun invalidateDrawable(drawable: Drawable) {
         super.invalidateDrawable(drawable)
         postInvalidate()
     }

@@ -1,6 +1,6 @@
 package im.dacer.kata.util.segment.parser
 
-import android.support.v4.util.PatternsCompat
+import androidx.core.util.PatternsCompat
 import com.atilika.kuromoji.TokenizerBase
 import com.atilika.kuromoji.ipadic.Tokenizer
 import im.dacer.kata.data.model.segment.KanjiResult

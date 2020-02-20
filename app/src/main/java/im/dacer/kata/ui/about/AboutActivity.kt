@@ -3,7 +3,7 @@ package im.dacer.kata.ui.about
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import android.view.MenuItem

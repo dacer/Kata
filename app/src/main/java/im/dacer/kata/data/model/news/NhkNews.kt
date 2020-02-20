@@ -1,8 +1,8 @@
 package im.dacer.kata.data.model.news
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Ignore
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import im.dacer.kata.data.NewsDataManager
 import java.util.*
 

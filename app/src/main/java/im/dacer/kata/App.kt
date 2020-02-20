@@ -1,7 +1,7 @@
 package im.dacer.kata
 
 import android.content.Context
-import android.support.multidex.MultiDexApplication
+import androidx.multidex.MultiDexApplication
 import android.util.Log
 import com.androidnetworking.AndroidNetworking
 import com.crashlytics.android.Crashlytics

@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
-import android.support.v4.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat.startActivity
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ViewConfiguration
