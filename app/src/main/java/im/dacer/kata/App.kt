@@ -1,17 +1,15 @@
 package im.dacer.kata
 
 import android.content.Context
-import androidx.multidex.MultiDexApplication
 import android.util.Log
+import androidx.multidex.MultiDexApplication
 import com.androidnetworking.AndroidNetworking
-import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.tspoon.traceur.Traceur
 import im.dacer.kata.injection.component.AppComponent
 import im.dacer.kata.injection.component.DaggerAppComponent
 import im.dacer.kata.injection.module.AppModule
-import io.fabric.sdk.android.Fabric
 import okhttp3.OkHttpClient
 import timber.log.Timber
 
@@ -45,7 +43,6 @@ class App : MultiDexApplication() {
 //            // You should not init your app in this process.
 //            return
 //        }
-        Fabric.with(this, Crashlytics())
 
         val okHttpClient = OkHttpClient().newBuilder()
 
@@ -67,7 +64,7 @@ class App : MultiDexApplication() {
             if (priority == Log.VERBOSE || priority == Log.DEBUG) {
                 return
             }
-            Crashlytics.logException(t)
+//            Crashlytics.logException(t)
         }
     }
 }

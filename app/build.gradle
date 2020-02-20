@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'io.fabric'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 // enable it when you need to check method count
 //apply plugin: 'com.getkeepsafe.dexcount'
@@ -44,7 +44,7 @@ android {
         debug {
             debuggable true
             versionNameSuffix '-DEBUG'
-            applicationIdSuffix '.debug'
+//            applicationIdSuffix '.debug'
         }
         android.applicationVariants.all { variant ->
             variant.outputs.all {
@@ -80,6 +80,7 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
 
     implementation supportLibs
     implementation networkLibs
@@ -94,7 +95,6 @@ dependencies {
     compileOnly immutablesValue // <-- for annotation API
     compileOnly immutablesGson
 
-    implementation(crashlyticsSdk) { transitive = true }
     implementation(materialdrawer) { transitive = true }
 
     debugImplementation debugLibs

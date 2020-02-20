@@ -17,7 +17,6 @@ ext {
             timber          : '4.6.0',
             anko            : '0.10.4',
             materialDialog  : '0.9.6.0',
-            crashlytics     : '2.9.9@aar',
             iconics         : '3.0.3@aar',
             immutables      : '2.2.1',
             room            : "1.1.0",
@@ -100,7 +99,6 @@ ext {
     ]
 
     leakCannary    = "com.squareup.leakcanary:leakcanary-android:1.5.1"
-    crashlyticsSdk = "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics"
     materialdrawer = "com.mikepenz:materialdrawer:6.0.7@aar"
 
     chuckDebug     = "com.readystatesoftware.chuck:library:$versions.chuck"
