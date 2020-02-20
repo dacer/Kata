@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.androidnetworking.AndroidNetworking
+import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.tspoon.traceur.Traceur
@@ -64,7 +65,7 @@ class App : MultiDexApplication() {
             if (priority == Log.VERBOSE || priority == Log.DEBUG) {
                 return
             }
-//            Crashlytics.logException(t)
+            Crashlytics.logException(t)
         }
     }
 }
