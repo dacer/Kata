@@ -5,16 +5,23 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
-import androidx.core.content.ContextCompat.startActivity
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ViewConfiguration
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
 import im.dacer.kata.data.model.segment.KanjiResult
 import im.dacer.kata.util.ViewUtil
+import im.dacer.kata.util.extension.copyToClipboard
 import im.dacer.kata.util.helper.SchemeHelper
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
 
 /**
@@ -153,20 +160,30 @@ class KataLayout @JvmOverloads constructor(
     private var actionDownItem: Item? = null
     private var mDisallowedParentIntercept = false
     private var mDownX: Float = 0F
+    private var longClickDisposable: Disposable? = null
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 mDownX = event.x
                 mDisallowedParentIntercept = false
                 actionDownItem = findItemByPoint(event.x.toInt(), event.y.toInt())
+                longClickDisposable?.dispose()
+                longClickDisposable = Observable.timer(800, TimeUnit.MILLISECONDS)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            onItemLongClicked(actionDownItem)
+                        }
             }
             MotionEvent.ACTION_MOVE -> {
-                if (!mDisallowedParentIntercept && Math.abs(event.x - mDownX) > mScaledTouchSlop) {
+                if (!mDisallowedParentIntercept && abs(event.x - mDownX) > mScaledTouchSlop) {
                     parent.requestDisallowInterceptTouchEvent(true)
                     mDisallowedParentIntercept = true
+                    longClickDisposable?.dispose()
                 }
             }
             MotionEvent.ACTION_UP -> {
+                longClickDisposable?.dispose()
                 if (mDisallowedParentIntercept) {
                     parent.requestDisallowInterceptTouchEvent(false)
                 }
@@ -176,6 +193,9 @@ class KataLayout @JvmOverloads constructor(
                 } else if (item != null && !item.view.isBlank()) {
                     onItemSelected(item)
                 }
+            }
+            else -> {
+                longClickDisposable?.dispose()
             }
         }
         return true
@@ -190,6 +210,17 @@ class KataLayout @JvmOverloads constructor(
         item.isSelected = true
         lastSelectedItem = item
         itemClickListener?.onItemClicked(item.index, selectedByUser)
+    }
+
+    private fun onItemLongClicked(item: Item?) {
+        MaterialDialog.Builder(context)
+                .items(arrayOf(R.string.copy).map { context.getString(it) })
+                .itemsCallback{_, _, pos, _ ->
+                    when(pos) {
+                        0 -> item?.view?.surface?.copyToClipboard(context, false)
+                    }
+                }
+                .show()
     }
 
     private fun onClickLink(item: Item) {

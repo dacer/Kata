@@ -1,6 +1,12 @@
 package im.dacer.kata.util.extension
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.widget.Toast
 import androidx.core.util.PatternsCompat.WEB_URL
+import im.dacer.kata.R
+import im.dacer.kata.util.helper.SchemeHelper
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -23,4 +29,10 @@ fun String.findUrl(): String? {
 
 fun String.isUrl(): Boolean {
     return WEB_URL.matcher(this).matches()
+}
+
+fun String.copyToClipboard(context: Context, showInKata: Boolean = true) {
+    val service = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    service.setPrimaryClip(ClipData.newPlainText(if(showInKata) "" else SchemeHelper.IGNORE_CLIP_DATA_LABEL, this))
+    Toast.makeText(context, context.getString(R.string.copied), Toast.LENGTH_SHORT).show()
 }

@@ -2,11 +2,8 @@ package im.dacer.kata.ui.main.inbox
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Canvas
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
@@ -21,6 +18,7 @@ import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
 import im.dacer.kata.util.LogUtils
+import im.dacer.kata.util.extension.copyToClipboard
 import im.dacer.kata.util.helper.SchemeHelper
 import im.dacer.kata.view.PopupView
 import io.reactivex.Observable
@@ -164,10 +162,7 @@ class InboxPresenter @Inject constructor(@ApplicationContext val context: Contex
     }
 
     override fun onPopupClicked() {
-        val service = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        service.setPrimaryClip(ClipData.newPlainText("", mvpView?.getClipTvText()))
-        Toast.makeText(context, context.getString(R.string.copied), Toast.LENGTH_SHORT).show()
-
+        mvpView?.getClipTvText()?.copyToClipboard(context)
 //        nothingHappenedCountdown = Observable.timer(8, TimeUnit.SECONDS)
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe { mvpView?.showNothingHappenedView()}

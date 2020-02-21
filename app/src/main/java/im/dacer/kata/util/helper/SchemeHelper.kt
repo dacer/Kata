@@ -7,13 +7,14 @@ import android.content.Intent
 import android.net.Uri
 import im.dacer.kata.R
 import im.dacer.kata.ui.bigbang.BigBangActivity
+import im.dacer.kata.util.helper.SchemeHelper.Companion.IGNORE_CLIP_DATA_LABEL
 import java.net.URLEncoder
 
 /**
  * Created by Dacer on 09/01/2018.
  */
 fun ClipData.getLastString(context: Context): String? {
-    if (itemCount > 0 && "BigBang" != description.label) {
+    if (itemCount > 0 && IGNORE_CLIP_DATA_LABEL != description.label) {
         return getItemAt(0).coerceToText(context).toString()
     }
     return null
@@ -22,6 +23,7 @@ fun ClipData.getLastString(context: Context): String? {
 class SchemeHelper {
     companion object {
         const val SHOW_FLOAT_MAX_TEXT_COUNT = 99
+        const val IGNORE_CLIP_DATA_LABEL = "BigBang"
 
         fun startKata(c: Context, text: String, preselectedIndex: Int = -1,
                       saveInHistory: Boolean = true, alias: String = "",
