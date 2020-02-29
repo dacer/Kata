@@ -22,8 +22,6 @@ ext {
             room            : "1.1.0",
             store           : '3.0.1',
             chuck           : '1.1.0',
-
-            leakcanary      : '1.5.4',
     ]
 
 
@@ -60,7 +58,6 @@ ext {
             roomRxJava : "android.arch.persistence.room:rxjava2:$versions.room"
     ]
     others = [
-            leakCannary    : "com.squareup.leakcanary:leakcanary-android:1.5.1",
             timber         : "com.jakewharton.timber:timber:$versions.timber",
             anko           : "org.jetbrains.anko:anko:$versions.anko",
             materialDialog : "com.afollestad.material-dialogs:core:$versions.materialDialog",
@@ -98,7 +95,6 @@ ext {
     compileOnly = [
     ]
 
-    leakCannary    = "com.squareup.leakcanary:leakcanary-android:1.5.1"
     materialdrawer = "com.mikepenz:materialdrawer:6.0.7@aar"
 
     chuckDebug     = "com.readystatesoftware.chuck:library:$versions.chuck"
@@ -117,8 +113,8 @@ ext {
     rxJavaLibs = rxJava.values()
     otherLibs = others.values()
 
-    debugLibs = [leakCannary, chuckDebug]
-    releaseLibs = [leakCannary, chuckRelease]
+    debugLibs = [chuckDebug]
+    releaseLibs = [chuckRelease]
     annotationProcessorLibs = compilers.values()
 
 }
