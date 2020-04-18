@@ -47,7 +47,7 @@ class App : MultiDexApplication() {
 //            return
 //        }
         Fabric.with(this, Crashlytics.Builder().core(CrashlyticsCore.Builder().build()).build())
-        
+
         val okHttpClient = OkHttpClient().newBuilder()
 
         if (BuildConfig.DEBUG) {

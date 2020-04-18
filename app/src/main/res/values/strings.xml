@@ -133,4 +133,5 @@
     <string name="use_nhk_mirror_site_summary">Select it if you can\'t access NHK website</string>
 
     <string name="moji_not_found">You need to install Moji辞書 before use this function</string>
+    <string name="share_to_kata">Share to kata</string>
 </resources>

@@ -1,6 +1,7 @@
 # Specific files to exclude
 com_crashlytics_export_strings.xml
 app/fabric.properties
+app/google-services.json
 
 # Any keystores
 *.keystore
