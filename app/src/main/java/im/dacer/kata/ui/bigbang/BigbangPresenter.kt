@@ -1,5 +1,6 @@
 package im.dacer.kata.ui.bigbang
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
@@ -159,6 +160,7 @@ class BigbangPresenter @Inject constructor(@ApplicationContext val context: Cont
         mvpView?.spotlight(index)
     }
 
+    @SuppressLint("CheckResult")
     private fun onWordSelectedByUser(index: Int) {
         if (!appPre.enableWordBook) return
         val kanjiResult = kanjiResultList?.get(index)!!
