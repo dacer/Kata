@@ -53,8 +53,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/FloatTheme"
-            android:process=":listener"
-            android:documentLaunchMode="intoExisting" >
+            android:process=":listener" >
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT"/>
                 <action android:name="android.intent.action.SEND"/>
@@ -74,10 +73,7 @@
         </activity>
         <activity
             android:name=".ui.bigbang.BigBangActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:process=":listener"
-            android:documentLaunchMode="intoExisting">
+            android:process=":listener">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
