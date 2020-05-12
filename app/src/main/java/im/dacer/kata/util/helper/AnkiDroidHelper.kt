@@ -1,12 +1,12 @@
 package im.dacer.kata.util.helper
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import collections.forEach
 import com.afollestad.materialdialogs.MaterialDialog
 import com.ichi2.anki.api.AddContentApi
 import com.ichi2.anki.api.AddContentApi.READ_WRITE_PERMISSION
@@ -26,6 +26,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.jetbrains.anko.collections.forEach
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -47,6 +48,7 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
     /**
      * check checkPermission before call this!
      */
+    @SuppressLint("CheckResult")
     fun export(activity: Activity, moveToMasteredAfterExport: Boolean) {
         val deckId = getDeckId()
         val modelId = getModelId()
