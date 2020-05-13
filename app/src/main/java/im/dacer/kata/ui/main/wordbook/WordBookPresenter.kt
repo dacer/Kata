@@ -122,6 +122,10 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
 
     private fun refreshWordList() {
         mvpView?.setLoading(true)
+        if (getWordSize() == 0) {
+            mvpView?.setLoading(false)
+            return
+        }
         mvpView?.setChangeListMenuName(if (showLearning) getStr(R.string.learning) else getStr(R.string.mastered))
         refreshWordDis?.dispose()
         refreshWordDis = getLoadWordFlowable()
@@ -149,6 +153,14 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
             wordDao.loadNotMasteredFlowable()
         } else {
             wordDao.loadMastered()
+        }
+    }
+
+    private fun getWordSize(): Int {
+        return if (showLearning) {
+            wordDao.getNotMasteredNum()
+        } else {
+            wordDao.getMasteredNum()
         }
     }
 

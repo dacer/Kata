@@ -20,6 +20,12 @@ interface WordDao {
     @Query("SELECT * FROM word WHERE baseForm is :baseForm LIMIT 1")
     fun findByBaseForm(baseForm: String): Maybe<List<Word>>
 
+    @Query("SELECT COUNT(*) FROM word WHERE mastered is 0 OR mastered is NULL")
+    fun getNotMasteredNum(): Int
+
+    @Query("SELECT COUNT(*) FROM word WHERE mastered is 1")
+    fun getMasteredNum(): Int
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(item: Word): Long
 
