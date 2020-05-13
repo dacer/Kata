@@ -8,6 +8,8 @@ import android.view.*
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
 import im.dacer.kata.R
 import im.dacer.kata.data.model.bigbang.Word
+import im.dacer.kata.data.model.bigbang.WordWithMeaning
+import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.ui.base.BaseFragment
 import im.dacer.kata.ui.flashcard.FlashcardActivity
 import im.dacer.kata.util.extension.applyHeight
@@ -82,18 +84,25 @@ class WordBookFragment : BaseFragment(), WordBookMvp {
         changeListMenuItem?.title = name
     }
 
-    override fun showWords(wordList: List<Word>?) {
-        wordAdapter.setNewData(wordList)
-        flashcardTv.isEnabled = wordList?.isNotEmpty() == true
-        exportAnkiIv.isEnabled = wordList?.isNotEmpty() == true
-        exportAnkiIv.alpha = if (wordList?.isEmpty() == true) 0.5f else 1f
+    override fun addWordWithMeaning(word: WordWithMeaning) {
+        wordAdapter.addData(word)
+        flashcardTv.isEnabled = wordAdapter.data.isNotEmpty() == true
+        exportAnkiIv.isEnabled = wordAdapter.data.isNotEmpty() == true
+        exportAnkiIv.alpha = if (wordAdapter.data.isEmpty()) 0.5f else 1f
     }
+
+    override fun getWordWithMeaning(index: Int) = wordAdapter.getItem(index)
 
     override fun showFlashcardBtn(show: Boolean) {
         bottomView.visibility = if (show) View.VISIBLE else View.GONE
     }
 
-    override fun getDecorView() = activity!!.window.decorView!!
+    override fun setLoading(loading: Boolean) {
+        if (loading) wordAdapter.setNewData(mutableListOf())
+        progressBar.visibility = if(loading) View.VISIBLE else View.GONE
+    }
+
+    override fun getDecorView() = activity!!.window.decorView
 
     fun exportAnki() {
         wordPresenter.exportAnki(activity!!)

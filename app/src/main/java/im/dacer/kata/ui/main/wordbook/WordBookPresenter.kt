@@ -8,18 +8,24 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import im.dacer.kata.R
 import im.dacer.kata.data.local.MultiprocessPref
+import im.dacer.kata.data.local.SearchDictHelper
 import im.dacer.kata.data.local.SettingUtility
 import im.dacer.kata.data.model.bigbang.Word
+import im.dacer.kata.data.model.bigbang.WordWithMeaning
+import im.dacer.kata.data.model.segment.CombinedResult
 import im.dacer.kata.data.room.dao.ContextStrDao
 import im.dacer.kata.data.room.dao.WordDao
 import im.dacer.kata.injection.ConfigPersistent
 import im.dacer.kata.injection.qualifier.ApplicationContext
 import im.dacer.kata.ui.base.BasePresenter
+import im.dacer.kata.util.LangUtils
 import im.dacer.kata.util.SnackBarHelper
 import im.dacer.kata.util.helper.AnkiDroidHelper
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
 
@@ -31,9 +37,10 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
     @Inject lateinit var wordDao: WordDao
     @Inject lateinit var contextStrDao: ContextStrDao
     @Inject lateinit var ankiDroidHelper: AnkiDroidHelper
+    @Inject lateinit var searchDictHelper: SearchDictHelper
+    @Inject lateinit var langUtils: LangUtils
 
     private var refreshWordDis: Disposable? = null
-    private var wordList: List<Word>? = null
     private var showLearning = true
 
     val swipeListener = object : OnItemSwipeListener {
@@ -41,7 +48,7 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
         override fun clearView(viewHolder: RecyclerView.ViewHolder?, pos: Int) {}
 
         override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
-            val word = wordList?.get(pos) ?: return
+            val word = mvpView?.getWordWithMeaning(pos)?.word ?: return
             SnackBarHelper.showRedo(mvpView!!.getDecorView(), getStr(R.string.deleted_sth, word.baseForm), { _ ->
                 contextStrDao.findByWordId(word.id).subscribe { contextStrList ->
                     contextStrList.forEach{ contextStrDao.delete(it) }
@@ -54,6 +61,11 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
 
         override fun onItemSwipeStart(viewHolder: RecyclerView.ViewHolder?, pos: Int) {}
         override fun onItemSwipeMoving(canvas: Canvas?, viewHolder: RecyclerView.ViewHolder?, dX: Float, dY: Float, isCurrentlyActive: Boolean) {}
+
+    }
+
+    override fun attachView(mvpView: WordBookMvp) {
+        super.attachView(mvpView)
 
     }
 
@@ -74,7 +86,7 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
     }
 
     fun onWordClicked(pos: Int) {
-        val word = wordList?.get(pos) ?: return
+        val word = mvpView?.getWordWithMeaning(pos)?.word ?: return
         if (!showLearning) {
             wordDao.update(word.markLearning())
             SnackBarHelper.showRedo(mvpView!!.getDecorView(),
@@ -109,13 +121,26 @@ class WordBookPresenter @Inject constructor(@ApplicationContext val context: Con
     }
 
     private fun refreshWordList() {
+        mvpView?.setLoading(true)
         mvpView?.setChangeListMenuName(if (showLearning) getStr(R.string.learning) else getStr(R.string.mastered))
         refreshWordDis?.dispose()
         refreshWordDis = getLoadWordFlowable()
+                .toObservable()
+                .flatMapIterable { it }
+                .flatMap {
+                    Observable.zip(
+                            Observable.just(it),
+                            searchDictHelper.searchForCombineResultAndTranslateIfNoMeaning(it.baseForm, langUtils),
+                            BiFunction<Word, CombinedResult, WordWithMeaning> {
+                                word, combineResult ->
+                                WordWithMeaning(word, combineResult.getMeaning(context))
+                            }
+                    )
+                }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { wordList ->
-                    this.wordList = wordList
-                    mvpView?.showWords(wordList)
+                .subscribe { word ->
+                    mvpView?.addWordWithMeaning(word)
+                    mvpView?.setLoading(false)
                 }
     }
 

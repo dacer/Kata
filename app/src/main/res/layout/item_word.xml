@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nothingHappenedView"
     android:layout_gravity="center"
     android:layout_width="match_parent"
@@ -25,7 +26,18 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:maxLines="5"
-                android:ellipsize="end"/>
+                android:ellipsize="end"
+                tools:text="Word"/>
+            <TextView
+                android:id="@+id/explanationTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textSize="14sp"
+                android:maxLines="5"
+                android:textColor="#A0A0A0"
+                android:ellipsize="end"
+                tools:text="It is a explanation"/>
         </LinearLayout>
 
     </RelativeLayout>

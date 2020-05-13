@@ -3,12 +3,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/wordRecyclerView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomView"/>
-
+        android:layout_above="@+id/bottomView">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wordRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/bottomView"
         android:layout_width="match_parent"
