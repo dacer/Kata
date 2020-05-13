@@ -130,6 +130,11 @@ class AnkiDroidHelper @Inject constructor(@ApplicationContext val appContext: Co
             if (result.isNotEmpty()) {
                 deckId = settingUtility.ankiDeckId
             }
+        } else {
+            val result = api.deckList.filter { it.value == DECK_NAME }
+            if (result.isNotEmpty()) {
+                deckId = result.keys.first()
+            }
         }
         if (deckId == -1L) {
             deckId = api.addNewDeck(DECK_NAME)
