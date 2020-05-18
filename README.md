@@ -1,4 +1,10 @@
-# Kata [![Get it on Google Play][googleplay_store_badge]][app]
+# Kata 
+<a href="https://play.google.com/store/apps/details?id=im.dacer.kata">
+    <img alt="Get it on Google Play"
+        height="80"
+        src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
+</a>
+
 # Credits
 
 * Dictionary - [JMdict](http://www.edrdg.org/edrdg/licence.html)
@@ -31,7 +37,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
-
-[app]: https://play.google.com/store/apps/details?id=im.dacer.kata
-[googleplay_store_badge]: http://www.android.com/images/brand/get_it_on_play_logo_large.png
